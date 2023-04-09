@@ -104,7 +104,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Daemon进程真正监听的端口号
-                proxy_pass http://localhost:24444;
+                proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -138,7 +138,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Daemon进程真正监听的端口号
-                proxy_pass http://localhost:24444;
+                proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -169,7 +169,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Web面板端真正监听的端口号
-                proxy_pass http://localhost:23333;
+                proxy_pass http://localhost:23333 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
