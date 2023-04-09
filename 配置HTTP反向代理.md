@@ -206,7 +206,7 @@ http://domain.com:12333/
 
 ## Web面板后台使用 WS 协议连接守护进程
 
-假设Web面板后台通过 `localhost` 连接节点，那么在[守护进程管理](connect_daemon.md)里，填写地址为 `localhost` ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 `连接` 或 `更新` 即可。  
+假设Web面板后台通过 `localhost` 连接节点，那么在`节点管理`中填写地址为 `localhost` ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 `连接` 或 `更新` 即可。  
 也可以将地址填写为 `ws://localhost` 。  
 假设需要填远程地址 `domain.com` ，那么将 `localhost` 改为 `domain.com` 即可。
 
