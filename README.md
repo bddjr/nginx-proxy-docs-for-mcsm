@@ -17,5 +17,5 @@ https://q8p.cc/proxyformcsm/README.md
 https://docs.mcsmanager.com  
 
 ***
-> 由于MCSManager官方并不愿意采纳我的反向代理文章到官方文档，现已专门开个仓库放这些文章。  
+> 由于MCSManager官方未采纳我的文章到官方文档，现已专门开个仓库放这些文章。  
 > 最后被关闭的PR：https://github.com/MCSManager/Documentation/pull/17  
