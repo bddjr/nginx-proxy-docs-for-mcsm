@@ -8,9 +8,14 @@
 有错误的内容或改进的建议？[点此编辑并提交issue](../../issues/new)。
 ***
 ## 非常感谢您能阅读我写的教程，希望对你有帮助！
-想要分享该文档？复制以下短链接：  
+想要分享该文档？  
+github仓库短链接：  
 ```
 https://q8p.cc/proxyformcsm/README.md
+```
+gitee仓库短链接：  
+```
+https://q8p.cc/gtproxyformcsm/README.md
 ```
 
 ***
