@@ -22,9 +22,18 @@
 
 ## 简单说下合并端口的原理
 
-在MCSManager中，访问Web端时，路径最前面始终不是 `/socket.io/` ，而访问守护节点时，路径最前面始终是 `/socket.io/` 。  
-在Nginx中，当一个 `http{server{}}` 里的同时含有 `location /socket.io/{}` 与 `location /{}` 两种location模块，则会优先尝试匹配 `location /socket.io/{}` 。  
-依据这些特性，我们可以使用反向代理，将两者端口合并，减少公网监听端口的占用数量。  
+现有的MCSM指向守护进程的路径开头有：
+> /socket.io/  
+> /upload/  
+> /download/
+
+这些路径在访问Web端时，并不会出现在开头。   
+在Nginx中，`http{server{}}`里的 location 模块中，可以在路径前面填等号、正则表达式。匹配优先级从高到低是：
+> =/test.txt {}  
+> ~ ^/path/ {}  
+> /path/ {}  
+
+依据这些特性，我们可以使用反向代理，将两者端口合并，减少公网监听端口的占用数量。   
 
 <br />
 
@@ -141,9 +150,9 @@ http {
 
         # 开始反向代理
         # 代理Daemon节点
-        location /socket.io/ {
-            # 填写Daemon进程真正监听的端口号，不要漏掉后面的路径与斜杠！
-                proxy_pass http://localhost:24444/socket.io/;
+        location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
+            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+                proxy_pass http://localhost:24444;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -183,9 +192,9 @@ http {
 
         # 开始反向代理
         # 代理Daemon节点
-        location /socket.io/ {
-            # 填写Daemon进程真正监听的端口号，不要漏掉后面的路径与斜杠！
-                proxy_pass http://localhost:24444/socket.io/;
+        location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
+            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+                proxy_pass http://localhost:24444;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -200,8 +209,8 @@ http {
         }
         # 代理Web端
         location / {
-            # 填写Web面板端真正监听的端口号，不要漏掉后面的斜杠！
-                proxy_pass http://localhost:23333/;
+            # 填写Web面板端真正监听的端口号
+                proxy_pass http://localhost:23333;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
