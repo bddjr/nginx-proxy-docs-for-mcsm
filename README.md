@@ -7,9 +7,9 @@
 
 ***
 ## 非常感谢您能阅读我写的教程，希望对你有帮助！
-想要分享该文档？复制以下链接：
+想要分享该文档？复制以下短链接：
 ```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md
+https://q8p.cc/proxyformcsm
 ```
 
 ***
