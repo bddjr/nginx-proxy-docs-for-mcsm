@@ -71,6 +71,9 @@ http {
     # 响应头中的server仅返回nginx，不返回版本号。
     server_tokens  off;
 
+    # 不限制客户端上传文件大小
+    client_max_body_size 0;
+
     server {
         # 这块是用于阻止跨域访问的。
 
