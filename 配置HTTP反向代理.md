@@ -222,3 +222,20 @@ http://domain.com:12333/
 > Daemon端真正监听的端口（例如24444） 
  
 <br />
+
+***
+## 非常感谢您能阅读我写的教程，希望对你有帮助！
+有错误的内容或改进的建议？[点此编辑并提交issue](../../issues/new)。
+
+想要分享该文档？  
+github仓库短链接：  
+```
+https://q8p.cc/proxyformcsm/配置HTTP反向代理.md
+```
+gitee仓库短链接：  
+```
+https://q8p.cc/gtproxyformcsm/配置HTTP反向代理.md
+```
+
+***
+[<=点此返回README](README.md)

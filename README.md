@@ -21,7 +21,7 @@ https://q8p.cc/gtproxyformcsm/README.md
 
 ***
 其它文档请参考MCSM官方文档：  
-https://docs.mcsmanager.com  
+https://docs.mcsmanager.com/#/zh-cn/  
 
 ***
 > 由于MCSManager官方未采纳我的文章到官方文档，现已专门开个仓库放这些文章。  
