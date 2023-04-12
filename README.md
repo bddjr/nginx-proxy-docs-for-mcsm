@@ -26,3 +26,4 @@ https://docs.mcsmanager.com/#/zh-cn/
 ***
 > 由于MCSManager官方未采纳我的文章到官方文档，现已专门开个仓库放这些文章。  
 > 最后被关闭的PR：https://github.com/MCSManager/Documentation/pull/17  
+> 写合并端口的文章是因为我看到这个issue：https://github.com/MCSManager/MCSManager/issues/826
