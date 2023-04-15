@@ -295,7 +295,7 @@ github仓库短链接：
 ```
 https://q8p.cc/proxyformcsm/配置HTTPS反向代理.md
 ```
-gitee仓库短链接：  
+gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTPS反向代理.md
 ```

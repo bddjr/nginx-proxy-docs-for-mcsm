@@ -228,7 +228,7 @@ github仓库短链接：
 ```
 https://q8p.cc/proxyformcsm/配置HTTP反向代理且合并端口.md
 ```
-gitee仓库短链接：  
+gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTP反向代理且合并端口.md
 ```
