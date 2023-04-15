@@ -148,7 +148,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            add_header Cache-Control no-store; # 禁止客户端缓存，防止更新不及时
+            expires -1; # 禁止客户端缓存，防止更新不及时
         }
     }
     server {
@@ -189,7 +189,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            add_header Cache-Control no-store; # 禁止客户端缓存，防止更新不及时
+            expires -1; # 禁止客户端缓存，防止更新不及时
         }
     }
     server {
