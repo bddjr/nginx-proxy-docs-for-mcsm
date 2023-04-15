@@ -143,12 +143,8 @@ http {
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
             server_name domain.com *.domain.com;
-        
-        # 绝对防止搜索引擎收录
-        location =/robots.txt{
-            default_type text/plain;
-            return 200 "User-agent: *\nDisallow: /";
-        }
+
+        # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
 
         # 开始反向代理
         # 代理Daemon节点

@@ -208,11 +208,7 @@ http {
             return 444;
         }
 
-        # 绝对防止搜索引擎收录
-        location =/robots.txt{
-            default_type text/plain;
-            return 200 "User-agent: *\nDisallow: /";
-        }
+        # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
 
         # 开始反向代理
         location / {
