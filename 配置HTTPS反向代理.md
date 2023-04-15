@@ -31,8 +31,8 @@
 为自己的域名生成SSL证书，用于建立安全的HTTPS连接。  
 可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签）。  
 这里提供两个可以免费申请90天SSL证书的地址：
-> https://www.cersign.com/free-ssl-certificate.html  
-> https://www.mianfeissl.com/  
+> <https://www.cersign.com/free-ssl-certificate.html>  
+> <https://www.mianfeissl.com/>  
 
 ### 警告：请勿泄露证书的私钥，攻击者拿到私钥后能劫持连接。  
 
