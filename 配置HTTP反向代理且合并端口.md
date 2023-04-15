@@ -99,22 +99,18 @@ http {
         # 这块是用于阻止跨域访问的。
 
         # 代理后端口
-            listen 12333 default;
+            listen 12333 default ;
         # 可以通过多个listen监听多个地址与端口。
 
-        server_name _; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         return 444; # 断开连接。
     }
     server {
-        # Daemon 端代理后localhost访问HTTPS协议端口
-            listen 12333;
+        # Daemon 端代理后localhost访问HTTP协议端口
+            listen 127.0.0.1:12333 ;
         # 可以通过多个listen监听多个地址与端口。
 
-        server_name localhost;
-
-        # 仅允许127.0.0.1通过localhost访问，其它IP会返回403
-        allow 127.0.0.1;
-        deny all;
+        server_name localhost ;
 
         gzip off; # 本地回环地址不需要压缩传输
 
@@ -138,11 +134,11 @@ http {
     }
     server {
         # 代理后的公网访问HTTP协议端口
-            listen 12333;
+            listen 12333 ;
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-            server_name domain.com *.domain.com;
+            server_name domain.com *.domain.com ;
 
         # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
 

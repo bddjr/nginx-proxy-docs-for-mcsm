@@ -78,26 +78,22 @@ http {
         # 这块是用于阻止跨域访问的。
 
         # Daemon 端访问端口
-            listen 12444 default;
+            listen 12444 default ;
         # 可以通过多个listen监听多个地址与端口。
 
         # Web面板访问端口
-            listen 12333 default;
+            listen 12333 default ;
         # 可以通过多个listen监听多个地址与端口。
 
-        server_name _; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         return 444; # 断开连接。
     }
     server {
         # Daemon 端代理后的localhost访问HTTP协议端口
-            listen 12444;
+            listen 127.0.0.1:12444 ;
         # 可以通过多个listen监听多个地址与端口。
 
-        server_name localhost;
-
-        # 仅允许127.0.0.1通过localhost访问，其它IP会返回403
-        allow 127.0.0.1;
-        deny all;
+        server_name localhost ;
 
         gzip off; # 本地回环地址不需要压缩传输
 
@@ -120,12 +116,12 @@ http {
     }
     server {
         # Daemon 端代理后的HTTP协议端口
-            listen 12444;
+            listen 12444 ;
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         # 您不应该加上localhost
-            server_name domain.com *.domain.com;
+            server_name domain.com *.domain.com ;
 
         deny 127.0.0.1; # 禁止来源127.0.0.1的IP访问，这块主要是测试的时候为了确保localhost真的不是访问这里。
 
@@ -154,11 +150,11 @@ http {
     }
     server {
         # Web 端代理后的HTTP端口
-            listen 12333;
+            listen 12333 ;
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-            server_name domain.com *.domain.com;
+            server_name domain.com *.domain.com ;
 
         # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
 

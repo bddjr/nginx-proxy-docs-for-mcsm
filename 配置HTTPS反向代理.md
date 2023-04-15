@@ -105,14 +105,14 @@ http {
         # 这块是用于阻止跨域访问的。
 
         # Daemon 端访问端口
-            listen 12444 ssl;
+            listen 12444 ssl ;
         # 可以通过多个listen监听多个地址与端口。
 
         # Web面板访问端口
-            listen 12333 ssl;
+            listen 12333 ssl ;
         # 可以通过多个listen监听多个地址与端口。
 
-        server_name _; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
 
         # 使用https访问时，直接断开连接，不返回证书。
         # 如果你需要套DNS的CDN高防，则不应该删除此块，那样更容易导致证书泄露，攻击者扫到IP后直接将源IP与域名绑定在一起。
@@ -126,11 +126,11 @@ http {
     }
     server {
         # Daemon 端localhost访问HTTP协议端口
-            listen 127.0.0.1:12444;
+            listen 127.0.0.1:12444 ;
         # 可以通过多个listen监听多个地址与端口。
 
         # 本地回环域名
-        server_name localhost;
+        server_name localhost ;
         
         gzip off; # 本地回环地址不占用宽带，不需要压缩。
 
@@ -157,7 +157,7 @@ http {
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-            server_name domain.com *.domain.com;
+            server_name domain.com *.domain.com ;
 
         deny 127.0.0.1; # 禁止来源127.0.0.1的IP访问，这块主要是测试的时候为了确保localhost真的不是访问这里。
 
@@ -194,11 +194,11 @@ http {
     }
     server {
         # Web 端公网HTTPS端口
-            listen 12333 ssl;
+            listen 12333 ssl ;
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-            server_name domain.com *.domain.com;
+            server_name domain.com *.domain.com ;
         
         # 在示范内容之前已经填了ssl证书相关配置，因此这里并没有ssl配置。您也可以在此处单独配置ssl。
 
