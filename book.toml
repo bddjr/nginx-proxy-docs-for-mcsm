@@ -1,5 +1,19 @@
 [book]
 title = "mdBook 文档"
 description = "Create book from markdown files. Like Gitbook but implemented in Rust"
-authors = ["Mathieu David", "Michael-F-Bryan"]
-language = "zh-cn"
+authors = ["bddjr"]
+language = "zh_CN"
+src = ""
+
+[build]
+build-dir = "my-example-book"
+create-missing = true
+
+[preprocessor.index]
+
+[preprocessor.links]
+
+[output.html]
+
+[output.html.search]
+limit-results = 15
