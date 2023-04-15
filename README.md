@@ -18,7 +18,7 @@ github仓库短链接：
 ```
 https://q8p.cc/proxyformcsm/README.md
 ```
-gitee仓库短链接：  
+gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/README.md
 ```
