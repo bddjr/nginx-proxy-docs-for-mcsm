@@ -22,6 +22,10 @@ gitee镜像仓库短链接：
 ```
 https://q8p.cc/gtproxyformcsm/README.md
 ```
+gitpage：  
+```
+https://proxyformcsm.bddjr.cn
+```
 
 ***
 其它文档请参考MCSM官方文档：  
