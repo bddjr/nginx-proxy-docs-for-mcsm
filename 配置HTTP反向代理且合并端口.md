@@ -133,7 +133,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止更新不及时
+            expires -1; # 效果：Cache-Control: no-cache
         }
     }
     server {
@@ -161,7 +161,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止更新不及时
+            expires -1; # 效果：Cache-Control: no-cache
         }
         # 代理Web端
         location / {
@@ -177,7 +177,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止更新不及时
+            expires -1; # 效果：Cache-Control: no-cache
         }
     }
 
