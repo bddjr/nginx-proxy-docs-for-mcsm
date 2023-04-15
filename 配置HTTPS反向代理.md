@@ -299,7 +299,7 @@ gitee仓库短链接：
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTPS反向代理.md
 ```
-gitpage：  
+gitpage网页：  
 ```
 https://proxyformcsm.bddjr.cn/配置HTTPS反向代理
 ```

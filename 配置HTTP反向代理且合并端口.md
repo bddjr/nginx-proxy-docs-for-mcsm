@@ -232,7 +232,7 @@ gitee仓库短链接：
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTP反向代理且合并端口.md
 ```
-gitpage：  
+gitpage网页：  
 ```
 https://proxyformcsm.bddjr.cn/配置HTTP反向代理且合并端口
 ```

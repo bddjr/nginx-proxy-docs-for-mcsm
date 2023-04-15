@@ -22,7 +22,7 @@ gitee镜像仓库短链接：
 ```
 https://q8p.cc/gtproxyformcsm/README.md
 ```
-gitpage：  
+gitpage网页：  
 ```
 https://proxyformcsm.bddjr.cn
 ```
