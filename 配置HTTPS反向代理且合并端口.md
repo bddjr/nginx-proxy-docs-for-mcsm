@@ -3,37 +3,38 @@
 ***
 # 配置 HTTPS 反向代理且合并Web面板与守护节点的端口
 
-本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
-若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-
 **合并端口通常仅用于Web面板与守护进程在同一主机的情况。**  
 
-此教程使用 Nginx 进行演示。  
-> 本地回环地址：在本文是指域名 `localhost` 以及IPv4 `127.0.0.1` 。  
-> 非本地回环地址：不是 **本地回环地址** ，例如本文提到的 `domain.com` 。  
+> 本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
+> 若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
+
+注释：  
+> 本地回环地址：例如域名 **localhost** IPv4 **127.0.0.1** 。  
+> 非本地回环地址：不是 **本地回环地址** ，例如本文提到的 **domain.com** 。  
 > 守护进程：意思同Daemon节点、Daemon进程、Daemon端。  
 > Web面板后台：指Web面板的程序，不是守护进程，不是浏览器。  
 
-### 警告：
-**合并端口可能会因为MCSM的设计导致一些BUG，端口充足的情况下不建议合并。**  
-当浏览器使用HTTPS访问Web面板时，浏览器访问守护进程也需要使用HTTPS。  
-若为守护进程的 **非本地回环地址** 配置了HTTPS，并且Web面板后台也使用 **非本地回环地址** 访问守护进程，则需要确保 **SSL证书有效** 、访问的地址正确。否则Web面板后台会因为 **SSL证书无效** 而无法连接节点，会显示节点离线。  
-本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
+### 警告⚠：
+> **合并端口可能会因为MCSManager的设计冲突导致一些BUG，端口充足的情况下不建议合并。**  
+> 当浏览器使用HTTPS访问Web面板时，浏览器访问守护进程也需要使用HTTPS。  
+> 若为守护进程的 **非本地回环地址** 配置了HTTPS，并且Web面板后台也使用 **非本地回环地址** 访问守护进程，则需要确保 **SSL证书有效** 、访问的地址正确。否则Web面板后台会因为 **SSL证书无效** 而无法连接节点，会显示节点离线。  
+> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
 
 <br />
 
 ## 简单说下合并端口的原理
 
-现有的MCSM指向守护进程的路径开头有：
+MCSManager访问守护进程时特有的路径开头（Web面板不会以这些作为路径开头）：
 > /socket.io/  
 > /upload/  
-> /download/
+> /download/  
 
-这些路径在访问Web端时，并不会出现在开头。   
-在Nginx中，`http{server{}}`里的 **location** 模块中，可以在路径前面填等号、正则表达式。匹配优先级从高到低是：
-> location =/test.txt {}  
-> location ~ ^/path/ {}  
-> location /path/ {}  
+在Nginx中，匹配优先级从高到低是：  
+```nginx
+location =/test.txt {}    # 匹配完全相等的路径  
+location ~ ^/path/ {}    # 匹配正则表达式  
+location /path/ {}    # 匹配单个路径开头  
+```
 
 依据这些特性，我们可以使用反向代理，将两者端口合并，减少公网监听端口的占用数量。   
 
@@ -54,13 +55,13 @@
 > <https://www.cersign.com/free-ssl-certificate.html>  
 > <https://www.mianfeissl.com/>  
 
-### 警告：请勿泄露证书的私钥，攻击者拿到私钥后能劫持连接。  
+### 警告⚠：请勿泄露证书的私钥，攻击者拿到私钥后能劫持连接。  
 
 <br />
 
 ## 配置反向代理
 
-以下示范环境是`CentOS`操作系统内使用`yum install nginx`安装的Nginx`1.20.1`，配置文件目录`/etc/nginx/nginx.conf`，Web面板版本`9.8.0`，守护进程版本`3.3.0`。  
+以下示范环境是 **CentOS** 操作系统使用yum安装的Nginx **1.20.1** ，配置文件目录 **/etc/nginx/nginx.conf** ，Web面板 **9.8.0** ，守护进程 **3.3.0** 。  
 
 ```nginx
 # For more information on configuration, see:
@@ -148,13 +149,13 @@ http {
         # 本地回环域名
         server_name localhost ;
         
-        gzip off; # 本地回环地址不占用宽带，不需要压缩。
+        gzip off; # 本地回环地址不占宽带，无需压缩。
 
         # 开始反向代理
         # 代理Daemon节点
         location / {
             # 填写Daemon进程真正监听的端口号
-                proxy_pass http://localhost:24444 ;
+            proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -165,7 +166,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
     }
     server {
@@ -174,7 +175,7 @@ http {
         # 可以通过多个listen监听多个地址与端口。
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-            server_name domain.com *.domain.com ;
+        server_name domain.com *.domain.com ;
 
         deny 127.0.0.1; # 禁止来源127.0.0.1的IP访问，这块主要是测试的时候为了确保localhost真的不是访问这里。
 
@@ -192,7 +193,7 @@ http {
         # 代理Daemon节点
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
             # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
-                proxy_pass http://localhost:24444 ;
+            proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -203,12 +204,12 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
         # 代理Web端
         location / {
             # 填写Web面板端真正监听的端口号
-                proxy_pass http://localhost:23333 ;
+            proxy_pass http://localhost:23333 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -219,7 +220,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
     }
 
@@ -232,47 +233,41 @@ systemctl restart nginx
 
 <br />
 
-## 客户端访问时，需要注意的
+## 客户端访问面板
 
-依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启），且直接使用 `https://` 协议访问，而不要使用 `http://` 协议。  
-假设域名是`domain.com`，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
+依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启），且直接使用 **https://** 协议访问，而不要使用 **http://** 协议。  
+假设域名是 **domain.com** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 https://domain.com:12333/
 ```
 
-请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。  
+### 请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。  
 
 <br />
 
-## Web面板后台使用 WS 协议连接 本地回环地址 的守护进程
+## 连接守护进程
 
-在**节点管理**中，填写地址为 `localhost` ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
-**不能**将地址填写为 `ws://localhost` ！这会导致浏览器尝试使用HTTP协议连接！  
+### 本地回环地址  
+> 在**节点管理**中，填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> **⚠不能将地址填写为 *ws://localhost* ！这会导致浏览器尝试使用HTTP协议连接！**  
+> 
+> ![connect_default_daemon_12333.webp](images/connect_default_daemon_12333.webp)
 
-![图片1](images/default_ws_daemon_12333.png)
-
-<br />
-
-## Web面板后台使用 WSS 协议连接 非本地回环地址 的守护进程
-
-由于您为守护进程的 **非本地回环地址** 配置了HTTPS访问或修改了代理后端口，且Web面板后台使用 **非本地回环地址** 连接守护进程，此时守护进程管理界面中，该节点状态可能是离线的。  
-
-在**节点管理**中，将原有的地址前面添加 `wss://` 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。
-
-例如以下两种原地址：
-> domain.com  
-> ws://domain.com  
-
-修改后：
-> wss://domain.com  
-
-![图片](images/wss_daemon_12333.png)
+### 非本地回环地址（远程地址）  
+> 在**节点管理**中，将原有的地址前面添加 **wss://** 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 例如以下两种原地址：
+> > domain.com  
+> > ws://domain.com  
+> 
+> 修改后：
+> > wss://domain.com  
+> 
+> ![connect_wss_daemon_12333.webp](images/connect_wss_daemon_12333.webp)
 
 <br />
 
-## 大功告成
+## 恭喜你，基础配置完成了！
 
-依据以上步骤，您的面板以及守护进程的https协议访问应该正常工作。  
 为了安全，您应当在防火墙中，禁止通过以下端口访问：
 > Web面板端真正监听的端口（例如23333）  
 > Daemon端真正监听的端口（例如24444） 

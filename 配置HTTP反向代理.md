@@ -3,17 +3,18 @@
 ***
 # 配置 HTTP 反向代理
 
-若您需要 HTTPS 反向代理，请参考 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
-若您需要合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。
+> 若您需要 HTTPS 反向代理，请参考 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
+> 若您需要合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。
 
-此教程使用 Nginx 进行演示。  
-> 本地回环地址：在本文是指域名 `localhost` 以及IPv4 `127.0.0.1` 。  
+注释：  
+> 本地回环地址：例如域名 **localhost** IPv4 **127.0.0.1** 。  
 > 守护进程：意思同Daemon节点、Daemon进程、Daemon端。  
 > Web面板后台：指Web面板的程序，不是守护进程，不是浏览器。  
 
-### 警告：
-使用HTTP协议可能会在毫不知情的情况下遭到网页内容**篡改**、**窃取**连接内容，若想要确保连接安全，请 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
-本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
+
+### 警告⚠：
+> 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容，若想要确保连接安全，请 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
+> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
 
 <br />
 
@@ -26,7 +27,7 @@
 
 ## 配置反向代理
 
-以下示范环境是`CentOS`操作系统内使用`yum install nginx`安装的Nginx`1.20.1`，配置文件目录`/etc/nginx/nginx.conf`，Web面板版本`9.8.0`，守护进程版本`3.3.0`。  
+以下示范环境是 **CentOS** 操作系统使用yum安装的Nginx **1.20.1** ，配置文件目录 **/etc/nginx/nginx.conf** ，Web面板 **9.8.0** ，守护进程 **3.3.0** 。  
 
 ```nginx
 # For more information on configuration, see:
@@ -101,7 +102,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Daemon进程真正监听的端口号
-                proxy_pass http://localhost:24444 ;
+            proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -112,7 +113,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
     }
     server {
@@ -135,7 +136,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Daemon进程真正监听的端口号
-                proxy_pass http://localhost:24444 ;
+            proxy_pass http://localhost:24444 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -146,7 +147,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
     }
     server {
@@ -162,7 +163,7 @@ http {
         # 开始反向代理
         location / {
             # 填写Web面板端真正监听的端口号
-                proxy_pass http://localhost:23333 ;
+            proxy_pass http://localhost:23333 ;
 
             # 一些必要的请求头
             proxy_set_header Host $host:$server_port;
@@ -173,7 +174,7 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 效果：Cache-Control: no-cache
+            expires -1; # 禁止客户端缓存
         }
     }
 
@@ -186,30 +187,29 @@ systemctl restart nginx
 
 <br />
 
-## 客户端访问Web面板时，需要注意的
+## 客户端访问面板
 
-假设域名是`domain.com`，反向代理后的端口是`12333`，那么浏览器需要使用这个地址访问面板：
+假如域名是 **domain.com** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 http://domain.com:12333/
 ```
 
-请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。  
+### 请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。  
 
 <br />
 
-## Web面板后台使用 WS 协议连接守护进程
+## 连接守护进程
 
-假设Web面板后台通过 `localhost` 连接节点，那么在**节点管理**中填写地址为 `localhost` ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 **连接** 或 **更新** 即可。  
-也可以将地址填写为 `ws://localhost` 。  
-假设需要填远程地址 `domain.com` ，那么将 `localhost` 改为 `domain.com` 即可。
+假如Web面板后台通过 **localhost** 域名连接节点，那么在**节点管理**中填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 **连接** 或 **更新** 即可。  
+也可以将地址填写为 **ws://localhost** 。  
+假设需要填远程地址 **domain.com** ，那么将 **localhost** 改为 **domain.com** 即可。
 
-![图片1](images/default_ws_daemon.png)
+![connect_default_daemon_12444.webp](images/connect_default_daemon_12444.webp)
 
 <br />
 
-## 大功告成
+## 恭喜你，基础配置完成了！
 
-依据以上步骤，您的面板以及守护进程的http协议访问应该正常工作。  
 为了安全，您应当在防火墙中，禁止通过以下端口访问：
 > Web面板端真正监听的端口（例如23333）  
 > Daemon端真正监听的端口（例如24444） 
