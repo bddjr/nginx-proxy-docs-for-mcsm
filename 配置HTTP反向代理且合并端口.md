@@ -7,14 +7,12 @@
 
 > 本文基于 [配置HTTP反向代理](配置HTTP反向代理.md) 进行修改。  
 > 若您需要 HTTPS 反向代理且合并端口，请参考 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。  
+> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效。  
+> ⚠ 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容。
 
 注释：  
-> 本地回环地址：例如域名 **localhost** IPv4 **127.0.0.1** 。  
+> 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
 > 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
-
-### 警告⚠：
-> 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容，若想要确保连接安全，请 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。  
-> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
 
 <br />
 
@@ -33,13 +31,6 @@ location /path/ {}    # 匹配单个路径开头
 ```
 
 依据这些特性，我们可以使用反向代理，将两者端口合并，减少公网监听端口的占用数量。   
-
-<br />
-
-## 需要安装的
-
-> [Nginx](https://nginx.org/)  
-> [MCSManager](https://mcsmanager.com/)  
 
 <br />
 
@@ -65,9 +56,8 @@ events {
 }
 
 # 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中真实存在即可。
-#========================================================
-# 以下才是需要理解并修改的内容。
-# 仅供参考，请依据自己的需求以及运行环境进行更改。
+#=======================================================================
+# 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
 #    只需监听IPv4的端口
 #    Daemon端真正监听的端口：24444
@@ -78,13 +68,13 @@ events {
 http {
     # 这块是在传输时默认开启gzip压缩
     gzip on;
-    # 传输时需要被压缩的类型
-    gzip_types text/plain text/css application/javascript application/xml application/json image/png;
+    # 传输时会被压缩的类型（png无需压缩，不建议将png加进去）
+    gzip_types text/plain text/css application/javascript application/xml application/json;
     # 反向代理时，启用压缩
     gzip_proxied any;
-    # 传输时压缩等级，等级越高压缩消耗CPU越多，最高9级
+    # 传输时压缩等级，等级越高压缩消耗CPU越多，最高9级，通常5级就够了
     gzip_comp_level 5;
-    # 传输时大小达到1k才压缩
+    # 传输时大小达到1k才压缩，压缩小内容无意义
     gzip_min_length 1k;
 
     # 响应头中的server仅返回nginx，不返回版本号。
@@ -110,7 +100,8 @@ http {
 
         server_name localhost ;
 
-        gzip off; # 本地回环地址不占宽带，无需压缩。
+        # 本地回环地址不占宽带，无需压缩。
+        gzip off;
 
         # 开始反向代理
         # 代理Daemon节点
@@ -128,7 +119,8 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
     }
     server {
@@ -139,7 +131,7 @@ http {
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
 
-        # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
+        # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
         # 代理Daemon节点
@@ -157,7 +149,8 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
         # 代理Web端
         location / {
@@ -174,10 +167,10 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
     }
-
 }
 ```
 

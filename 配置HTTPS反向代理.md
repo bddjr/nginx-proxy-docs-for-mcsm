@@ -4,21 +4,12 @@
 # 配置 HTTPS 反向代理
 
 > 若您只需要 HTTP 反向代理，请参考 [配置HTTP反向代理](配置HTTP反向代理.md) 。  
-> 若您需要合并端口，请参考 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。
+> 若您需要合并端口，请参考 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。  
+> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效。  
 
 注释：  
-> 本地回环地址：例如域名 **localhost** IPv4 **127.0.0.1** 。  
+> 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
 > 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
-
-### 警告⚠：
-> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
-
-<br />
-
-## 需要安装的
-
-> [Nginx](https://nginx.org/)  
-> [MCSManager](https://mcsmanager.com/)  
 
 <br />
 
@@ -26,11 +17,11 @@
 
 为自己的域名生成有效的SSL证书，用于建立安全的HTTPS连接。  
 可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签）。  
-这里提供两个可以免费申请90天SSL证书的地址：
+这里提供两个可以免费申请90天SSL证书的地址：  
 > <https://www.cersign.com/free-ssl-certificate.html>  
 > <https://www.mianfeissl.com/>  
 
-### 警告⚠：请勿泄露证书的私钥，攻击者拿到私钥后能劫持连接。
+### 警告⚠：别泄露私钥！私钥泄露会导致HTTPS形同虚设！
 
 <br />
 
@@ -56,9 +47,8 @@ events {
 }
 
 # 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中真实存在即可。
-#========================================================
-# 以下才是需要理解并修改的内容。
-# 仅供参考，请依据自己的需求以及运行环境进行更改。
+#=======================================================================
+# 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
 #    只需监听IPv4的端口
 #    Daemon端真正监听的端口：24444
@@ -72,9 +62,9 @@ events {
 http {
     # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
     # 你的域名证书crt文件所在目录
-        ssl_certificate /etc/nginx/ssl/domain.com.crt;
+        ssl_certificate "/etc/nginx/ssl/domain.com.crt";
     # 你的域名证书私钥key文件所在目录
-        ssl_certificate_key /etc/nginx/ssl/domain.com_rsa.key;
+        ssl_certificate_key "/etc/nginx/ssl/domain.com_rsa.key";
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
@@ -83,13 +73,13 @@ http {
 
     # 这块是在传输时默认开启gzip压缩
     gzip on;
-    # 传输时需要被压缩的类型
-    gzip_types text/plain text/css application/javascript application/xml application/json image/png;
+    # 传输时会被压缩的类型（png无需压缩，不建议将png加进去）
+    gzip_types text/plain text/css application/javascript application/xml application/json;
     # 反向代理时，启用压缩
     gzip_proxied any;
-    # 传输时压缩等级，等级越高压缩消耗CPU越多，最高9级
+    # 传输时压缩等级，等级越高压缩消耗CPU越多，最高9级，通常5级就够了
     gzip_comp_level 5;
-    # 传输时大小达到1k才压缩
+    # 传输时大小达到1k才压缩，压缩小内容无意义
     gzip_min_length 1k;
 
     # 响应头中的server仅返回nginx，不返回版本号。
@@ -129,7 +119,8 @@ http {
         # 本地回环域名
         server_name localhost ;
         
-        gzip off; # 本地回环地址不占宽带，无需压缩。
+        # 本地回环地址不占宽带，无需压缩。
+        gzip off;
 
         # 开始反向代理
         location / {
@@ -146,7 +137,8 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
     }
     server {
@@ -157,7 +149,7 @@ http {
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
 
-        # 在示范内容之前已经填了ssl证书相关配置，因此这里并没有ssl配置。您也可以在此处单独配置ssl。
+        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
 
         # 使用HTTP访问时，断开连接。
         error_page 497 =200 /444nginx;
@@ -165,7 +157,7 @@ http {
             return 444;
         }
         
-        # 绝对防止搜索引擎收录
+        # 返回 robots.txt 以防止搜索引擎收录
         location =/robots.txt{
             default_type text/plain;
             return 200 "User-agent: *\nDisallow: /";
@@ -186,7 +178,8 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
     }
     server {
@@ -197,7 +190,7 @@ http {
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
         
-        # 在示范内容之前已经填了ssl证书相关配置，因此这里并没有ssl配置。您也可以在此处单独配置ssl。
+        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
 
         # 使用HTTP访问时，断开连接。
         error_page 497 =200 /444nginx;
@@ -205,7 +198,7 @@ http {
             return 444;
         }
 
-        # 这里不需要设置返回 robots.txt ，因为面板UI已经包含该文件。
+        # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
         location / {
@@ -222,12 +215,13 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            expires -1; # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
         }
     }
-
 }
 ```
+
 **配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
 ```bash
 systemctl restart nginx
@@ -274,7 +268,8 @@ https://domain.com:12333/
 > Web面板端真正监听的端口（例如23333）  
 > Daemon端真正监听的端口（例如24444） 
 
-（本地回环地址不受防火墙限制）
+（本地回环地址不受防火墙限制）  
+
 <br />
 
 ***
