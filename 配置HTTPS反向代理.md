@@ -17,11 +17,10 @@
 
 为自己的域名生成有效的SSL证书，用于建立安全的HTTPS连接。  
 可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签）。  
-这里提供两个可以免费申请90天SSL证书的地址：  
 > <https://www.cersign.com/free-ssl-certificate.html>  
 > <https://www.mianfeissl.com/>  
 
-### 警告⚠：别泄露私钥！私钥泄露会导致HTTPS形同虚设！
+### ⚠别泄露私钥！私钥泄露会导致HTTPS形同虚设！
 
 <br />
 
