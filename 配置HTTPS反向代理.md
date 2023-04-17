@@ -34,13 +34,6 @@
 
 <br />
 
-> 没有自己的域名？  
-> 你可以去 <https://www.dnspod.cn> 或 <https://wanwang.aliyun.com> 购买域名  
-> .top 后缀的域名首年仅9元，续费一年仅29元！  
-> （作者没收广告费，只是推荐一下）  
-
-<br />
-
 ## 配置反向代理
 
 以下示范环境是 **CentOS** 操作系统使用yum安装的Nginx **1.20.1** ，配置文件目录 **/etc/nginx/nginx.conf** ，Web面板 **9.8.0** ，守护进程 **3.3.0** 。  

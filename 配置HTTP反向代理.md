@@ -181,11 +181,6 @@ http {
 }
 ```
 
-> 没有自己的域名？  
-> 你可以去 <https://www.dnspod.cn> 或 <https://wanwang.aliyun.com> 购买域名  
-> .top 后缀的域名首年仅9元，续费一年仅29元！  
-> （作者没收广告费，只是推荐一下） 
-
 **配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
 ```bash
 systemctl restart nginx
