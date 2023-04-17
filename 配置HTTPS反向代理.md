@@ -140,11 +140,12 @@ http {
             # 填写Daemon进程真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
@@ -159,8 +160,6 @@ http {
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
-
-        deny 127.0.0.1; # 禁止来源127.0.0.1的IP访问，这块主要是测试的时候为了确保localhost真的不是访问这里。
 
         # 在示范内容之前已经填了ssl证书相关配置，因此这里并没有ssl配置。您也可以在此处单独配置ssl。
 
@@ -181,11 +180,12 @@ http {
             # 填写Daemon进程真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
@@ -216,11 +216,12 @@ http {
             # 填写Web面板端真正监听的端口号
             proxy_pass http://localhost:23333 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
@@ -240,7 +241,7 @@ systemctl restart nginx
 
 ## 客户端访问面板
 
-依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启），且直接使用 **https://** 协议访问，而不要使用 **http://** 协议。  
+依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启）。  
 假设域名是 **domain.com** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 https://domain.com:12333/

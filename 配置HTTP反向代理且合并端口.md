@@ -121,11 +121,12 @@ http {
             # 填写Daemon进程真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
@@ -149,11 +150,12 @@ http {
             # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
             proxy_pass http://localhost:24444 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
@@ -165,11 +167,12 @@ http {
             # 填写Web面板端真正监听的端口号
             proxy_pass http://localhost:23333 ;
 
-            # 一些必要的请求头
+            # 一些请求头
             proxy_set_header Host $host:$server_port;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             # 增加响应头
