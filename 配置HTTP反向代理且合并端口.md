@@ -18,7 +18,7 @@
 
 <br />
 
-## 简单说下合并端口的原理
+## 合并端口的原理
 
 MCSManager访问守护进程时特有的路径开头（Web面板不会以这些作为路径开头）：
 > /socket.io/  
@@ -180,6 +180,12 @@ http {
 
 }
 ```
+
+> 没有自己的域名？  
+> 你可以去 <https://www.dnspod.cn> 或 <https://wanwang.aliyun.com> 购买域名  
+> .top 后缀的域名首年仅9元，续费一年仅29元！  
+> （这里作者没恰饭，单纯推荐一下） 
+
 配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）
 ```bash
 systemctl restart nginx
