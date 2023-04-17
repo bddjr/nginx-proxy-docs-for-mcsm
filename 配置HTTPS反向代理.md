@@ -254,13 +254,13 @@ https://domain.com:12333/
 ## 连接守护进程
 
 ### 本地回环地址  
-> 在**节点管理**中，填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 在**节点管理**中，填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 **连接** 或 **更新** 即可。  
 > **⚠不能将地址填写为 *ws://localhost* ！这会导致浏览器尝试使用HTTP协议连接！**  
 > 
-> ![connect_default_daemon_12333.webp](images/connect_default_daemon_12333.webp)
+> ![connect_default_daemon_12444.webp](images/connect_default_daemon_12444.webp)
 
 ### 非本地回环地址（远程地址）  
-> 在**节点管理**中，将原有的地址前面添加 **wss://** 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 在**节点管理**中，将原有的地址前面添加 **wss://** 协议头，端口填写反向代理后的端口号（例如12444），然后单击右侧的 **连接** 或 **更新** 即可。  
 > 例如以下两种原地址：
 > > domain.com  
 > > ws://domain.com  
@@ -268,7 +268,7 @@ https://domain.com:12333/
 > 修改后：
 > > wss://domain.com  
 > 
-> ![connect_wss_daemon_12333.webp](images/connect_wss_daemon_12333.webp)
+> ![connect_wss_daemon_12444.webp](images/connect_wss_daemon_12444.webp)
 
 <br />
 
