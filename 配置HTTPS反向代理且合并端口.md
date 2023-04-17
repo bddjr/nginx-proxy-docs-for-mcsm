@@ -45,13 +45,20 @@ location /path/ {}    # 匹配单个路径开头
 
 ## 生成SSL证书
 
-为自己的域名生成SSL证书，用于建立安全的HTTPS连接。  
+为自己的域名生成有效的SSL证书，用于建立安全的HTTPS连接。  
 可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签）。  
 这里提供两个可以免费申请90天SSL证书的地址：
 > <https://www.cersign.com/free-ssl-certificate.html>  
 > <https://www.mianfeissl.com/>  
 
 ### 警告⚠：请勿泄露证书的私钥，攻击者拿到私钥后能劫持连接。  
+
+<br />
+
+> 没有自己的域名？  
+> 你可以去 <https://www.dnspod.cn> 或 <https://wanwang.aliyun.com> 购买域名  
+> .top 后缀的域名首年仅9元，续费一年仅29元！  
+> （这里作者没恰饭，单纯推荐一下）  
 
 <br />
 
