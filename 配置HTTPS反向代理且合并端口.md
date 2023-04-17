@@ -58,7 +58,7 @@ location /path/ {}    # 匹配单个路径开头
 > 没有自己的域名？  
 > 你可以去 <https://www.dnspod.cn> 或 <https://wanwang.aliyun.com> 购买域名  
 > .top 后缀的域名首年仅9元，续费一年仅29元！  
-> （作者没恰饭，单纯推荐一下）  
+> （作者没收广告费，只是推荐一下）  
 
 <br />
 
