@@ -8,9 +8,7 @@
 
 注释：  
 > 本地回环地址：例如域名 **localhost** IPv4 **127.0.0.1** 。  
-> 守护进程：意思同Daemon节点、Daemon进程、Daemon端。  
-> Web面板后台：指Web面板的程序，不是守护进程，不是浏览器。  
-
+> 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
 
 ### 警告⚠：
 > 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容，若想要确保连接安全，请 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
@@ -97,7 +95,7 @@ http {
 
         server_name localhost ;
 
-        gzip off; # 本地回环地址不需要压缩传输
+        gzip off; # 本地回环地址不占宽带，无需压缩。
 
         # 开始反向代理
         location / {
