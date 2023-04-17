@@ -186,7 +186,7 @@ http {
 > .top 后缀的域名首年仅9元，续费一年仅29元！  
 > （这里作者没恰饭，单纯推荐一下） 
 
-配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）
+**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
 ```bash
 systemctl restart nginx
 ```

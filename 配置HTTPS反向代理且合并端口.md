@@ -230,7 +230,7 @@ http {
 
 }
 ```
-配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）
+**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
 ```bash
 systemctl restart nginx
 ```
