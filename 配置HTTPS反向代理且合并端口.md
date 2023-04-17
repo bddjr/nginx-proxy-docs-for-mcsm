@@ -3,11 +3,10 @@
 ***
 # 配置 HTTPS 反向代理且合并Web面板与守护节点的端口
 
-合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
-
+> 合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
 > 本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
 > 若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效。  
+> 本文**不是**MCSManager官方开发人员写的，但内容已实测有效。  
 
 注释：  
 > 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
@@ -17,16 +16,16 @@
 
 ## 合并端口的原理
 
-MCSManager访问守护进程时特有的路径开头（Web面板不会以这些作为路径开头）：
+MCSManager访问守护进程的路径开头（与Web面板路径开头不冲突）：  
 > /socket.io/  
 > /upload/  
 > /download/  
 
 Nginx里的location匹配优先级从高到低是：  
 ```nginx
-location =/test.txt {}    # 匹配完全相等的路径
-location ~ (^/path/)|(^/path2/) {}    # 匹配正则表达式
-location /path/ {}    # 匹配单个路径开头
+location =/test.txt {}              # 匹配完全相等的路径
+location ~ (^/path/)|(^/path2/) {}  # 匹配正则表达式
+location /path/ {}                  # 匹配单个路径开头
 ```
 
 依据这些特性，将两者端口合并，以减少公网监听端口数量。   
@@ -46,7 +45,12 @@ location /path/ {}    # 匹配单个路径开头
 
 ## 配置反向代理
 
-以下示范环境是 **CentOS** 操作系统使用yum安装的Nginx **1.20.1** ，配置文件目录 **/etc/nginx/nginx.conf** ，Web面板 **9.8.0** ，守护进程 **3.3.0** 。  
+以下示范内容的测试环境：  
+> ***CentOS*** 操作系统  
+> 使用yum安装的Nginx ***1.20.1***  
+> 配置文件目录 ***/etc/nginx/nginx.conf***  
+> Web面板 ***9.8.0***  
+> 守护进程 ***3.3.0***  
 
 ```nginx
 # For more information on configuration, see:
@@ -65,7 +69,7 @@ events {
     worker_connections 1024;
 }
 
-# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中真实存在即可。
+# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中有效即可。
 #=======================================================================
 # 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
@@ -79,19 +83,19 @@ events {
 
 http {
     # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
-    # 你的域名证书crt文件所在目录
-        ssl_certificate "/etc/nginx/ssl/domain.com.crt";
-    # 你的域名证书私钥key文件所在目录
-        ssl_certificate_key "/etc/nginx/ssl/domain.com_rsa.key";
+    #SSL-START
+    ssl_certificate "/etc/nginx/ssl/domain.com.crt";
+    ssl_certificate_key "/etc/nginx/ssl/domain.com_rsa.key";
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
     ssl_protocols TLSv1.2; # 仅允许使用TLSv1.2建立连接
-    ssl_verify_client off; # 关闭客户端证书验证
+    ssl_verify_client off; # 不验证客户端的证书
+    #SSL-END
 
-    # 这块是在传输时默认开启gzip压缩
+    # 传输时默认开启gzip压缩
     gzip on;
-    # 传输时会被压缩的类型（png无需压缩，不建议将png加进去）
+    # 传输时会被压缩的类型（应当依据文件压缩效果添加）
     gzip_types text/plain text/css application/javascript application/xml application/json;
     # 反向代理时，启用压缩
     gzip_proxied any;
@@ -109,11 +113,11 @@ http {
     server {
         # 这块是用于阻止跨域访问的。
 
-        # 代理后端口
-            listen 12333 ssl ;
-        # 可以通过多个listen监听多个地址与端口。
+        # 代理后端口（可用多个listen监听多个端口）
+        listen 12333 ssl ;
 
-        server_name _ ; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ;
 
         # 使用https访问时，直接断开连接，不返回证书。
         # 如果你需要套DNS的CDN高防，则不应该删除此块，那样更容易导致证书泄露，攻击者扫到IP后直接将源IP与域名绑定在一起。
@@ -126,9 +130,8 @@ http {
         }
     }
     server {
-        # Daemon 端代理后localhost访问HTTP协议端口
-            listen 127.0.0.1:12333 ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Daemon 端代理后localhost访问HTTP协议端口（可用多个listen监听多个端口）
+        listen 127.0.0.1:12333 ;
 
         # 本地回环域名
         server_name localhost ;
@@ -143,7 +146,7 @@ http {
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -157,14 +160,11 @@ http {
         }
     }
     server {
-        # 代理后公网HTTPS端口
-            listen 12333 ssl ;
-        # 可以通过多个listen监听多个地址与端口。
+        # 代理后公网HTTPS端口（可用多个listen监听多个端口）
+        listen 12333 ssl ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
-
-        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
 
         # 使用HTTP访问时，断开连接。
         error_page 497 =200 /444nginx;
@@ -181,7 +181,7 @@ http {
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -199,7 +199,7 @@ http {
             proxy_pass http://localhost:23333 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -225,7 +225,7 @@ systemctl restart nginx
 ## 客户端访问面板
 
 依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启）。  
-假如域名是 **domain.com** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
+假如域名是 ***domain.com*** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 https://domain.com:12333/
 ```
@@ -237,13 +237,13 @@ https://domain.com:12333/
 ## 连接守护进程
 
 ### 本地回环地址  
-> 在**节点管理**中，填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 在**节点管理**中，填写地址为 ***localhost*** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
 > **⚠不能将地址填写为 *ws://localhost* ！这会导致浏览器尝试使用HTTP协议连接！**  
 > 
 > ![connect_default_daemon_12333.webp](images/connect_default_daemon_12333.webp)
 
 ### 远程地址  
-> 在**节点管理**中，将原有的地址前面添加 **wss://** 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 在**节点管理**中，将原有的地址前面添加 ***wss://*** 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
 > 例如以下两种原地址：
 > > domain.com  
 > > ws://domain.com  

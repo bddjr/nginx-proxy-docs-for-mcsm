@@ -5,7 +5,7 @@
 
 > 若您需要 HTTPS 反向代理，请参考 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
 > 若您需要合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-> 本文**不是**MCSManager官方开发人员写的，但大部分内容已实测有效。  
+> 本文**不是**MCSManager官方开发人员写的，但内容已实测有效。  
 > ⚠ 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容。
 
 注释：  
@@ -16,7 +16,12 @@
 
 ## 配置反向代理
 
-以下示范环境是 **CentOS** 操作系统使用yum安装的Nginx **1.20.1** ，配置文件目录 **/etc/nginx/nginx.conf** ，Web面板 **9.8.0** ，守护进程 **3.3.0** 。  
+以下示范内容的测试环境：  
+> ***CentOS*** 操作系统  
+> 使用yum安装的Nginx ***1.20.1***  
+> 配置文件目录 ***/etc/nginx/nginx.conf***  
+> Web面板 ***9.8.0***  
+> 守护进程 ***3.3.0***  
 
 ```nginx
 # For more information on configuration, see:
@@ -35,7 +40,7 @@ events {
     worker_connections 1024;
 }
 
-# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中真实存在即可。
+# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中有效即可。
 #=======================================================================
 # 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
@@ -47,9 +52,9 @@ events {
 #    需要允许主域名 domain.com 及其所有子域名访问
 
 http {
-    # 这块是在传输时默认开启gzip压缩
+    # 传输时默认开启gzip压缩
     gzip on;
-    # 传输时会被压缩的类型（png无需压缩，不建议将png加进去）
+    # 传输时会被压缩的类型（应当依据文件压缩效果添加）
     gzip_types text/plain text/css application/javascript application/xml application/json;
     # 反向代理时，启用压缩
     gzip_proxied any;
@@ -67,22 +72,23 @@ http {
     server {
         # 这块是用于阻止跨域访问的。
 
-        # Daemon 端访问端口
-            listen 12444 default ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Daemon 端访问端口（可用多个listen监听多个端口）
+        listen 12444 default ;
 
-        # Web面板访问端口
-            listen 12333 default ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Web面板访问端口（可用多个listen监听多个端口）
+        listen 12333 default ;
 
-        server_name _ ; #若使用的域名在其它server{}中都无法匹配，则会匹配这里。
-        return 444; # 断开连接。
+        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ;
+
+        # 断开连接。
+        return 444;
     }
     server {
-        # Daemon 端代理后的localhost访问HTTP协议端口
-            listen 127.0.0.1:12444 ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Daemon 端代理后的localhost访问HTTP协议端口（可用多个listen监听多个端口）
+        listen 127.0.0.1:12444 ;
 
+        # 本地回环域名
         server_name localhost ;
 
         # 本地回环地址不占宽带，无需压缩。
@@ -94,7 +100,7 @@ http {
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -108,14 +114,11 @@ http {
         }
     }
     server {
-        # Daemon 端代理后的公网访问HTTP协议端口
-            listen 12444 ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Daemon 端代理后的公网访问HTTP协议端口（可用多个listen监听多个端口）
+        listen 12444 ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
-
-        deny 127.0.0.1; # 禁止来源127.0.0.1的IP访问，这块主要是测试的时候为了确保localhost真的不是访问这里。
 
         # 返回 robots.txt 以防止搜索引擎收录
         location =/robots.txt{
@@ -129,7 +132,7 @@ http {
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -143,9 +146,8 @@ http {
         }
     }
     server {
-        # Web 端代理后的公网访问HTTP端口
-            listen 12333 ;
-        # 可以通过多个listen监听多个地址与端口。
+        # Web 端代理后的公网访问HTTP端口（可用多个listen监听多个端口）
+        listen 12333 ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         server_name domain.com *.domain.com ;
@@ -158,7 +160,7 @@ http {
             proxy_pass http://localhost:23333 ;
 
             # 一些请求头
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header REMOTE-HOST $remote_addr;
@@ -183,7 +185,7 @@ systemctl restart nginx
 
 ## 客户端访问面板
 
-假如域名是 **domain.com** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
+假如域名是 ***domain.com*** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 http://domain.com:12333/
 ```
@@ -194,9 +196,8 @@ http://domain.com:12333/
 
 ## 连接守护进程
 
-假如Web面板后台通过 **localhost** 域名连接节点，那么在**节点管理**中填写地址为 **localhost** ，端口填写反向代理后的端口号（例如12444），然后单击右侧的 **连接** 或 **更新** 即可。  
-也可以将地址填写为 **ws://localhost** 。  
-假如需要填远程地址 **domain.com** ，那么将 **localhost** 改为 **domain.com** 即可。
+假如Web面板后台通过 ***localhost*** 域名连接节点，那么在**节点管理**中填写地址为 ***localhost*** 或 ***ws://localhost*** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+假如需要填远程地址 ***domain.com*** ，那么将 ***localhost*** 改为 ***domain.com*** 即可。
 
 ![connect_default_daemon_12444.webp](images/connect_default_daemon_12444.webp)
 
@@ -209,6 +210,7 @@ http://domain.com:12333/
 > Daemon端真正监听的端口（例如24444） 
 
 （本地回环地址不受防火墙限制）
+
 <br />
 
 ***
