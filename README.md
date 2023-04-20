@@ -1,9 +1,5 @@
 ## 用于MCSManager的Nginx反向代理文档
 
-官方文档写的太简陋？网上找不到别的教程？来看看我写的教程吧！  
-> 这些文章**不是**MCSManager官方开发人员写的，但大部分内容已实测有效，仅供参考。  
-
-请选择你想要的教程：  
 > [配置HTTPS反向代理](配置HTTPS反向代理.md)  
 > [配置HTTP反向代理](配置HTTP反向代理.md)  
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  
@@ -32,5 +28,5 @@ https://proxyformcsm.bddjr.cn
 <https://docs.mcsmanager.com/#/zh-cn/>  
 
 ***
-> 由于MCSManager官方未采纳我的文章到官方文档，现已专门开个仓库放这些文章。  
+> MCSManager官方何时才会采纳这些文章呢？  
 > 写合并端口的文章是因为我看到这个issue：<https://github.com/MCSManager/MCSManager/issues/826>
