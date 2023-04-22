@@ -26,6 +26,8 @@
 
 ## 配置反向代理
 
+> [主要参数改起来有些麻烦？试试这款生成器吧！](https://proxyformcsm.bddjr.cn/generator.html?https=1)
+
 以下示范内容的测试环境：  
 > ***CentOS*** 操作系统  
 > 使用yum安装的Nginx ***1.20.1***  
