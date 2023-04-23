@@ -477,7 +477,7 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
     }
 `;
 
-            generate_result_text.innerHTML= buildconf;
+            generate_result_text.value= buildconf;
             generate_info.innerHTML ="生成成功";
             generate_info.style= "color:green;";
         }catch(e){
