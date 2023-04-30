@@ -26,9 +26,17 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
 <body>
-    <p id="pleaseopenjs">等待JavaScript运行</p>
+    <p id="waitingjs">等待JavaScript运行</p>
 
     <style type="text/css">
+        @font-face{
+            font-family: 'HarmonyOS-Sans-Light';
+            src: url('HarmonyOS_Sans_Regular.woff2');
+        }
+        *{
+            font-family: 'HarmonyOS-Sans-Light','Sans-serif';
+        }
+
         div {
             margin-bottom: 10px;
         }
@@ -104,7 +112,6 @@
             padding: 5px 5px;
             border-color:#72b5fd;
             font-size: 15px;
-            font-family: Sans-serif;
             width: 100%;
             height: 80%;
             resize: none;
@@ -143,11 +150,8 @@
         
             <div id="conf_webport">
                 <label id="conf_webport_title" for="conf_webport_input">web端监听的端口：</label>
-                <input id="conf_webport_input" name="conf_webport_input" type="number" min="0" max="65535" step="1" list="conf_webport_defaultNumbers" required value="23333"/>
+                <input id="conf_webport_input" name="conf_webport_input" type="number" min="0" max="65535" step="1" required value="23333"/>
                 <span class="validity"></span>
-                <datalist id="conf_webport_defaultNumbers">
-                    <option value="23333">
-                </datalist>
             </div>
 
             <div id="conf_webproxyport">
@@ -158,11 +162,8 @@
 
             <div id="conf_daemonport">
                 <label id="conf_daemonport_title" for="conf_daemonport_input">daemon端监听的端口：</label>
-                <input id="conf_daemonport_input" name="conf_daemonport_input" type="number" min="0" max="65535" step="1" list="conf_daemonport_defaultNumbers" required value="24444"/>
+                <input id="conf_daemonport_input" name="conf_daemonport_input" type="number" min="0" max="65535" step="1" required value="24444"/>
                 <span class="validity"></span>
-                <datalist id="conf_daemonport_defaultNumbers">
-                    <option value="24444">
-                </datalist>
             </div>
 
             <div id="conf_daemonproxyport">
@@ -639,9 +640,7 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
 
 
 
-    //删除请求开启JS语句
-    pleaseopenjs.remove();
-    //显示网页
+    waitingjs.remove();
     mydiv.removeAttribute('style');
 
 </script>
