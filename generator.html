@@ -1,9 +1,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>配置文件生成器</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
 <body>
-    <p id="pleaseopenjs">该网页依赖JavaScript运行，请开启JavaScript。</p>
+    <p id="pleaseopenjs">该网页依赖JavaScript运行。</p>
 
     <style type="text/css">
         div {
@@ -84,13 +85,13 @@
 
         <div id="conf_sslcertpath">
             <label id="conf_sslcertpath_title" for="conf_sslcertpath_input">SSL证书路径：</label>
-            <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="60" required value="/etc/nginx/ssl/_.domain.com.crt"/>
+            <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="60" required="" value="/etc/nginx/ssl/_.domain.com.crt" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)">
             <span class="validity"></span>
         </div>
 
         <div id="conf_sslkeypath">
             <label id="conf_sslkeypath_title" for="conf_sslkeypath_input">SSL私钥路径：</label>
-            <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="60" required value="/etc/nginx/ssl/_.domain.com_rsa.key"/>
+            <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="60" required value="/etc/nginx/ssl/_.domain.com_rsa.key" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)"/>
             <span class="validity"></span>
         </div>
     </fieldset>
@@ -102,7 +103,7 @@
         <legend>生成结果（填在 http{} 里）</legend>
     
         <div id="generate_result">
-            <textarea id="generate_result_text" name="generate_result_text" type="text" size="60" rows="40" cols="160"></textarea>
+            <textarea id="generate_result_text" name="generate_result_text" type="text" rows="40" cols="122"></textarea>
         </div>
     </fieldset>
 </body>
@@ -117,7 +118,7 @@
     document.getElementById('pleaseopenjs').remove();
 
     //补全元素的正则表达式
-    conf_sslkeypath_input.pattern= conf_sslcertpath_input.pattern = "(^[^\*\?\"\<\>\|]+$)|(^\"[^\*\?\"\<\>\|]+\"$)";
+    //conf_sslkeypath_input.pattern= conf_sslcertpath_input.pattern = "(^[^\*\?\"\<\>\|]+$)|(^\"[^\*\?\"\<\>\|]+\"$)";
 
     //onclick
     function clickconf_https(){
