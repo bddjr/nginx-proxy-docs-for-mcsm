@@ -1,13 +1,3 @@
-<div><style type="text/css">
-    @font-face{
-        font-family: 'HarmonyOS-Sans-Light';
-        src: url('HarmonyOS_Sans_Regular.woff2');
-    }
-    *{
-        font-family: 'HarmonyOS-Sans-Light','Sans-serif';
-    }
-</style></div>
-
 ## 用于MCSManager的Nginx反向代理文档
 
 > [配置HTTPS反向代理](配置HTTPS反向代理.md)  
