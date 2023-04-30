@@ -4,14 +4,19 @@
 > [配置HTTP反向代理](配置HTTP反向代理.md)  
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  
 > [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md)  
+>   
 > ***  
 > <a href="https://proxyformcsm.bddjr.cn/generator.html" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>
 
 ***
 ## 非常感谢您能阅读我写的教程，希望对你有帮助！
-有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
+有错误的内容或改进的建议？或者没弄懂怎么配置？<a href="../../issues/new" target="_blank">点此编辑并提交issue</a>。  
 
-想要分享该文档？  
+### 想要分享该文档？  
+gitpage网页：  
+```
+https://proxyformcsm.bddjr.cn
+```
 github仓库短链接：  
 ```
 https://q8p.cc/proxyformcsm/README.md
@@ -19,10 +24,6 @@ https://q8p.cc/proxyformcsm/README.md
 gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/README.md
-```
-gitpage网页：  
-```
-https://proxyformcsm.bddjr.cn
 ```
 
 ***

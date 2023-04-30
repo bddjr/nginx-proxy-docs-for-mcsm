@@ -6,7 +6,7 @@
 > 合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
 > 本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
 > 若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-> 本文**不是**MCSManager官方开发人员写的，但内容已实测有效。  
+> 本文**不是**MCSManager官方开发人员写的。  
 
 注释：  
 > 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
@@ -34,10 +34,9 @@ location /path/ {}                  # 匹配单个路径开头
 
 ## 生成SSL证书
 
-为自己的域名生成有效的SSL证书，用于建立安全的HTTPS连接。  
-可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签）。  
-> <https://www.cersign.com/free-ssl-certificate.html>  
-> <https://www.mianfeissl.com/>  
+可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签），用于建立安全的HTTPS连接。  
+> <a href="https://www.cersign.com/free-ssl-certificate.html" target="_blank">https://www.cersign.com/free-ssl-certificate.html</a>  
+> <a href="https://www.mianfeissl.com/" target="_blank">https://www.mianfeissl.com/</a>  
 
 ### ⚠别泄露私钥！私钥泄露会导致HTTPS形同虚设！
 
@@ -45,7 +44,7 @@ location /path/ {}                  # 匹配单个路径开头
 
 ## 配置反向代理
 
-> [主要参数改起来有些麻烦？试试这款生成器吧！](https://proxyformcsm.bddjr.cn/generator.html?https=1&mergeports=1)
+> <a href="https://proxyformcsm.bddjr.cn/generator.html?https=1&mergeports=1" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
 
 以下示范内容的测试环境：  
 > ***CentOS*** 操作系统  
@@ -271,7 +270,11 @@ https://domain.com:12333/
 ## 非常感谢您能阅读我写的教程，希望对你有帮助！
 有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
 
-想要分享该文档？  
+### 想要分享该文档？  
+gitpage网页：  
+```
+https://proxyformcsm.bddjr.cn/配置HTTPS反向代理且合并端口
+```
 github仓库短链接：  
 ```
 https://q8p.cc/proxyformcsm/配置HTTPS反向代理且合并端口.md
@@ -279,10 +282,6 @@ https://q8p.cc/proxyformcsm/配置HTTPS反向代理且合并端口.md
 gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTPS反向代理且合并端口.md
-```
-gitpage网页：  
-```
-https://proxyformcsm.bddjr.cn/配置HTTPS反向代理且合并端口
 ```
 
 ***

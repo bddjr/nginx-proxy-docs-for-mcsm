@@ -5,7 +5,7 @@
 
 > 若您需要 HTTPS 反向代理，请参考 [配置HTTPS反向代理](配置HTTPS反向代理.md) 。  
 > 若您需要合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-> 本文**不是**MCSManager官方开发人员写的，但内容已实测有效。  
+> 本文**不是**MCSManager官方开发人员写的。  
 > ⚠ 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容。
 
 注释：  
@@ -16,7 +16,7 @@
 
 ## 配置反向代理
 
-> [主要参数改起来有些麻烦？试试这款生成器吧！](https://proxyformcsm.bddjr.cn/generator.html?https=0)
+> <a href="https://proxyformcsm.bddjr.cn/generator.html?https=0" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
 
 以下示范内容的测试环境：  
 > ***CentOS*** 操作系统  
@@ -219,7 +219,11 @@ http://domain.com:12333/
 ## 非常感谢您能阅读我写的教程，希望对你有帮助！
 有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
 
-想要分享该文档？  
+### 想要分享该文档？  
+gitpage网页：  
+```
+https://proxyformcsm.bddjr.cn/配置HTTP反向代理
+```
 github仓库短链接：  
 ```
 https://q8p.cc/proxyformcsm/配置HTTP反向代理.md
@@ -227,10 +231,6 @@ https://q8p.cc/proxyformcsm/配置HTTP反向代理.md
 gitee镜像仓库短链接：  
 ```
 https://q8p.cc/gtproxyformcsm/配置HTTP反向代理.md
-```
-gitpage网页：  
-```
-https://proxyformcsm.bddjr.cn/配置HTTP反向代理
 ```
 
 ***
