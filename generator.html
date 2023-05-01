@@ -260,8 +260,8 @@
     function generate_conf(){
         console.log('generate_conf');
         generate_conf_runned= true;
-        generate_info.innerHTML ="正在生成配置文件，请稍候";
-        generate_info.style= "color:gray;";
+        //generate_info.innerHTML ="正在生成配置文件，请稍候";
+        //generate_info.style= "color:gray;";
         click_generate_conf.innerHTML= "重新生成配置文件";
         try{
             //验证填写信息有效
@@ -656,7 +656,16 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
     */
     if(navigator.userAgent.includes('Chrome/')) pleaseusechrome.remove();
 
-    mydiv.removeAttribute('style');
-    waitingjs.remove();
+    //JS运行了后，还剩字体未加载。
+    waitingjs.innerHTML= '加载字体中……';
+
+    //网页加载完成或加载终止时，自动显示内容
+    window.onload= ()=>{
+        console.log('web onload');
+        waitingjs.remove();
+        mydiv.removeAttribute('style');
+    }
+
+    console.log('JS done');
 
 </script>
