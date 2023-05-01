@@ -26,25 +26,22 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 </head>
 <body>
+    <p id="pleaseusechrome" style="color:gray;margin: 0 0 6px;">请使用基于Chrome内核的浏览器，否则界面可能出现错误。</p>
     <p id="waitingjs">等待JavaScript运行</p>
 
     <style type="text/css">
         @font-face{
-            font-family: 'HarmonyOS-Sans-Light';
-            src: url('HarmonyOS_Sans_Regular.woff2');
+            font-family: 'HarmonyOS-Sans-SC-Regular';
+            src: url('HarmonyOS_Sans_SC_Regular.woff2');
         }
         *{
-            font-family: 'HarmonyOS-Sans-Light','Sans-serif';
-        }
-
-        div {
-            margin-bottom: 10px;
+            font-family: 'HarmonyOS-Sans-SC-Regular','system-ui';
         }
 
         input{
             border-radius: 6px;
             border-width: 1.5px;
-            padding: 4px 2px;
+            padding: 3px 2px;
             border-color:#000000;
             outline-color:#72b5fd;
             background-color: #f7fbff;
@@ -86,6 +83,7 @@
             font-size: 15px;
             background-color: #dedede;
             color:black;
+            margin: 2px 10px 6px 0;
         }
         .button_generate_url:active{
             background-color: #afafaf;
@@ -94,6 +92,8 @@
         fieldset{
             border-radius: 8px;
             border-color:#1b89ff;
+            margin: 6px 0 0;
+            padding: 0 4px 6px 10px;
         }
         legend{
             background-color: #e8f3fc;
@@ -104,38 +104,46 @@
             font-size: 18px;
             color:black;
         }
+        fieldset>div{
+            margin: 5px 0;
+        }
+        fieldset>div>input[type=checkbox]{
+            margin: 0 1px 0 0;
+        }
 
         textarea{
             background-color: #f7fbff;
             border-radius: 8px;
             border-width: 2px;
-            padding: 5px 5px;
+            padding: 3px 3px;
             border-color:#72b5fd;
             font-size: 15px;
             width: 100%;
             height: 80%;
             resize: none;
+            margin: 0;
         }
 
         .generate_info{
             font-size: 18px;
+            margin: 6px auto 8px 4px;
         }
     </style>
     <div id="mydiv" style="display:none;">
-        <p style="font-size: 30;">用于MCSManager的Nginx反向代理配置文件生成器</p>
-        <p style="font-size: 18px;">请配合 <a href="/" target="_blank">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
+        <p style="font-size: 30; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
 
         <fieldset>
             <legend>选项</legend>
         
             <div>
-            <input type="checkbox" id="conf_https" name="conf_https" checked onclick=clickconf_https() >
-            <label for="conf_https" >HTTPS</label>
+                <input type="checkbox" id="conf_https" name="conf_https" checked onclick=clickconf_https() >
+                <label for="conf_https" >HTTPS</label>
             </div>
         
             <div>
-            <input type="checkbox" id="conf_mergeports" name="conf_mergeports" onclick=clickconf_mergeports()>
-            <label for="conf_mergeports">合并端口（通常仅用于web端与daemon端在同一主机的情况）</label>
+                <input type="checkbox" id="conf_mergeports" name="conf_mergeports" onclick=clickconf_mergeports()>
+                <label for="conf_mergeports">合并端口<label for="conf_mergeports" style="color:gray;">（通常仅用于web端与daemon端在同一主机的情况）</label></label>
             </div>
 
             <div>
@@ -143,8 +151,6 @@
                 <label for="conf_listenipv6">同时监听IPv6</label>
             </div>
         </fieldset>
-
-        <p></p>
         <fieldset>
             <legend>填写内容</legend>
         
@@ -173,30 +179,30 @@
             </div>
 
             <div id="conf_domain">
-                <label id="conf_domain_title" for="conf_domain_input">域名（空格分隔以输入多个，支持通配符）：</label>
-                <input id="conf_domain_input" name="conf_domain_input" type="text" size="40" value="domain.com *.domain.com"/>
+                <label id="conf_domain_title" for="conf_domain_input">域名<label for="conf_domain_input" style="color:gray;">（空格分隔以输入多个，支持通配符）</label>：</label>
+                <input id="conf_domain_input" name="conf_domain_input" type="text" size="38" value="domain.com *.domain.com"/>
             </div>
 
             <div id="conf_sslcertpath">
                 <label id="conf_sslcertpath_title" for="conf_sslcertpath_input">SSL证书路径：</label>
-                <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="40" required="" value="/etc/nginx/ssl/_.domain.com.crt" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)">
+                <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="35" required="" value="/etc/nginx/ssl/_.domain.com.crt" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)">
                 <span class="validity"></span>
             </div>
 
             <div id="conf_sslkeypath">
                 <label id="conf_sslkeypath_title" for="conf_sslkeypath_input">SSL私钥路径：</label>
-                <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="40" required value="/etc/nginx/ssl/_.domain.com_rsa.key" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)"/>
+                <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="35" required value="/etc/nginx/ssl/_.domain.com_rsa.key" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)"/>
                 <span class="validity"></span>
             </div>
         </fieldset>
         
-        <p style="color:gray; font-size: 14px;">生成URL可用于分享自己填写的参数。如果生成URL之前已经生成配置文件，那么使用生成的URL访问时会自动依据参数生成配置文件。</p>
+        <p style="color:gray; font-size: 14px; margin: 2px 0;">生成URL可用于分享自己填写的参数。如果生成URL之前已经生成配置文件，那么使用生成的URL访问时会自动依据参数生成配置文件。</p>
         <button id="click_generate_url" class="button_generate_url" onclick=generate_url()>生成URL参数</button>
         <button id="click_clear_url" class="button_generate_url" onclick=clear_url()>清除URL参数</button>
         <hr/>
         <button id="click_generate_conf" class="button_generate_conf" onclick=generate_conf()>生成配置文件</button>
         <p id="generate_info" class="generate_info" style="color:gray;">配置文件未生成</p>
-        <fieldset style="padding:4px 4px 0;">
+        <fieldset style="padding:2px 2px 0 1px;">
             <legend>配置文件生成结果（填在 http{} 里）</legend>
         
             <div id="generate_result">
@@ -205,7 +211,7 @@
         </fieldset>
     </div>
 </body>
-<script>
+<script type="text/javascript">
     //onclick
     function clickconf_https(){
         console.log('clickconf_https');
@@ -587,10 +593,10 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
 `;
 
             generate_result_text.value= buildconf;
-            generate_info.innerHTML ="配置文件生成成功";
+            generate_info.innerHTML ="配置文件生成成功 ✓";
             generate_info.style= "color:green;";
         }catch(e){
-            generate_info.innerHTML ="配置文件生成失败<br/>"+e;
+            generate_info.innerHTML ="配置文件生成失败 ✖<br/>"+e;
             generate_info.style= "color:red;";
         }
     }
@@ -640,7 +646,17 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
 
 
 
-    waitingjs.remove();
+    console.log(navigator.userAgent);
+    /*
+    let testchrome= /Chrome\/\d+/.exec(navigator.userAgent) ;
+    if(testchrome && (/\d+/.exec(testchrome[0])[0] >=100)){
+        console.log('浏览器版本正确');
+        pleaseusechrome.remove();
+    }else console.log(pleaseusechrome.innerHTML);
+    */
+    if(navigator.userAgent.includes('Chrome/')) pleaseusechrome.remove();
+
     mydiv.removeAttribute('style');
+    waitingjs.remove();
 
 </script>
