@@ -27,7 +27,7 @@
 </head>
 <body>
     <!--<p id="pleaseusechrome" style="color:gray;margin: 0 0 6px;">请使用基于Chrome内核的浏览器，否则界面可能出现错误。</p>-->
-    <p id="waitingjs">等待JavaScript运行</p>
+    <p id="waitingjs" style="font-size: 24px;">等待JavaScript运行</p>
 
     <style type="text/css">
         @font-face{
@@ -45,11 +45,12 @@
         }
 
         input{
+            border: outset #72b5fd;
+            border-style: solid;
             border-radius: 6px;
             border-width: 1.5px;
             padding: 3px 2px;
-            border-color:#000000;
-            outline-color:#72b5fd;
+            outline-color:#0069da;
             background-color: #f7fbff;
         }
         input:invalid + span::after {
@@ -78,9 +79,13 @@
             font-size: 20px;
             background-color: #1987fd;
             color:white;
+            transition-duration: 0.18s;
+        }
+        .button_generate_conf:hover{
+            background-color: #0072eb;
         }
         .button_generate_conf:active{
-            background-color: #005fc5;
+            background-color: #004ea2;
         }
         .button_generate_url{
             border-radius: 8px;
@@ -90,28 +95,31 @@
             background-color: #dedede;
             color:black;
             margin: 2px 10px 6px 0;
+            transition-duration: 0.18s;
+        }
+        .button_generate_url:hover{
+            background-color: #c8c8c8;
         }
         .button_generate_url:active{
-            background-color: #afafaf;
+            background-color: #959595;
         }
 
         fieldset{
+            border-style: solid;
             border-radius: 8px;
-            border-color:#1b89ff;
+            border-color:#3697ff;
             margin: 6px 0 0;
             padding: 0 4px 6px 10px;
         }
         legend{
             background-color: #e8f3fc;
             border-radius: 8px;
-            border-color: #1b89ff;
-            border-width: 4px;
             padding: 4px 10px;
             font-size: 18px;
             color:black;
         }
         fieldset>div{
-            margin: 5px 0;
+            margin: 10px 0;
         }
         fieldset>div>input[type=checkbox]{
             margin: 0 1px 0 0;
@@ -129,6 +137,7 @@
             border-width: 2px;
             padding: 3px 3px;
             border-color:#72b5fd;
+            outline-color:#0058db;
             font-size: 15px;
             width: 100%;
             height: 80%;
@@ -142,7 +151,7 @@
         }
     </style>
     <div id="mydiv" style="display:none;">
-        <p style="font-size: 30; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
         <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
         <p style="font-size: 14px; margin: 6px 0; color:gray;">
             该网页已使用鸿蒙简体字体。<br/>
