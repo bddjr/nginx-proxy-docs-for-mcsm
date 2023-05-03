@@ -27,7 +27,10 @@
 </head>
 <body>
     <!--<p id="pleaseusechrome" style="color:gray;margin: 0 0 6px;">请使用基于Chrome内核的浏览器，否则界面可能出现错误。</p>-->
-    <p id="waitingjs" style="font-size: 24px;">等待JavaScript运行</p>
+    <div id="loadingtitlediv">
+        <p id="loadingtitle" style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p id="waitingjs" style="font-size: 24px;">等待JavaScript运行</p>
+    </div>
 
     <style type="text/css">
         @font-face{
@@ -687,7 +690,7 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
     //网页加载完成或加载终止时，自动显示内容
     window.onload= ()=>{
         console.log('web loaded');
-        waitingjs.remove();
+        loadingtitlediv.remove();
         mydiv.removeAttribute('style');
     }
 
