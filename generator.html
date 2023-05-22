@@ -161,10 +161,10 @@
     </style>
     <div id="mydiv" style="display:none;">
         <p style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
-        <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
+        <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank" rel="noopener">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
         <p style="font-size: 14px; margin: 6px 0; color:gray;">
             该网页已使用鸿蒙简体字体。<br/>
-            源码仓库：<a href="https://q8p.cc/github/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
+            源码仓库：<a href="https://q8p.cc/github/nginx-proxy-docs-for-mcsm" target="_blank" rel="noopener">nginx-proxy-docs-for-mcsm</a><br/>
             Made by bddjr.
         </p>
 
@@ -245,8 +245,10 @@
             </div>
         </fieldset>
     </div>
-</body>
-<script type="text/javascript">
+
+    <script type="text/javascript">
+    "use strict";
+
     //onclick
     function clickconf_https(){
         console.log('clickconf_https');
@@ -300,14 +302,11 @@
         click_generate_conf.innerHTML= "重新生成配置文件";
         try{
             //验证填写信息有效
-            function ElseThrowError(BOOL,E){
-                if(!BOOL) throw new Error(E);
-            }
             function porttest(port,E){
-                ElseThrowError( (/^[0-9]{1,5}$/.test(port) && Number(port)>=0 && Number(port)<=65535) ,E);
+                if(!(/^[0-9]{1,5}$/.test(port) && Number(port)>=0 && Number(port)<=65535)) throw E;
             }
             function sslpathtest(INPUT,E){
-                ElseThrowError( (new RegExp(INPUT.pattern)).test(INPUT.value) ,E)
+                if(!(new RegExp(INPUT.pattern)).test(INPUT.value)) throw E;
             }
             
             porttest(conf_webport_input.value, 'web端监听端口格式无效');
@@ -332,7 +331,7 @@
                 ];
             }
             //console.log(testportsarray);
-            if(testportsarray.length > (new Set(testportsarray)).size) throw new Error('端口号不能重复');
+            if(testportsarray.length > (new Set(testportsarray)).size) throw '端口号不能重复';
             
             if(conf_https.checked){
                 sslpathtest(conf_sslcertpath_input, 'SSL证书路径格式无效');
@@ -342,10 +341,10 @@
             let test_domains_array= conf_domain_input.value.split(' ');
             for(let i in test_domains_array){
                 let j= test_domains_array[i].toLowerCase();
-                if(j=='localhost') throw new Error('不能填写 localhost 域名');
-                if(j.indexOf('\*\*') > -1) throw new Error('不能有多个 * 连在一起');
-                if(j.indexOf('\.\.') > -1) throw new Error('不能有多个 . 连在一起');
-                if(j.indexOf('\-\-') > -1) throw new Error('不能有多个 - 连在一起');
+                if(j=='localhost') throw '不能填写 localhost 域名';
+                if(j.includes('**')) throw '不能有多个 * 连在一起';
+                if(j.includes('..')) throw '不能有多个 . 连在一起';
+                if(j.includes('--')) throw '不能有多个 - 连在一起';
             }
 
             //检查完毕，开始进行字符串连接
@@ -355,34 +354,32 @@
                 //ssl目录
                     var buildconf_sslcertpath= conf_sslcertpath_input.value.replaceAll('\\','/');
                     if(!(/^\"/.test(buildconf_sslcertpath) && /\"$/.test(buildconf_sslcertpath))){
-                        buildconf_sslcertpath= '"'+buildconf_sslcertpath+'"';
+                        buildconf_sslcertpath= `"${buildconf_sslcertpath}"`;
                     }
                     var buildconf_sslkeypath= conf_sslkeypath_input.value.replaceAll('\\','/');
                     if(!(/^\"/.test(buildconf_sslkeypath) && /\"$/.test(buildconf_sslkeypath))){
-                        buildconf_sslkeypath= '"'+buildconf_sslkeypath+'"';
+                        buildconf_sslkeypath= `"${buildconf_sslkeypath}"`;
                     }
                 //daemon端口
-                    var buildconf_daemonport;
-                    if(conf_mergeports.checked) buildconf_daemonport= conf_webproxyport_input.value;
-                    else buildconf_daemonport= conf_daemonproxyport_input.value;
+                    if(conf_mergeports.checked) var buildconf_daemonport= conf_webproxyport_input.value;
+                    else var buildconf_daemonport= conf_daemonproxyport_input.value;
                 //ssl或default
-                    var buildconf_sslORdefault, buildconf_sslORnone;
                     if(conf_https.checked){
-                        buildconf_sslORdefault= 'ssl';
-                        buildconf_sslORnone= 'ssl ';
+                        var buildconf_sslORdefault= 'ssl';
+                        var buildconf_sslORnone= 'ssl ';
                     }
                     else{
-                        buildconf_sslORdefault= 'default';
-                        buildconf_sslORnone= '';
+                        var buildconf_sslORdefault= 'default';
+                        var buildconf_sslORnone= '';
                     }
                 //ipv6 listen
                     function buildconf_ipv6listen(ipv6, port){
                         if(conf_listenipv6.checked) return `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`;
-                        else return '';
+                        return '';
                     }
                     function buildconf_ipv6listendefault(ipv6, port){
                         if(conf_listenipv6.checked) return `        listen [${ipv6}]:${port} ${buildconf_sslORdefault};\n`;
-                        else return '';
+                        return '';
                     }
                 //listen
                     function buildconf_listen(ipv4,ipv6,port){
@@ -398,7 +395,7 @@
                 //
                     function ifHttpsReturn(INPUT){
                         if(conf_https.checked) return INPUT;
-                        else return '';
+                        return '';
                     }
 
 
@@ -649,8 +646,9 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
             return params.get(inputstr)!==null ;
         }
         function StrToBool(inputstr){
-            if(Number(inputstr) !==NaN) return !!Number(inputstr);
-            return !(inputstr.toLowerCase() =='false');
+            let n= Number(inputstr);
+            if(n !== NaN) return !!n;
+            return !(inputstr.toLowerCase() ==='false');
         }
 
         if(uriGetNotNull('https')){
@@ -698,8 +696,9 @@ ${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
         console.log('web loaded');
         loadingtitlediv.remove();
         mydiv.removeAttribute('style');
-    }
+    };
 
     console.log('JS done');
 
-</script>
+    </script>
+</body>
