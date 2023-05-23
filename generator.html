@@ -3,9 +3,9 @@
 
     可以使用的url参数：
         选项（布尔值）：
-            https=1
-            mergeports=0
-            listenipv6=0
+            https=true
+            mergeports=false
+            listenipv6=false
 
         填写内容（字符串）：
         若合并端口，则无需daemonproxyport
@@ -18,7 +18,7 @@
             sslkeypath=/etc/nginx/ssl/_.domain.com_rsa.key
 
         运行网页时自动生成：
-            autogenerate=1
+            autogenerate=true
 -->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -251,15 +251,19 @@
 
 //String Tools
 /**
- * @param {String} inputstr
+ * @param {String|any} inputstr
  * @return {Boolean}
 */
 function StrToBool(inputstr){
+    //不是字符串就直接转布尔值
+    if( (typeof inputstr)!=="string" ) return !!inputstr;
+    //如果转成数后是NaN，就识别字符串是否在列表内
     if(Number.isNaN(+inputstr)){
         return !(
             ['false','null','NaN','undefined'].includes( inputstr.toLowerCase() )
         );
     }
+    //转成数再转布尔值
     return !!(+inputstr);
 }
 
@@ -332,6 +336,7 @@ ConfS.ConfNameList= ConfS.ConfBooleanNameList.concat( ConfS.ConfValueNameList );
 
 //onclick
 const clickconfCheck= new class{
+    /**@return {undefined}*/
     https(){
         console.log('clickconfCheck.https');
         if(ConfS.https()){
@@ -342,6 +347,7 @@ const clickconfCheck= new class{
             conf_sslkeypath.style.display= "none";
         }
     }
+    /**@return {undefined}*/
     mergeports(){
         console.log('clickconfCheck.mergeports');
         if(ConfS.mergeports()){
@@ -352,80 +358,39 @@ const clickconfCheck= new class{
             conf_webproxyport_title.innerHTML= "web端代理后的端口：";
         }
     }
+    /**@return {undefined}*/
     listenipv6(){
         console.log('clickconfCheck.listenipv6');
     }
 };
+/**@return {undefined}*/
 function generate_url(){
     console.log('generate_url');
     click_generate_url.innerHTML= "重新生成URL参数";
     /**@type {Array<String>}*/
     let urils= [];
-    if(generate_conf_runned) urils.push('autogenerate=1');
-    for(let i in ConfS.ConfNameList){
-        let j= ConfS.ConfNameList[i];
-        urils.push(`${j}=${encodeURIComponent( ConfS[j]() )}`);
+    if(generate_conf_runned) urils.push('autogenerate=true');
+    for(let i of ConfS.ConfNameList){
+        urils.push(`${i}=${encodeURIComponent( ConfS[i]() )}`);
     }
     let uri= '?'+ urils.join('&');
 
     console.log(uri);
     if( location.search != uri ) history.pushState("","",uri);
 }
+/**@return {undefined}*/
 function clear_url(){
     console.log('clear_url');
     if(location.search!=''){
         click_generate_url.innerHTML= "生成URL参数";
-        history.pushState("","",location.href.replace(location.search,''))
+        history.pushState("","",location.href.replace(location.search,''));
     }
-}
-
-
-//read uri
-if( location.search !=='' ){
-    console.log('read uri');
-    click_generate_url.innerHTML= "重新生成URL参数";
-
-    let params = (new URL(document.location)).searchParams;
-    let i;
-
-    for(let i in ConfS.ConfBooleanNameList){
-        let j= ConfS.ConfBooleanNameList[i];
-        //console.log(j);
-        let k= params.get(j);
-        //console.log(k);
-        if(k !== null){
-            try{
-                this['confCheck_'+j].checked= StrToBool(k);
-                clickconfCheck[j]();
-            }catch(e){
-                console.error(e);
-            }
-        }
-    }
-
-    for(let i in ConfS.ConfValueNameList){
-        let j= ConfS.ConfValueNameList[i];
-        //console.log(j);
-        let k= params.get(j);
-        //console.log(k);
-        if(k !== null){
-            try{
-                this[`conf_${j}_input`].value= k;
-            }catch(e){
-                console.error(e);
-            }
-        }
-    }
-
-    let autogenerate= false;
-    i= params.get('autogenerate');
-    if(i !== null) autogenerate= StrToBool(i);
-    if(autogenerate) generate_conf();
 }
 
 
 //定义生成配置文件的函数
 var generate_conf_runned= false;
+/**@return {undefined}*/
 function generate_conf(){
     console.log('generate_conf');
     generate_conf_runned= true;
@@ -439,14 +404,16 @@ function generate_conf(){
          * @param {String} port
          * @param {String} E
          * @throws {String}
+         * @return {undefined}
         */
         function porttest(port,E){
             if(!(/^[0-9]{1,5}$/.test(port) && Number(port)>=0 && Number(port)<=65535)) throw E;
         }
         /**
-         * @param {String} INPUT
+         * @param {html} INPUT
          * @param {String} E
          * @throws {String}
+         * @return {undefined}
         */
         function sslpathtest(INPUT,E){
             if( !(new RegExp(INPUT.pattern) ).test(INPUT.value)) throw E;
@@ -474,8 +441,8 @@ function generate_conf(){
             }
 
             let test_domains_array= ConfS.domain().split(' ');
-            for(let i in test_domains_array){
-                let j= test_domains_array[i].toLowerCase();
+            for(let i of test_domains_array){
+                let j= i.toLowerCase();
                 if(j == 'localhost') throw '不能填写 localhost 域名';
                 if(j.includes('**')) throw '不能有多个 * 连在一起';
                 if(j.includes('..')) throw '不能有多个 . 连在一起';
@@ -483,10 +450,8 @@ function generate_conf(){
             }
         }
 
-        //检查完毕，开始进行字符串连接
-        const buildconf= [];
 
-        //缓存备用
+        //检查完毕，缓存函数与变量以备用
         //ssl目录
             /**
              * @param {String} VALUE
@@ -500,6 +465,7 @@ function generate_conf(){
             const buildconf_sslcertpath= correctionFilePath(ConfS.sslcertpath());
             const buildconf_sslkeypath= correctionFilePath(ConfS.sslkeypath());
         //daemon端口
+            //将匿名函数的返回值作为变量值
             const buildconf_daemonport= (
                 ()=>{
                     if(ConfS.mergeports()) return ConfS.webproxyport();
@@ -507,13 +473,14 @@ function generate_conf(){
                 }
             )();
         //ssl或default
+            //将匿名函数的返回值作为变量值
             const [
                 buildconf_sslORdefault, 
                 buildconf_sslORnone
             ]=(
                 ()=>{
                     if(ConfS.https()) return ['ssl','ssl '];
-                    return ['default','']
+                    return ['default',''];
                 }
             )();
         //ipv6 listen
@@ -521,6 +488,7 @@ function generate_conf(){
              * @param {String} ipv6
              * @param {String|Number} port
              * @return {String}
+             * buildconf_listen 的前置函数
             */
             function buildconf_ipv6listen(ipv6, port){
                 if(ConfS.listenipv6()) return `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`;
@@ -530,6 +498,7 @@ function generate_conf(){
              * @param {String} ipv6
              * @param {String|Number} port
              * @return {String}
+             * buildconf_listendefault 的前置函数
             */
             function buildconf_ipv6listendefault(ipv6, port){
                 if(ConfS.listenipv6()) return `        listen [${ipv6}]:${port} ${buildconf_sslORdefault};\n`;
@@ -541,6 +510,8 @@ function generate_conf(){
              * @param {String} ipv6
              * @param {String|Number} port
              * @return {String}
+             * 如果是http，那么后面什么都不填。
+             * 如果是https，那么后面填ssl。
             */
             function buildconf_listen(ipv4,ipv6,port){
                 return `${buildconf_ipv6listen(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORnone};`
@@ -550,11 +521,16 @@ function generate_conf(){
              * @param {String} ipv6
              * @param {String|Number} port
              * @return {String}
+             * 如果是http，那么后面填default。
+             * 如果是https，那么后面填ssl。
             */
             function buildconf_listendefault(ipv4,ipv6,port){
-                return `${buildconf_ipv6listendefault(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORdefault};`
+                return `${buildconf_ipv6listendefault(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORdefault} ;`
             }
 
+
+        //开始进行字符串连接
+        const buildconf= [];
         //ssl证书
         if(ConfS.https()){
             buildconf.push(
@@ -791,20 +767,58 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
 }
 
 
-//console.log(navigator.userAgent);
+//read uri
+if( location.search !=='' ){
+    console.log('read uri');
+    click_generate_url.innerHTML= "重新生成URL参数";
+
+    let params = (new URL(document.location)).searchParams;
+    let i;
+
+    for(let i of ConfS.ConfBooleanNameList){
+        let j= params.get(i);
+        if(j !== null){
+            try{
+                this['confCheck_'+i].checked= StrToBool(j);
+                clickconfCheck[i]();
+            }catch(e){
+                console.error(e);
+            }
+        }
+    }
+
+    for(let i of ConfS.ConfValueNameList){
+        let j= params.get(i);
+        if(j !== null){
+            try{
+                this[`conf_${i}_input`].value= j;
+            }catch(e){
+                console.error(e);
+            }
+        }
+    }
+
+    //默认不自动生成配置文件，所以缩写了。
+    if( //输入null不会导致出错。
+        StrToBool( params.get('autogenerate') )
+    )generate_conf();
+}
+
+
 /*
+console.log(navigator.userAgent);
 let testchrome= /Chrome\/\d+/.exec(navigator.userAgent) ;
 if(testchrome && (/\d+/.exec(testchrome[0])[0] >=100)){
     console.log('浏览器版本正确');
     pleaseusechrome.remove();
 }else console.log(pleaseusechrome.innerHTML);
+if(navigator.userAgent.includes('Chrome/')) pleaseusechrome.remove();
 */
-//if(navigator.userAgent.includes('Chrome/')) pleaseusechrome.remove();
 
 waitingjs.innerHTML= '请稍候……';
 
 //网页加载完成或加载终止时，自动显示内容
-window.onload= ()=>{
+window.onload= /**@return {undefined}*/()=>{
     console.log('web loaded');
     loadingtitlediv.remove();
     mydiv.style.display= '';
