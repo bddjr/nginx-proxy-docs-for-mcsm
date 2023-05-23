@@ -27,139 +27,139 @@
 </head>
 <body>
     <!--<p id="pleaseusechrome" style="color:gray;margin: 0 0 6px;">请使用基于Chrome内核的浏览器，否则界面可能出现错误。</p>-->
-    <div id="loadingtitlediv">
-        <p id="loadingtitle" style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
-        <p id="waitingjs" style="font-size: 24px;">等待JavaScript运行</p>
+    <div id="loadingtitlediv" name="loadingtitlediv">
+        <p id="loadingtitle" name="loadingtitle" style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p id="waitingjs" name="waitingjs" style="font-size: 24px;">等待JavaScript运行</p>
     </div>
 
-    <style type="text/css">
-        @font-face{
-            font-family: 'HarmonyOS-Sans-SC-Regular-fontmin';
-            src: url('https://q8p.cc/fonts/HarmonyOS_Sans_SC_Regular-fontmin-for-proxyformcsm.bddjr.cn-generator.html.woff2'), url('HarmonyOS_Sans_SC_Regular-fontmin.woff2');
-            font-display: fallback;
-        }
-        @font-face{
-            font-family: 'HarmonyOS-Sans-SC-Regular';
-            src: url('https://q8p.cc/fonts/HarmonyOS_Sans_SC_Regular.woff2'), url('HarmonyOS_Sans_SC_Regular.woff2');
-            font-display: swap;
-        }
-        *{
-            font-family: 'HarmonyOS-Sans-SC-Regular-fontmin','HarmonyOS-Sans-SC-Regular','system-ui';
-        }
-
-        input{
-            border: outset #72b5fd;
-            border-style: solid;
-            border-radius: 6px;
-            border-width: 1.5px;
-            padding: 3px 2px;
-            outline-color:#0069da;
-            background-color: #f7fbff;
-        }
-        input:invalid + span::after {
-            content: "✖";
-            padding-left: 5px;
-            color:red;
-        }
-        input:valid + span::after {
-            content: "✓";
-            padding-left: 5px;
-            color:green;
-        }
-
-        a{
-            color: #0366d6;
-            text-decoration: none;
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-
-        .button_generate_conf{
-            border-radius: 8px;
-            border:none;
-            padding: 7px 15px;
-            font-size: 20px;
-            background-color: #1987fd;
-            color:white;
-            transition-duration: 0.18s;
-        }
-        .button_generate_conf:hover{
-            background-color: #0072eb;
-        }
-        .button_generate_conf:active{
-            background-color: #004ea2;
-        }
-        .button_generate_url{
-            border-radius: 8px;
-            border:none;
-            padding: 7px 15px;
-            font-size: 15px;
-            background-color: #dedede;
-            color:black;
-            margin: 2px 10px 6px 0;
-            transition-duration: 0.18s;
-        }
-        .button_generate_url:hover{
-            background-color: #c8c8c8;
-        }
-        .button_generate_url:active{
-            background-color: #959595;
-        }
-
-        fieldset{
-            border-style: solid;
-            border-radius: 8px;
-            border-color:#3697ff;
-            margin: 6px 0 0;
-            padding: 0 4px 6px 10px;
-        }
-        fieldset>legend{
-            background-color: #e8f3fc;
-            border-radius: 8px;
-            padding: 4px 10px;
-            font-size: 20px;
-            color:black;
-        }
-        fieldset>div{
-            margin: 10px 0;
-        }
-        fieldset>div>label{
-            font-size: 17px;
-        }
-        fieldset>div>input[type=checkbox]{
-            margin: auto 1px 0 0;
-            accent-color:#067fff;
-            width: 14px;
-            height: 14px;
-        }
-        fieldset>div>input[type=number]{
-            width: 70px;
-        }
-        fieldset>div>input[type=text]{
-            width: 290px;
-        }
-
-        textarea{
-            background-color: #f7fbff;
-            border-radius: 8px;
-            border-width: 2px;
-            padding: 3px 3px;
-            border-color:#72b5fd;
-            outline-color:#0058db;
-            font-size: 15px;
-            width: 100%;
-            height: 80%;
-            resize: none;
-            margin: 0;
-        }
-
-        .generate_info{
-            font-size: 18px;
-            margin: 6px auto 8px 4px;
-        }
-    </style>
-    <div id="mydiv" style="display:none;">
+    <div id="mydiv" name="mydiv" style="display:none;">
+        <style type="text/css">
+            @font-face{
+                font-family: 'HarmonyOS-Sans-SC-Regular-fontmin';
+                src: url('https://q8p.cc/fonts/HarmonyOS_Sans_SC_Regular-fontmin-for-proxyformcsm.bddjr.cn-generator.html.woff2'), url('HarmonyOS_Sans_SC_Regular-fontmin.woff2');
+                font-display: fallback;
+            }
+            @font-face{
+                font-family: 'HarmonyOS-Sans-SC-Regular';
+                src: url('https://q8p.cc/fonts/HarmonyOS_Sans_SC_Regular.woff2'), url('HarmonyOS_Sans_SC_Regular.woff2');
+                font-display: swap;
+            }
+            *{
+                font-family: 'HarmonyOS-Sans-SC-Regular-fontmin','HarmonyOS-Sans-SC-Regular','system-ui';
+            }
+    
+            input{
+                border: outset #72b5fd;
+                border-style: solid;
+                border-radius: 6px;
+                border-width: 1.5px;
+                padding: 3px 2px;
+                outline-color:#0069da;
+                background-color: #f7fbff;
+            }
+            input:invalid + span::after {
+                content: "✖";
+                padding-left: 5px;
+                color:red;
+            }
+            input:valid + span::after {
+                content: "✓";
+                padding-left: 5px;
+                color:green;
+            }
+    
+            a{
+                color: #0366d6;
+                text-decoration: none;
+            }
+            a:hover{
+                text-decoration: underline;
+            }
+    
+            .button_generate_conf{
+                border-radius: 8px;
+                border:none;
+                padding: 7px 15px;
+                font-size: 20px;
+                background-color: #1987fd;
+                color:white;
+                transition-duration: 0.18s;
+            }
+            .button_generate_conf:hover{
+                background-color: #0072eb;
+            }
+            .button_generate_conf:active{
+                background-color: #004ea2;
+            }
+            .button_generate_url{
+                border-radius: 8px;
+                border:none;
+                padding: 7px 15px;
+                font-size: 15px;
+                background-color: #dedede;
+                color:black;
+                margin: 2px 10px 6px 0;
+                transition-duration: 0.18s;
+            }
+            .button_generate_url:hover{
+                background-color: #c8c8c8;
+            }
+            .button_generate_url:active{
+                background-color: #959595;
+            }
+    
+            fieldset{
+                border-style: solid;
+                border-radius: 8px;
+                border-color:#3697ff;
+                margin: 6px 0 0;
+                padding: 0 4px 6px 10px;
+            }
+            fieldset>legend{
+                background-color: #e8f3fc;
+                border-radius: 8px;
+                padding: 4px 10px;
+                font-size: 20px;
+                color:black;
+            }
+            fieldset>div{
+                margin: 10px 0;
+            }
+            fieldset>div>label{
+                font-size: 17px;
+            }
+            fieldset>div>input[type=checkbox]{
+                margin: auto 1px 0 0;
+                accent-color:#067fff;
+                width: 14px;
+                height: 14px;
+            }
+            fieldset>div>input[type=number]{
+                width: 70px;
+            }
+            fieldset>div>input[type=text]{
+                width: 290px;
+            }
+    
+            textarea{
+                background-color: #f7fbff;
+                border-radius: 8px;
+                border-width: 2px;
+                padding: 3px 3px;
+                border-color:#72b5fd;
+                outline-color:#0058db;
+                font-size: 15px;
+                width: 100%;
+                height: 80%;
+                resize: none;
+                margin: 0;
+            }
+    
+            .generate_info{
+                font-size: 18px;
+                margin: 6px auto 8px 4px;
+            }
+        </style>
         <p style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
         <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank" rel="noopener">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
         <p style="font-size: 14px; margin: 6px 0; color:gray;">
@@ -245,6 +245,7 @@
             </div>
         </fieldset>
     </div>
+    <p id="JSNotLoaded" name="JSNotLoaded" style="display: none;">true</p>
 
 <script type="text/javascript">
 "use strict";
@@ -256,11 +257,14 @@
 */
 function StrToBool(inputstr){
     //不是字符串就直接转布尔值
-    if( (typeof inputstr)!=="string" ) return !!inputstr;
-    //如果转成数后是NaN，就识别字符串是否在列表内
+    if( (typeof inputstr)!=="string" )
+        return !!inputstr;
+    //如果转成数后是NaN，就识别字符串是否在列表内，输出相反值
     if(Number.isNaN(+inputstr)){
         return !(
-            ['false','null','NaN','undefined'].includes( inputstr.toLowerCase() )
+            ['false','null','NaN','undefined'].includes(
+                inputstr.trim().toLowerCase()
+            )
         );
     }
     //转成数再转布尔值
@@ -339,7 +343,7 @@ const clickconfCheck= new class{
     /**@return {undefined}*/
     https(){
         console.log('clickconfCheck.https');
-        if(ConfS.https()){
+        if( ConfS.https() ){
             conf_sslcertpath.style.display= '';
             conf_sslkeypath.style.display= '';
         }else{
@@ -350,7 +354,7 @@ const clickconfCheck= new class{
     /**@return {undefined}*/
     mergeports(){
         console.log('clickconfCheck.mergeports');
-        if(ConfS.mergeports()){
+        if( ConfS.mergeports() ){
             conf_daemonproxyport.style.display= "none";
             conf_webproxyport_title.innerHTML= "代理后的端口：";
         }else{
@@ -367,23 +371,27 @@ const clickconfCheck= new class{
 function generate_url(){
     console.log('generate_url');
     click_generate_url.innerHTML= "重新生成URL参数";
+
     /**@type {Array<String>}*/
     let urils= [];
-    if(generate_conf_runned) urils.push('autogenerate=true');
-    for(let i of ConfS.ConfNameList){
+    if(generate_conf_runned)
+        urils.push('autogenerate=true');
+    for(let i of ConfS.ConfNameList)
         urils.push(`${i}=${encodeURIComponent( ConfS[i]() )}`);
-    }
     let uri= '?'+ urils.join('&');
 
     console.log(uri);
-    if( location.search != uri ) history.pushState("","",uri);
+    if( location.search != uri )
+        history.pushState("","", uri);
 }
 /**@return {undefined}*/
 function clear_url(){
     console.log('clear_url');
     if(location.search!=''){
         click_generate_url.innerHTML= "生成URL参数";
-        history.pushState("","",location.href.replace(location.search,''));
+        history.pushState("","",
+            location.href.replace( location.search, '')
+        );
     }
 }
 
@@ -401,52 +409,61 @@ function generate_conf(){
     try{
         //验证填写信息有效
         /**
-         * @param {String} port
-         * @param {String} E
-         * @throws {String}
+         * @param {String|Number} port
+         * @param {String|Error} E
          * @return {undefined}
         */
         function porttest(port,E){
-            if(!(/^[0-9]{1,5}$/.test(port) && Number(port)>=0 && Number(port)<=65535)) throw E;
+            if(!(
+                /^[0-9]{1,5}$/.test(String(port)) && 
+                (+port) >= 0 && 
+                (+port) <= 65535
+            )) throw E;
         }
         /**
-         * @param {html} INPUT
-         * @param {String} E
-         * @throws {String}
+         * @param {Document} INPUT
+         * @param {String|Error} E
          * @return {undefined}
         */
         function sslpathtest(INPUT,E){
-            if( !(new RegExp(INPUT.pattern) ).test(INPUT.value)) throw E;
+            if(!(
+                ( new RegExp( INPUT.pattern ) ).test( INPUT.value )
+            )) throw E;
         }
-        
+
         porttest(ConfS.webport(), 'web端监听端口格式无效');
         porttest(ConfS.webproxyport(), 'web端代理后的端口格式无效');
         porttest(ConfS.daemonport(), 'daemon端监听端口格式无效');
-        if(!(ConfS.mergeports())) porttest(ConfS.daemonproxyport(), 'daemon端代理后的端口格式无效');
+        if(!( ConfS.mergeports() ))
+            porttest(ConfS.daemonproxyport(), 'daemon端代理后的端口格式无效');
 
         //使用数组去重检测端口号冲突
-        {//有临时变量，括起来
+        //有临时变量，括起来
+        {
             let testportsarray=[
                 ConfS.webport(),
                 ConfS.webproxyport(),
                 ConfS.daemonport()
             ];
-            if( !(ConfS.mergeports()) ) testportsarray.push( ConfS.daemonproxyport() );
-            //console.log(testportsarray);
-            if(testportsarray.length > (new Set(testportsarray)).size) throw '端口号不能重复';
+            if( !(ConfS.mergeports()) )
+                testportsarray.push( ConfS.daemonproxyport() );
 
-            if(ConfS.https()){
-                sslpathtest(conf_sslcertpath_input, 'SSL证书路径格式无效');
-                sslpathtest(conf_sslkeypath_input, 'SSL私钥路径格式无效');
-            }
+            if( testportsarray.length > (new Set(testportsarray)).size )
+                throw '端口号不能重复';
+        }
 
-            let test_domains_array= ConfS.domain().split(' ');
-            for(let i of test_domains_array){
-                let j= i.toLowerCase();
-                if(j == 'localhost') throw '不能填写 localhost 域名';
-                if(j.includes('**')) throw '不能有多个 * 连在一起';
-                if(j.includes('..')) throw '不能有多个 . 连在一起';
-                if(j.includes('--')) throw '不能有多个 - 连在一起';
+        if(ConfS.https()){
+            sslpathtest(conf_sslcertpath_input, 'SSL证书路径格式无效');
+            sslpathtest(conf_sslkeypath_input, 'SSL私钥路径格式无效');
+        }
+
+        for(let i of ConfS.domain().split(' ')){
+            let j= i.toLowerCase();
+            if(j == 'localhost')
+                throw '不能填写 localhost 域名';
+            for( let k of ['*', '.', '-'] ){
+                if( j.includes( k.repeat(2) ) )
+                    throw `不能有多个 ${k} 连在一起`;
             }
         }
 
@@ -459,51 +476,29 @@ function generate_conf(){
             */
             function correctionFilePath(VALUE){
                 let path= VALUE.replaceAll('\\','/');
-                if(/^\"(.+)\"$/.test(path)) return path;
-                return `"${path}"`;
+                return (
+                    /^\"(.+)\"$/.test(path) 
+                    ? path 
+                    : `"${path}"`
+                );
             }
             const buildconf_sslcertpath= correctionFilePath(ConfS.sslcertpath());
             const buildconf_sslkeypath= correctionFilePath(ConfS.sslkeypath());
         //daemon端口
-            //将匿名函数的返回值作为变量值
             const buildconf_daemonport= (
-                ()=>{
-                    if(ConfS.mergeports()) return ConfS.webproxyport();
-                    return ConfS.daemonproxyport();
-                }
-            )();
+                ConfS.mergeports()
+                ? ConfS.webproxyport()
+                : ConfS.daemonproxyport()
+            );
         //ssl或default
-            //将匿名函数的返回值作为变量值
             const [
                 buildconf_sslORdefault, 
                 buildconf_sslORnone
             ]=(
-                ()=>{
-                    if(ConfS.https()) return ['ssl','ssl '];
-                    return ['default',''];
-                }
-            )();
-        //ipv6 listen
-            /**
-             * @param {String} ipv6
-             * @param {String|Number} port
-             * @return {String}
-             * buildconf_listen 的前置函数
-            */
-            function buildconf_ipv6listen(ipv6, port){
-                if(ConfS.listenipv6()) return `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`;
-                return '';
-            }
-            /**
-             * @param {String} ipv6
-             * @param {String|Number} port
-             * @return {String}
-             * buildconf_listendefault 的前置函数
-            */
-            function buildconf_ipv6listendefault(ipv6, port){
-                if(ConfS.listenipv6()) return `        listen [${ipv6}]:${port} ${buildconf_sslORdefault};\n`;
-                return '';
-            }
+                ConfS.https()
+                ? ['ssl','ssl ']
+                : ['default','']
+            );
         //listen
             /**
              * @param {String} ipv4
@@ -514,7 +509,11 @@ function generate_conf(){
              * 如果是https，那么后面填ssl。
             */
             function buildconf_listen(ipv4,ipv6,port){
-                return `${buildconf_ipv6listen(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORnone};`
+                return `${
+                    ConfS.listenipv6()
+                    ? `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`
+                    :''
+                }        listen ${ipv4+port} ${buildconf_sslORnone};`;
             }
             /**
              * @param {String} ipv4
@@ -525,7 +524,11 @@ function generate_conf(){
              * 如果是https，那么后面填ssl。
             */
             function buildconf_listendefault(ipv4,ipv6,port){
-                return `${buildconf_ipv6listendefault(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORdefault} ;`
+                return `${
+                    ConfS.listenipv6()
+                    ? `        listen [${ipv6}]:${port} ${buildconf_sslORdefault} ;\n`
+                    :''
+                }        listen ${ipv4+port} ${buildconf_sslORdefault} ;`;
             }
 
 
@@ -773,35 +776,26 @@ if( location.search !=='' ){
     click_generate_url.innerHTML= "重新生成URL参数";
 
     let params = (new URL(document.location)).searchParams;
-    let i;
 
     for(let i of ConfS.ConfBooleanNameList){
         let j= params.get(i);
         if(j !== null){
-            try{
-                this['confCheck_'+i].checked= StrToBool(j);
-                clickconfCheck[i]();
-            }catch(e){
-                console.error(e);
-            }
+            this['confCheck_'+i].checked= StrToBool(j);
+            clickconfCheck[i]();
         }
     }
 
     for(let i of ConfS.ConfValueNameList){
         let j= params.get(i);
         if(j !== null){
-            try{
-                this[`conf_${i}_input`].value= j;
-            }catch(e){
-                console.error(e);
-            }
+            this[`conf_${i}_input`].value= j;
         }
     }
 
     //默认不自动生成配置文件，所以缩写了。
-    if( //输入null不会导致出错。
-        StrToBool( params.get('autogenerate') )
-    )generate_conf();
+    //输入null不会导致出错。
+    if(StrToBool( params.get('autogenerate') ))
+        generate_conf();
 }
 
 
@@ -820,11 +814,22 @@ waitingjs.innerHTML= '请稍候……';
 //网页加载完成或加载终止时，自动显示内容
 window.onload= /**@return {undefined}*/()=>{
     console.log('web loaded');
+    //移除加载时显示的元素块
     loadingtitlediv.remove();
+    //显示网页块
     mydiv.style.display= '';
 };
 
+JSNotLoaded.innerHTML= '';
 console.log('JS done');
 
 </script>
+
+<script type="text/javascript">
+    if(JSNotLoaded.innerHTML){
+        waitingjs.innerHTML= "JavaScript加载失败，请尝试更换浏览器。";
+        mydiv.innerHTML= "";
+    }
+</script>
+
 </body>
