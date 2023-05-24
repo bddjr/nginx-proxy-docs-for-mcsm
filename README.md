@@ -31,7 +31,6 @@ https://q8p.cc/gtproxyformcsm/README.md
 <https://docs.mcsmanager.com/#/zh-cn/>  
 
 ***
-> MCSManager官方何时才会采纳这些文章呢？  
 > 写合并端口的文章是因为我看到这个issue：<https://github.com/MCSManager/MCSManager/issues/826>
 >
 > 源码仓库：<a href="https://q8p.cc/github/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
