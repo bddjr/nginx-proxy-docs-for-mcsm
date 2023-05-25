@@ -287,5 +287,5 @@ https://q8p.cc/gtproxyformcsm/配置HTTPS反向代理且合并端口.md
 ***
 [<=点此返回README](README.md)
 
-> 源码仓库：<a href="https://q8p.cc/github/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
+> 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr.

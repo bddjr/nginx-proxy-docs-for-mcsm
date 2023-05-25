@@ -4,6 +4,7 @@
 > [配置HTTP反向代理](配置HTTP反向代理.md)  
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  
 > [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md)  
+> [通过不同域名实现与网站或其它面板合并](通过不同域名实现与网站或其它面板合并.md)  
 > [通过区分路径实现与网站合并](通过区分路径实现与网站合并.md)  
 >   
 > ***  
@@ -34,5 +35,5 @@ https://q8p.cc/gtproxyformcsm/README.md
 ***
 > 写合并端口的文章是因为我看到这个issue：<https://github.com/MCSManager/MCSManager/issues/826>
 >
-> 源码仓库：<a href="https://q8p.cc/github/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
+> 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr.
