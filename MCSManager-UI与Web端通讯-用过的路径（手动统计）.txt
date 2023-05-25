@@ -1,8 +1,0 @@
-/#/
-/css/
-/js/
-/static/
-/api/
-/img/
-/fonts/
-/favicon.ico
