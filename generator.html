@@ -98,11 +98,9 @@
         <hr/>
         <button id="click_generate_conf" class="button_generate_conf" onclick=generate_conf()>生成配置文件</button>
         <p id="generate_info" class="generate_info" style="color:gray;">配置文件未生成</p>
-        <fieldset style="padding: 0 1px 1px 1px;">
+        <fieldset id="generate_result" style="padding: 0 1px 1px 1px;">
             <legend>配置文件生成结果（填在 http{} 里）</legend>
-            <div id="generate_result" style="margin:0;">
-                <textarea id="generate_result_text" name="generate_result_text" type="text" rows="36" cols="118" wrap="off"></textarea>
-            </div>
+            <textarea id="generate_result_text" name="generate_result_text" type="text" rows="36" cols="118" wrap="off"></textarea>
         </fieldset>
     </div>
     <p id="JSNotLoaded" name="JSNotLoaded" style="display: none;">true</p>

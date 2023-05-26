@@ -8,7 +8,7 @@
 }
 
 input{
-    border: outset #72b5fd;
+    border: outset #90c6ff;
     border-style: solid;
     border-radius: 6px;
     border-width: 1.5px;
@@ -100,13 +100,12 @@ fieldset>div>input[type=text]{
     width: 290px;
 }
 
-div[id=generate_result]>textarea{
-    
+textarea[id=generate_result_text]{
     background-color: #f7fbff;
     border-radius: 8px;
     border-width: 2px;
     padding: 3px 3px;
-    border-color:#72b5fd;
+    border-color:#90c6ff;
     outline-color:#0058db;
     font-size: 15px;
     width: 100%;

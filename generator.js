@@ -1,6 +1,15 @@
 "use strict";
 
-//String Tools
+let mydebugmode= false;
+/**
+ * @param {any} a
+ * @return {undefined}
+*/
+function myLog(a){
+    if(mydebugmode)
+        console.log(a);
+}
+
 /**
  * @param {String|any} inputstr
  * @return {Boolean}
@@ -92,7 +101,7 @@ ConfS.ConfNameList= ConfS.ConfBooleanNameList.concat( ConfS.ConfValueNameList );
 const clickconfCheck= new class{
     /**@return {undefined}*/
     https(){
-        console.log('clickconfCheck.https');
+        myLog('clickconfCheck.https');
         if( ConfS.https() ){
             conf_sslcertpath.style.display= '';
             conf_sslkeypath.style.display= '';
@@ -103,7 +112,7 @@ const clickconfCheck= new class{
     }
     /**@return {undefined}*/
     mergeports(){
-        console.log('clickconfCheck.mergeports');
+        myLog('clickconfCheck.mergeports');
         if( ConfS.mergeports() ){
             conf_daemonproxyport.style.display= "none";
             conf_webproxyport_title.innerHTML= "代理后的端口：";
@@ -114,12 +123,12 @@ const clickconfCheck= new class{
     }
     /**@return {undefined}*/
     listenipv6(){
-        console.log('clickconfCheck.listenipv6');
+        myLog('clickconfCheck.listenipv6');
     }
 };
 /**@return {undefined}*/
 function generate_url(){
-    console.log('generate_url');
+    myLog('generate_url');
     click_generate_url.innerHTML= "重新生成URL参数";
 
     /**@type {Array<String>}*/
@@ -130,13 +139,13 @@ function generate_url(){
         urils.push(`${i}=${encodeURIComponent( ConfS[i]() )}`);
     let uri= '?'+ urils.join('&');
 
-    console.log(uri);
+    myLog(uri);
     if( location.search != uri )
         history.pushState("","", uri);
 }
 /**@return {undefined}*/
 function clear_url(){
-    console.log('clear_url');
+    myLog('clear_url');
     if(location.search!=''){
         click_generate_url.innerHTML= "生成URL参数";
         history.pushState("","",
@@ -150,7 +159,7 @@ function clear_url(){
 var generate_conf_runned= false;
 /**@return {undefined}*/
 function generate_conf(){
-    console.log('generate_conf');
+    myLog('generate_conf');
     generate_conf_runned= true;
     click_generate_conf.innerHTML= "重新生成配置文件";
     try{
@@ -518,7 +527,7 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
 
 //read uri
 if( location.search !=='' ){
-    console.log('read uri');
+    myLog('read uri');
     click_generate_url.innerHTML= "重新生成URL参数";
 
     let params = (new URL(document.location)).searchParams;
@@ -546,12 +555,24 @@ if( location.search !=='' ){
 
 //网页加载完成或加载终止时，自动显示内容
 window.onload= /**@return {undefined}*/()=>{
-    console.log('web loaded');
+    myLog('web loaded');
     //移除加载时显示的元素块
     loadingtitlediv.remove();
     //显示网页块
     mydiv.style.display= '';
 };
 
+/**@return {undefined}*/
+function generate_result_text_resize(){
+    let height= window.innerHeight;
+    myLog(
+`generate_result_text_resize
+height: ${height}`
+);
+    generate_result_text.style.height= height - 160;
+}
+generate_result_text_resize();
+window.onresize= generate_result_text_resize;
+
 JSNotLoaded.innerHTML= '';
-console.log('JS done');
+myLog('JS done');
