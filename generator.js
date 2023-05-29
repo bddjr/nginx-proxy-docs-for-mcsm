@@ -1,15 +1,20 @@
 "use strict";
+// @ts-check
 
-let mydebugmode= false;
+//my tools
+/**@type {boolean}*/
+var mydebugmode= (location.host === '127.0.0.1');
 /**
  * @param {any} a
- * @return {undefined}
+ * @return {void}
 */
 function myLog(a){
     if(mydebugmode)
         console.log(a);
 }
 
+/**@type {Array<String>}*/
+const StrToBool_falseStrings= ['false','null','NaN','undefined'];
 /**
  * @param {String|any} inputstr
  * @return {Boolean}
@@ -21,7 +26,7 @@ function StrToBool(inputstr){
     //如果转成数后是NaN，就识别字符串是否在列表内，输出相反值
     if(Number.isNaN(+inputstr)){
         return !(
-            ['false','null','NaN','undefined'].includes(
+            StrToBool_falseStrings.includes(
                 inputstr.trim().toLowerCase()
             )
         );
@@ -34,6 +39,7 @@ function StrToBool(inputstr){
 //build Configs class
 //必须写成品，否则编辑器不能给出正确的类型。
 const ConfS= new class{
+    /**@type {Array<String>}*/
     ConfBooleanNameList=[
         'https',
         'mergeports',
@@ -41,18 +47,21 @@ const ConfS= new class{
     ];
     /**@return {Boolean}*/
     https(){
+        // @ts-ignore
         return confCheck_https.checked;
     }
     /**@return {Boolean}*/
     mergeports(){
+        // @ts-ignore
         return confCheck_mergeports.checked;
     }
     /**@return {Boolean}*/
     listenipv6(){
+        // @ts-ignore
         return confCheck_listenipv6.checked;
     }
 
-
+    /**@type {Array<String>}*/
     ConfValueNameList=[
         'webport',
         'webproxyport',
@@ -64,30 +73,37 @@ const ConfS= new class{
     ];
     /**@return {String}*/
     webport(){
+        // @ts-ignore
         return conf_webport_input.value;
     }
     /**@return {String}*/
     webproxyport(){
+        // @ts-ignore
         return conf_webproxyport_input.value;
     }
     /**@return {String}*/
     daemonport(){
+        // @ts-ignore
         return conf_daemonport_input.value;
     }
     /**@return {String}*/
     daemonproxyport(){
+        // @ts-ignore
         return conf_daemonproxyport_input.value;
     }
     /**@return {String}*/
     domain(){
+        // @ts-ignore
         return conf_domain_input.value;
     }
     /**@return {String}*/
     sslcertpath(){
+        // @ts-ignore
         return conf_sslcertpath_input.value;
     }
     /**@return {String}*/
     sslkeypath(){
+        // @ts-ignore
         return conf_sslkeypath_input.value;
     }
 
@@ -99,36 +115,46 @@ ConfS.ConfNameList= ConfS.ConfBooleanNameList.concat( ConfS.ConfValueNameList );
 
 //onclick
 const clickconfCheck= new class{
-    /**@return {undefined}*/
+    /**@return {void}*/
     https(){
         myLog('clickconfCheck.https');
         if( ConfS.https() ){
+            // @ts-ignore
             conf_sslcertpath.style.display= '';
+            // @ts-ignore
             conf_sslkeypath.style.display= '';
         }else{
+            // @ts-ignore
             conf_sslcertpath.style.display= "none";
+            // @ts-ignore
             conf_sslkeypath.style.display= "none";
         }
     }
-    /**@return {undefined}*/
+    /**@return {void}*/
     mergeports(){
         myLog('clickconfCheck.mergeports');
         if( ConfS.mergeports() ){
+            // @ts-ignore
             conf_daemonproxyport.style.display= "none";
+            // @ts-ignore
             conf_webproxyport_title.innerHTML= "代理后的端口：";
         }else{
+            // @ts-ignore
             conf_daemonproxyport.style.display= '';
+            // @ts-ignore
             conf_webproxyport_title.innerHTML= "web端代理后的端口：";
         }
     }
-    /**@return {undefined}*/
+    /**@return {void}*/
     listenipv6(){
         myLog('clickconfCheck.listenipv6');
     }
 };
-/**@return {undefined}*/
+
+/**@return {void}*/
 function generate_url(){
     myLog('generate_url');
+    // @ts-ignore
     click_generate_url.innerHTML= "重新生成URL参数";
 
     /**@type {Array<String>}*/
@@ -143,10 +169,12 @@ function generate_url(){
     if( location.search != uri )
         history.pushState("","", uri);
 }
-/**@return {undefined}*/
+
+/**@return {void}*/
 function clear_url(){
     myLog('clear_url');
     if(location.search!=''){
+        // @ts-ignore
         click_generate_url.innerHTML= "生成URL参数";
         history.pushState("","",
             location.href.replace( location.search, '')
@@ -156,18 +184,21 @@ function clear_url(){
 
 
 //定义生成配置文件的函数
+/**@type {boolean}*/
 var generate_conf_runned= false;
-/**@return {undefined}*/
+
+/**@return {void}*/
 function generate_conf(){
     myLog('generate_conf');
     generate_conf_runned= true;
+    // @ts-ignore
     click_generate_conf.innerHTML= "重新生成配置文件";
     try{
         //验证填写信息有效
         /**
          * @param {String|Number} port
          * @param {String|Error} E
-         * @return {undefined}
+         * @return {void}
         */
         function porttest(port,E){
             if(!(
@@ -179,10 +210,11 @@ function generate_conf(){
         /**
          * @param {Document} INPUT
          * @param {String|Error} E
-         * @return {undefined}
+         * @return {void}
         */
         function sslpathtest(INPUT,E){
             if(!(
+                // @ts-ignore
                 ( new RegExp( INPUT.pattern ) ).test( INPUT.value )
             )) throw E;
         }
@@ -209,7 +241,9 @@ function generate_conf(){
         }
 
         if(ConfS.https()){
+            // @ts-ignore
             sslpathtest(conf_sslcertpath_input, 'SSL证书路径格式无效');
+            // @ts-ignore
             sslpathtest(conf_sslkeypath_input, 'SSL私钥路径格式无效');
         }
 
@@ -231,6 +265,7 @@ function generate_conf(){
              * @return {String}
             */
             function correctionFilePath(VALUE){
+                // @ts-ignore
                 let path= VALUE.replaceAll('\\','/');
                 return (
                     /^\"(.+)\"$/.test(path) 
@@ -304,7 +339,7 @@ function generate_conf(){
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
-`);
+`           );
         }
         //gzip
         buildconf.push(
@@ -328,7 +363,7 @@ function generate_conf(){
     server {
         # 这块是用于阻止跨域访问的。
 
-`);
+`       );
 
 
 
@@ -338,20 +373,20 @@ function generate_conf(){
 `        # 代理后端口（可用多个listen监听多个端口）
 ${buildconf_listendefault('','::',ConfS.webproxyport())}
 
-`);
+`           );
         }else{
             buildconf.push(
 `        # Daemon 端访问端口（可用多个listen监听多个端口）
 ${buildconf_listendefault('','::',ConfS.daemonproxyport())}
         # Web面板访问端口（可用多个listen监听多个端口）
 ${buildconf_listendefault('','::',ConfS.webproxyport())}
-`);
+`           );
         }
         buildconf.push(
 `        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         server_name _ ;
 
-`);
+`       );
         if(ConfS.https()){
             buildconf.push(
 `        # 使用https访问时，直接断开连接，不返回证书。
@@ -364,13 +399,13 @@ ${buildconf_listendefault('','::',ConfS.webproxyport())}
             return 444;
         }
     }
-`);
+`           );
         }else{
             buildconf.push(
 `        # 断开连接。
         return 444;
     }
-`);
+`           );
         }
 
 
@@ -406,7 +441,7 @@ ${(ConfS.listenipv6()) ? (`        listen [::1]:${buildconf_daemonport} ;\n`) : 
             expires -1;
         }
     }
-`);
+`       );
 
 
         //Daemon监听公网
@@ -452,7 +487,7 @@ ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并�
             expires -1;
         }
     }
-`);
+`           );
         }
 
 
@@ -513,13 +548,18 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
             expires -1;
         }
     }
-`);
+`       );
 
+        // @ts-ignore
         generate_result_text.value= buildconf.join('');
+        // @ts-ignore
         generate_info.innerHTML ="配置文件生成成功 ✓";
+        // @ts-ignore
         generate_info.style.color= "green";
     }catch(e){
+        // @ts-ignore
         generate_info.innerHTML ="配置文件生成失败 ✖<br/>"+e;
+        // @ts-ignore
         generate_info.style.color= "red";
     }
 }
@@ -528,8 +568,10 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
 //read uri
 if( location.search !=='' ){
     myLog('read uri');
+    // @ts-ignore
     click_generate_url.innerHTML= "重新生成URL参数";
 
+    // @ts-ignore
     let params = (new URL(document.location)).searchParams;
 
     for(let i of ConfS.ConfBooleanNameList){
@@ -554,25 +596,37 @@ if( location.search !=='' ){
 }
 
 //网页加载完成或加载终止时，自动显示内容
-window.onload= /**@return {undefined}*/()=>{
+window.onload= /**@return {void}*/()=>{
     myLog('web loaded');
-    //移除加载时显示的元素块
-    loadingtitlediv.remove();
+
     //显示网页块
+    // @ts-ignore
     mydiv.style.display= '';
+
+    //移除加载时显示的元素块
+    try{
+        // @ts-ignore
+        loadingtitlediv.remove();
+    }catch(e){
+        // @ts-ignore
+        loadingtitlediv.innerHTML= '';
+    }
 };
 
-/**@return {undefined}*/
+/**@return {void}*/
 function generate_result_text_resize(){
     let height= window.innerHeight;
     myLog(
 `generate_result_text_resize
 height: ${height}`
-);
+    );
+    // @ts-ignore
     generate_result_text.style.height= height - 160;
 }
+
 generate_result_text_resize();
 window.onresize= generate_result_text_resize;
 
+// @ts-ignore
 JSNotLoaded.innerHTML= '';
 myLog('JS done');

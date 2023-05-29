@@ -20,9 +20,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>配置文件生成器</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="./generator.css">
 </head>
 <body>
-    <div id="loadingtitlediv" name="loadingtitlediv" style="font-family: system-ui;">
+    <div id="loadingtitlediv" name="loadingtitlediv">
         <p id="loadingtitle" name="loadingtitle" style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
         <p id="waitingjs" name="waitingjs" style="font-size: 24px;"></p>
         <noscript>
@@ -30,9 +31,6 @@
         </noscript>
     </div>
     <div id="mydiv" name="mydiv" style="display:none;">
-        <style>
-            @import url("./generator.css");
-        </style>
         <p style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
         <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank" rel="noopener">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
         <p style="font-size: 14px; margin: 6px 0; color:gray;">
@@ -110,8 +108,8 @@
     <script type="text/javascript" src="./generator.js"></script>
     <script type="text/javascript">
         if(JSNotLoaded.innerHTML){
-            console.log("JavaScript加载失败，请尝试更换浏览器。");
-            waitingjs.innerHTML="JavaScript加载失败，请尝试更换浏览器。";
+            console.log("JavaScript加载失败，请尝试刷新网页，或尝试更换浏览器。");
+            waitingjs.innerHTML="JavaScript加载失败，请尝试刷新网页，或尝试更换浏览器。";
             mydiv.innerHTML="";
         }
     </script>
