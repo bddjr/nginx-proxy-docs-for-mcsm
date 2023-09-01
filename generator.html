@@ -1,0 +1,116 @@
+<!--用于MCSManager的Nginx反向代理配置文件生成器
+    可以使用的url参数：
+        选项（布尔值）：
+            https=true
+            mergeports=false
+            listenipv6=false
+        填写内容（字符串）：
+        若合并端口，则无需daemonproxyport
+            webport=23333
+            webproxyport=12333
+            daemonport=24444
+            daemonproxyport=12444
+            domain=domain.com%20*.domain.com
+            sslcertpath=/etc/nginx/ssl/_.domain.com.crt
+            sslkeypath=/etc/nginx/ssl/_.domain.com_rsa.key
+        运行网页时自动生成：
+            autogenerate=true
+-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>配置文件生成器</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="./generator.css">
+</head>
+<body>
+    <div id="loadingtitlediv" name="loadingtitlediv">
+        <p id="loadingtitle" name="loadingtitle" style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p id="waitingjs" name="waitingjs" style="font-size: 24px;"></p>
+        <noscript>
+            <p style="font-size: 24px;">⛔该页面需要依赖JavaScript运作，请允许运行JavaScript。</p>
+        </noscript>
+    </div>
+    <div id="mydiv" name="mydiv" style="display:none;">
+        <p style="font-size: 30px; margin: 0;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+        <p style="font-size: 18px; margin: 6px 0;">请配合 <a href="/" target="_blank" rel="noopener">教程</a> 的其它部分使用，该生成器仅用于配置反向代理。</p>
+        <p style="font-size: 14px; margin: 6px 0; color:gray;">
+            该网页已使用鸿蒙英文字体。<br/>
+            源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank" rel="noopener">nginx-proxy-docs-for-mcsm</a><br/>
+            Made by bddjr.
+        </p>
+        <fieldset>
+            <legend>选项</legend>
+            <div>
+                <input type="checkbox" id="confCheck_https" name="confCheck_https" checked onclick=clickconfCheck.https() >
+                <label for="confCheck_https" >HTTPS</label>
+            </div>
+            <div>
+                <input type="checkbox" id="confCheck_mergeports" name="confCheck_mergeports" onclick=clickconfCheck.mergeports()>
+                <label for="confCheck_mergeports">合并端口<label for="confCheck_mergeports" style="color:gray;">（通常仅用于web端与daemon端在同一主机的情况）</label></label>
+            </div>
+            <div>
+                <input type="checkbox" id="confCheck_listenipv6" name="confCheck_listenipv6" onclick=clickconfCheck.listenipv6()>
+                <label for="confCheck_listenipv6">同时监听IPv6</label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>填写内容</legend>
+            <div id="conf_webport">
+                <label id="conf_webport_title" for="conf_webport_input">web端监听的端口：</label>
+                <input id="conf_webport_input" name="conf_webport_input" type="number" min="0" max="65535" step="1" required value="23333"/>
+                <span class="validity"></span>
+            </div>
+            <div id="conf_webproxyport">
+                <label id="conf_webproxyport_title" for="conf_webproxyport_input">web端代理后的端口：</label>
+                <input id="conf_webproxyport_input" name="conf_webproxyport_input" type="number" min="0" max="65535" step="1" required value="12333"/>
+                <span class="validity"></span>
+            </div>
+            <div id="conf_daemonport">
+                <label id="conf_daemonport_title" for="conf_daemonport_input">daemon端监听的端口：</label>
+                <input id="conf_daemonport_input" name="conf_daemonport_input" type="number" min="0" max="65535" step="1" required value="24444"/>
+                <span class="validity"></span>
+            </div>
+            <div id="conf_daemonproxyport">
+                <label id="conf_daemonproxyport_title" for="conf_daemonproxyport_input">daemon端代理后的端口：</label>
+                <input id="conf_daemonproxyport_input" name="conf_daemonproxyport_input" type="number" min="0" step="1" max="65535" required value="12444"/>
+                <span class="validity"></span>
+            </div>
+            <div id="conf_domain">
+                <label id="conf_domain_title" for="conf_domain_input">域名<label for="conf_domain_input" style="color:gray;">（空格分隔以输入多个，支持通配符）</label>：</label>
+                <input id="conf_domain_input" name="conf_domain_input" type="text" size="38" value="domain.com *.domain.com"/>
+            </div>
+            <div id="conf_sslcertpath">
+                <label id="conf_sslcertpath_title" for="conf_sslcertpath_input">SSL证书路径：</label>
+                <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="35" required="" value="/etc/nginx/ssl/_.domain.com.crt" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)">
+                <span class="validity"></span>
+            </div>
+            <div id="conf_sslkeypath">
+                <label id="conf_sslkeypath_title" for="conf_sslkeypath_input">SSL私钥路径：</label>
+                <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="35" required value="/etc/nginx/ssl/_.domain.com_rsa.key" pattern="(^[^*?&quot;<>|]+$)|(^&quot;[^*?&quot;<>|]+&quot;$)"/>
+                <span class="validity"></span>
+            </div>
+        </fieldset>
+        <p style="color:gray; font-size: 14px; margin: 2px 0;">生成URL可用于分享自己填写的参数。如果生成URL之前已经生成配置文件，那么使用生成的URL访问时会自动依据参数生成配置文件。</p>
+        <button id="click_generate_url" class="button_generate_url" onclick=generate_url()>生成URL参数</button>
+        <button id="click_clear_url" class="button_generate_url" onclick=clear_url()>清除URL参数</button>
+        <hr/>
+        <button id="click_generate_conf" class="button_generate_conf" onclick=generate_conf()>生成配置文件</button>
+        <p id="generate_info" class="generate_info" style="color:gray;">配置文件未生成</p>
+        <fieldset id="generate_result" style="padding: 0 1px 1px 1px;">
+            <legend>配置文件生成结果（填在 http{} 里）</legend>
+            <textarea id="generate_result_text" name="generate_result_text" type="text" rows="36" cols="118" wrap="off"></textarea>
+        </fieldset>
+    </div>
+    <p id="JSNotLoaded" name="JSNotLoaded" style="display: none;">true</p>
+    <script type="text/javascript">
+        waitingjs.innerHTML='请稍候……';
+    </script>
+    <script type="text/javascript" src="./generator.js"></script>
+    <script type="text/javascript">
+        if(JSNotLoaded.innerHTML){
+            console.log("JavaScript加载失败，请尝试刷新网页，或尝试更换浏览器。");
+            waitingjs.innerHTML="JavaScript加载失败，请尝试刷新网页，或尝试更换浏览器。";
+            mydiv.innerHTML="";
+        }
+    </script>
+</body>

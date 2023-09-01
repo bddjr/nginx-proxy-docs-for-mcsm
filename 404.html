@@ -1,0 +1,19 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+</head>
+<body>
+    <div>
+        <h1>404 Not Found</h1>
+    </div>
+    <script>
+        if(/^\/issues/.test(location.pathname)){
+            document.querySelector("body>div").innerHTML= '<p style="font-size:26;">正在重定向到github仓库<p>';
+            location.href= location.href.replace(location.host, "github.com/bddjr/nginx-proxy-docs-for-mcsm");
+        }else{
+            let title = document.createElement('title');
+            title.innerHTML = '404 Not Found';
+            document.head.appendChild(title);
+        }
+    </script>
+</body>

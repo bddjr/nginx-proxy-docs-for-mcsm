@@ -1,0 +1,528 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>配置文件生成器</title>
+</head>
+<body>
+    <p id="pleaseopenjs">该网页依赖JavaScript运行，请开启JavaScript。</p>
+
+    <style type="text/css">
+        div {
+            margin-bottom: 10px;
+        }
+
+        input:invalid + span::after {
+            content: "✖";
+            padding-left: 5px;
+            color:red;
+        }
+
+        input:valid + span::after {
+            content: "✓";
+            padding-left: 5px;
+            color:green;
+        }
+    </style>
+
+    <p style="font-size: 30;">用于MCSManager的Nginx反向代理配置文件生成器</p>
+    <p>请配合<a href="/">教程</a>使用。</p>
+
+    <fieldset>
+        <legend>选项</legend>
+    
+        <div>
+          <input type="checkbox" id="conf_https" name="conf_https" checked onclick=clickconf_https() >
+          <label for="conf_https" >HTTPS</label>
+        </div>
+    
+        <div>
+          <input type="checkbox" id="conf_mergeports" name="conf_mergeports" onclick=clickconf_mergeports()>
+          <label for="conf_mergeports">合并端口（通常仅用于web端与daemon端在同一主机的情况）</label>
+        </div>
+
+        <div>
+            <input type="checkbox" id="conf_listenipv6" name="conf_listenipv6" onclick=clickconf_listenipv6()>
+            <label for="conf_listenipv6">同时监听IPv6</label>
+          </div>
+    </fieldset>
+    <fieldset>
+        <legend>填写内容</legend>
+    
+        <div id="conf_webport">
+            <label id="conf_webport_title" for="conf_webport_input">web端监听的端口：</label>
+            <input id="conf_webport_input" name="conf_webport_input" type="number" min="0" max="65535" step="1" list="conf_webport_defaultNumbers" required value="23333"/>
+            <span class="validity"></span>
+            <datalist id="conf_webport_defaultNumbers">
+                <option value="23333">
+            </datalist>
+        </div>
+
+        <div id="conf_webproxyport">
+            <label id="conf_webproxyport_title" for="conf_webproxyport_input">web端代理后的端口：</label>
+            <input id="conf_webproxyport_input" name="conf_webproxyport_input" type="number" min="0" max="65535" step="1" required value="12333"/>
+            <span class="validity"></span>
+        </div>
+
+        <div id="conf_daemonport">
+            <label id="conf_daemonport_title" for="conf_daemonport_input">daemon端监听的端口：</label>
+            <input id="conf_daemonport_input" name="conf_daemonport_input" type="number" min="0" max="65535" step="1" list="conf_daemonport_defaultNumbers" required value="24444"/>
+            <span class="validity"></span>
+            <datalist id="conf_daemonport_defaultNumbers">
+                <option value="24444">
+            </datalist>
+        </div>
+
+        <div id="conf_daemonproxyport">
+            <label id="conf_daemonproxyport_title" for="conf_daemonproxyport_input">daemon端代理后的端口：</label>
+            <input id="conf_daemonproxyport_input" name="conf_daemonproxyport_input" type="number" min="0" step="1" max="65535" required value="12444"/>
+            <span class="validity"></span>
+        </div>
+
+        <div id="conf_domain">
+            <label id="conf_domain_title" for="conf_domain_input">域名（空格分隔以输入多个，支持通配符）：</label>
+            <input id="conf_domain_input" name="conf_domain_input" type="text" size="60" value="domain.com *.domain.com"/>
+        </div>
+
+        <div id="conf_sslcertpath">
+            <label id="conf_sslcertpath_title" for="conf_sslcertpath_input">SSL证书路径：</label>
+            <input id="conf_sslcertpath_input" name="conf_sslcertpath_input" type="text" size="60" required value="/etc/nginx/ssl/_.domain.com.crt"/>
+            <span class="validity"></span>
+        </div>
+
+        <div id="conf_sslkeypath">
+            <label id="conf_sslkeypath_title" for="conf_sslkeypath_input">SSL私钥路径：</label>
+            <input id="conf_sslkeypath_input" name="conf_sslkeypath_input" type="text" size="60" required value="/etc/nginx/ssl/_.domain.com_rsa.key"/>
+            <span class="validity"></span>
+        </div>
+    </fieldset>
+    
+    <p></p>
+    <button id="click_generate" style="font-size: 20;" onclick=generate_conf()>点此生成</button>
+    <p id="generate_info" style="color:gray;">未生成</p>
+    <fieldset>
+        <legend>生成结果（填在 http{} 里）</legend>
+    
+        <div id="generate_result">
+            <textarea id="generate_result_text" name="generate_result_text" type="text" size="60" rows="40" cols="160"></textarea>
+        </div>
+    </fieldset>
+</body>
+
+
+
+
+
+
+<script>
+    //删除请求开启JS语句
+    document.getElementById('pleaseopenjs').remove();
+
+    //补全元素的正则表达式
+    conf_sslkeypath_input.pattern= conf_sslcertpath_input.pattern = "(^[^\*\?\"\<\>\|]+$)|(^\"[^\*\?\"\<\>\|]+\"$)";
+
+    //onclick
+    function clickconf_https(){
+        console.log('clickconf_https');
+        if(conf_https.checked){
+            conf_sslkeypath.style= conf_sslcertpath.style= "";
+        }else{
+            conf_sslkeypath.style= conf_sslcertpath.style= "display:none;";
+        }
+    }
+    function clickconf_mergeports(){
+        console.log('clickconf_mergeports');
+        if(conf_mergeports.checked){
+            conf_daemonproxyport.style= "display:none;";
+            conf_webproxyport_title.innerHTML= "代理后的端口：";
+        }else{
+            conf_daemonproxyport.style= "";
+            conf_webproxyport_title.innerHTML= "web端代理后的端口:";
+        }
+    }
+    function clickconf_listenipv6(){
+        console.log('clickconf_listenipv6');
+    }
+
+
+
+    //定义生成配置文件的函数
+    function generate_conf(){
+        console.log('generate_conf');
+        click_generate.innerHTML= "点此重新生成";
+        try{
+            //验证填写信息有效
+            function ElseThrowError(BOOL,E){
+                if(!BOOL) throw new Error(E);
+            }
+            function porttest(port,E){
+                ElseThrowError( (/^[0-9]{1,5}$/.test(port) && Number(port)>=0 && Number(port)<=65535) ,E);
+            }
+            function sslpathtest(INPUT,E){
+                ElseThrowError( (new RegExp(INPUT.pattern)).test(INPUT.value) ,E)
+            }
+            
+            porttest(conf_webport_input.value, 'web端监听端口格式无效');
+            porttest(conf_webproxyport_input.value, 'web端代理后的端口格式无效');
+            porttest(conf_daemonport_input.value, 'daemon端监听端口格式无效');
+            if(!(conf_mergeports.checked)) porttest(conf_daemonproxyport_input.value, 'daemon端代理后的端口端口格式无效');
+
+            //使用数组去重检测端口号冲突
+            let testportsarray;
+            if(conf_mergeports.checked){
+                testportsarray=[
+                    conf_webport_input.value,
+                    conf_webproxyport_input.value,
+                    conf_daemonport_input.value
+                ];
+            }else{
+                testportsarray=[
+                    conf_webport_input.value,
+                    conf_webproxyport_input.value,
+                    conf_daemonport_input.value,
+                    conf_daemonproxyport_input.value
+                ];
+            }
+            //console.log(testportsarray);
+            if(testportsarray.length > (new Set(testportsarray)).size) throw new Error('端口号不能重复');
+            
+            if(conf_https.checked){
+                sslpathtest(conf_sslcertpath_input, 'SSL证书路径格式无效');
+                sslpathtest(conf_sslkeypath_input, 'SSL私钥路径格式无效');
+            }
+
+            let test_domains_array= conf_domain_input.value.split(' ');
+            for(let i in test_domains_array){
+                let j= test_domains_array[i].toLowerCase();
+                if(j=='localhost') throw new Error('不能填写 localhost 域名');
+                if(j.indexOf('\*\*') > -1) throw new Error('不能有多个 * 连在一起');
+                if(j.indexOf('\.\.') > -1) throw new Error('不能有多个 . 连在一起');
+                if(j.indexOf('\-\-') > -1) throw new Error('不能有多个 - 连在一起');
+            }
+
+            //检查完毕，开始进行字符串连接
+            var buildconf="";
+
+            //缓存备用
+                //ssl目录
+                    var buildconf_sslcertpath= conf_sslcertpath_input.value.replaceAll('\\','/');
+                    if(!(/^\"/.test(buildconf_sslcertpath) && /\"$/.test(buildconf_sslcertpath))){
+                        buildconf_sslcertpath= '"'+buildconf_sslcertpath+'"';
+                    }
+                    var buildconf_sslkeypath= conf_sslkeypath_input.value.replaceAll('\\','/');
+                    if(!(/^\"/.test(buildconf_sslkeypath) && /\"$/.test(buildconf_sslkeypath))){
+                        buildconf_sslkeypath= '"'+buildconf_sslkeypath+'"';
+                    }
+                //daemon端口
+                    var buildconf_daemonport;
+                    if(conf_mergeports.checked) buildconf_daemonport= conf_webproxyport_input.value;
+                    else buildconf_daemonport= conf_daemonproxyport_input.value;
+                //ssl或default
+                    var buildconf_sslORdefault, buildconf_sslORnone;
+                    if(conf_https.checked){
+                        buildconf_sslORdefault= 'ssl';
+                        buildconf_sslORnone= 'ssl ';
+                    }
+                    else{
+                        buildconf_sslORdefault= 'default';
+                        buildconf_sslORnone= '';
+                    }
+                //ipv6 listen
+                    function buildconf_ipv6listen(ipv6, port){
+                        if(conf_listenipv6.checked) return `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`;
+                        else return '';
+                    }
+                    function buildconf_ipv6listendefault(ipv6, port){
+                        if(conf_listenipv6.checked) return `        listen [${ipv6}]:${port} ${buildconf_sslORdefault};\n`;
+                        else return '';
+                    }
+                //listen
+                    function buildconf_listen(ipv4,ipv6,port){
+                        return `${buildconf_ipv6listen(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORnone};`
+                    }
+                    function buildconf_listendefault(ipv4,ipv6,port){
+                        return `${buildconf_ipv6listendefault(ipv6, port)}        listen ${ipv4+port} ${buildconf_sslORdefault};`
+                    }
+                //
+                    function ifElseReturn(BOOL,VALUE,ELSE){
+                        if(BOOL) return VALUE; else return ELSE;
+                    }
+                //
+                    function ifHttpsReturn(INPUT){
+                        if(conf_https.checked) return INPUT;
+                        else return '';
+                    }
+
+
+            //ssl证书
+            if(conf_https.checked){
+                buildconf +=
+`    # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
+    #SSL-START
+    ssl_certificate ${buildconf_sslcertpath};
+    ssl_certificate_key ${buildconf_sslkeypath};
+
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout  10m;
+    ssl_protocols TLSv1.2; # 仅允许使用TLSv1.2建立连接
+    ssl_verify_client off; # 不验证客户端的证书
+    #SSL-END
+
+`;
+            }
+            //gzip
+            buildconf +=
+`    # 传输时默认开启gzip压缩
+    gzip on;
+    # 传输时会被压缩的类型（应当依据文件压缩效果添加）
+    gzip_types text/plain text/css application/javascript application/xml application/json;
+    # 反向代理时，启用压缩
+    gzip_proxied any;
+    # 传输时压缩等级，等级越高压缩消耗CPU越多，最高9级，通常5级就够了
+    gzip_comp_level 5;
+    # 传输时大小达到1k才压缩，压缩小内容无意义
+    gzip_min_length 1k;
+
+    # 响应头中的server仅返回nginx，不返回版本号。
+    server_tokens  off;
+
+    # 不限制客户端上传文件大小
+    client_max_body_size 0;
+
+    server {
+        # 这块是用于阻止跨域访问的。
+
+`;
+
+
+
+            //防跨域模块
+            if(conf_mergeports.checked){
+                buildconf+=
+`        # 代理后端口（可用多个listen监听多个端口）
+${buildconf_listendefault('','::',conf_webproxyport_input.value)}
+
+`;
+            }else{
+                buildconf+=
+`        # Daemon 端访问端口（可用多个listen监听多个端口）
+${buildconf_listendefault('','::',conf_daemonproxyport_input.value)}
+        # Web面板访问端口（可用多个listen监听多个端口）
+${buildconf_listendefault('','::',conf_webproxyport_input.value)}
+`;
+            }
+            buildconf+= 
+`        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+        server_name _ ;
+
+`;
+            if(conf_https.checked){
+                buildconf+=
+`        # 使用https访问时，直接断开连接，不返回证书。
+        # 如果你需要套DNS的CDN高防，则不应该删除此块，那样更容易导致证书泄露，攻击者扫到IP后直接将源IP与域名绑定在一起。
+        ssl_reject_handshake on;
+
+        # 使用HTTP访问时，断开连接。
+        error_page 497 =200 /;
+        location / {
+            return 444;
+        }
+    }
+`;
+            }else{
+                buildconf+=
+`        # 断开连接。
+        return 444;
+    }
+`;
+            }
+
+
+
+            //localhost块
+            buildconf+= 
+`    server {
+        # Daemon 端代理后的localhost访问HTTP协议端口（可用多个listen监听多个端口）
+${ifElseReturn(conf_listenipv6.checked, `        listen [::1]:${buildconf_daemonport} ;\n` ,'')}        listen 127.0.0.1:${buildconf_daemonport} ;
+
+        # 本地回环域名
+        server_name localhost ;
+
+        # 本地回环地址不占宽带，无需压缩。
+        gzip off;
+
+        # 开始反向代理
+        location / {
+            # 填写Daemon进程真正监听的端口号
+            proxy_pass http://localhost:${conf_daemonport_input.value} ;
+
+            # 一些请求头
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            # 增加响应头
+            add_header X-Cache $upstream_cache_status;
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
+        }
+    }
+`;
+
+
+            //Daemon监听公网
+            if(!(conf_mergeports.checked)){
+                buildconf+= 
+`    server {
+        # Daemon 端公网端口（可用多个listen监听多个端口）
+${buildconf_listen('','::',conf_daemonproxyport_input.value)}
+
+        # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        server_name ${conf_domain_input.value} ;
+
+${ifHttpsReturn(`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
+
+        # 使用HTTP访问时，断开连接。
+        error_page 497 =200 /444nginx;
+        location =/444nginx {
+            return 444;
+        }
+
+`)}        # 返回 robots.txt 以防止搜索引擎收录
+        location =/robots.txt{
+            default_type text/plain;
+            return 200 "User-agent: *\\nDisallow: /";
+        }
+
+        # 开始反向代理
+        location / {
+            # 填写Daemon进程真正监听的端口号
+            proxy_pass http://localhost:${conf_daemonport_input.value} ;
+
+            # 一些请求头
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            # 增加响应头
+            add_header X-Cache $upstream_cache_status;
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
+        }
+    }
+`;
+            }
+
+
+            //Web监听公网
+            buildconf+= 
+`    server {
+        # ${ifElseReturn(conf_mergeports.checked,"代理后","Web 端")}公网端口（可用多个listen监听多个端口）
+${buildconf_listen('','::',conf_webproxyport_input.value)}
+
+        # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        server_name domain.com *.domain.com ;
+
+${ifHttpsReturn(`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
+
+        # 使用HTTP访问时，断开连接。
+        error_page 497 =200 /444nginx;
+        location =/444nginx {
+            return 444;
+        }
+
+`)}        # 此处无需单独返回 robots.txt ，面板已包含该文件。
+
+        # 开始反向代理
+${ifElseReturn(conf_mergeports.checked, `        # 代理Daemon节点
+        location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
+            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+            proxy_pass http://localhost:${conf_daemonport_input.value} ;
+
+            # 一些请求头
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            # 增加响应头
+            add_header X-Cache $upstream_cache_status;
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
+        }
+        # 代理Web端
+`,'')}        location / {
+            # 填写Web面板端真正监听的端口号
+            proxy_pass http://localhost:${conf_webport_input.value} ;
+
+            # 一些请求头
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header REMOTE-HOST $remote_addr;
+            # 用于WebSocket的必要请求头
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            # 增加响应头
+            add_header X-Cache $upstream_cache_status;
+            # 禁止客户端缓存，防止客户端未更新内容
+            expires -1;
+        }
+    }
+`;
+
+            generate_result_text.value= buildconf;
+            generate_info.innerHTML ="生成成功";
+            generate_info.style= "color:green;";
+        }catch(e){
+            generate_info.innerHTML ="生成失败<br/>"+e;
+            generate_info.style= "color:red;";
+        }
+    }
+
+
+
+
+    //read uri
+    let params = (new URL(document.location)).searchParams;
+
+    function uriGetNotNull(inputstr){
+        return params.get(inputstr)!==null ;
+    }
+    function StrToBool(inputstr){
+        if(Number(inputstr) !==NaN) return !!Number(inputstr);
+        return !(inputstr.toLowerCase() =='false');
+    }
+
+    if(uriGetNotNull('https')){
+        conf_https.checked= StrToBool(params.get('https'));
+        clickconf_https();
+    }
+    if(uriGetNotNull('mergeports')){
+        conf_mergeports.checked= StrToBool(params.get('mergeports'));
+        clickconf_mergeports();
+    }
+    if(uriGetNotNull('listenipv6')){
+        conf_listenipv6.checked= StrToBool(params.get('listenipv6'));
+        clickconf_listenipv6();
+    }
+
+    if(uriGetNotNull('webport')) conf_webport_input.value= params.get('webport');
+    if(uriGetNotNull('webproxyport')) conf_webproxyport_input.value= params.get('webproxyport');
+    if(uriGetNotNull('daemonport')) conf_daemonport_input.value= params.get('daemonport');
+    if(uriGetNotNull('daemonproxyport')) conf_daemonproxyport_input.value= params.get('daemonproxyport');
+    if(uriGetNotNull('domain')) conf_domain_input.value= params.get('domain');
+    if(uriGetNotNull('sslcertpath')) conf_sslcertpath_input.value= params.get('sslcertpath');
+    if(uriGetNotNull('sslkeypath')) conf_sslkeypath_input.value= params.get('sslkeypath');
+
+    let autogenerate= false;
+    if(uriGetNotNull('autogenerate')) autogenerate= StrToBool(params.get('autogenerate'));
+    if(autogenerate) generate_conf();
+
+</script>
