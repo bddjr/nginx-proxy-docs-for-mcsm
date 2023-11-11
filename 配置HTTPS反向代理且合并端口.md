@@ -271,17 +271,17 @@ https://domain.com:12333/
 有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
 
 ### 想要分享该文档？  
-gitpage网页：  
+Gitee 仓库：  
+```
+https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTPS反向代理且合并端口.md
+```
+Github 仓库：  
+```
+https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTPS反向代理且合并端口.md
+```
+Github Page + Cloudflare CDN 网页：  
 ```
 https://proxyformcsm.bddjr.com/配置HTTPS反向代理且合并端口
-```
-github仓库短链接：  
-```
-https://q8p.cc/proxyformcsm/配置HTTPS反向代理且合并端口.md
-```
-gitee镜像仓库短链接：  
-```
-https://q8p.cc/gtproxyformcsm/配置HTTPS反向代理且合并端口.md
 ```
 
 ***

@@ -326,7 +326,7 @@ function generate_conf(){
         //开始进行字符串连接
         const buildconf= [];
         //ssl证书
-        if(ConfS.https()){
+        if (ConfS.https()){
             buildconf.push(
 `    # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
     #SSL-START
@@ -335,7 +335,7 @@ function generate_conf(){
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2; # 仅允许使用TLSv1.2建立连接
+    ssl_protocols TLSv1.2 TLSv1.3; # 仅允许使用 TLSv1.2 或 TLSv1.3 建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
