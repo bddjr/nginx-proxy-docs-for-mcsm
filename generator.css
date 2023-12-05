@@ -1,10 +1,5 @@
-@font-face{
-    font-family: 'HarmonyOS-Sans-SC-Regular';
-    src: url('./HarmonyOS_Sans_Regular.woff2');
-    font-display: fallback;
-}
 *{
-    font-family: 'HarmonyOS-Sans-SC-Regular';
+    font-family: 'system-ui';
 }
 
 input{

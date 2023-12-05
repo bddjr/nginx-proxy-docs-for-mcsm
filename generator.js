@@ -1,5 +1,4 @@
 "use strict";
-// @ts-check
 
 //my tools
 /**@type {boolean}*/
