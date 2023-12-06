@@ -240,4 +240,4 @@ https://proxyformcsm.bddjr.com/配置HTTP反向代理且合并端口
 [<=点此返回README](README.md)
 
 > 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
-> Made by [bddjr](https://bddjr.cn)
+> Made by <a href="https://bddjr.cn" target="_blank" rel="noopener">bddjr</a>
