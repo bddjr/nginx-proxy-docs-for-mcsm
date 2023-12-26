@@ -44,6 +44,8 @@ location /path/ {}                  # 匹配单个路径开头
 > Web面板 ***9.8.0***  
 > 守护进程 ***3.3.0***  
 
+如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
+
 ```nginx
 # For more information on configuration, see:
 #   * Official English Documentation: http://nginx.org/en/docs/
@@ -136,6 +138,7 @@ http {
         listen 12333 ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
         # 此处无需单独返回 robots.txt ，面板已包含该文件。

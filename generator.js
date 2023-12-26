@@ -451,6 +451,7 @@ ${(ConfS.listenipv6()) ? (`        listen [::1]:${buildconf_daemonport} ;\n`) : 
 ${buildconf_listen('','::',ConfS.daemonproxyport())}
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name ${ConfS.domain()} ;
 
 ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
@@ -497,6 +498,7 @@ ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并�
 ${buildconf_listen('','::',ConfS.webproxyport())}
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
 ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。

@@ -19,6 +19,10 @@
 > <a href="https://www.cersign.com/free-ssl-certificate.html" target="_blank">https://www.cersign.com/free-ssl-certificate.html</a>  
 > <a href="https://www.mianfeissl.com/" target="_blank">https://www.mianfeissl.com/</a>  
 
+如果您正在使用大厂IDC，遇到非通用端口号（不是80也不是443）仍然不能使用域名建立HTTPS连接的情况，可以尝试直接使用公网IP建立HTTPS连接。[\[参考反馈\]](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/issues/12)  
+可在下方网址填入公网IP，使用HTTP验证的方式获取IP证书。  
+> <a href="https://zerossl.com/" target="_blank">https://zerossl.com/</a>  
+
 ### ⚠别泄露私钥！私钥泄露会导致HTTPS形同虚设！
 
 <br />
@@ -33,6 +37,8 @@
 > 配置文件目录 ***/etc/nginx/nginx.conf***  
 > Web面板 ***9.8.0***  
 > 守护进程 ***3.3.0***  
+
+如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
 
 ```nginx
 # For more information on configuration, see:
@@ -148,6 +154,7 @@ http {
         listen 12444 ssl ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
         # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
@@ -188,6 +195,7 @@ http {
         listen 12333 ssl ;
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
+        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
         
         # 使用HTTP访问时，断开连接。
