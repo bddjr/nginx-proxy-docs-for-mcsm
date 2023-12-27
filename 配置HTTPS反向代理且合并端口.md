@@ -38,7 +38,7 @@ location /path/ {}                  # 匹配单个路径开头
 > <a href="https://www.cersign.com/free-ssl-certificate.html" target="_blank">https://www.cersign.com/free-ssl-certificate.html</a>  
 > <a href="https://www.mianfeissl.com/" target="_blank">https://www.mianfeissl.com/</a>  
 
-如果您正在使用大厂IDC，遇到非通用端口号（不是80也不是443）仍然不能使用域名建立HTTPS连接的情况，可以尝试直接使用公网IP建立HTTPS连接。[\[此处参考了这个反馈\]](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/issues/12)  
+如果您正在使用大厂IDC（例如阿里云、腾讯云），遇到非通用端口号（不是80也不是443）仍然不能使用域名建立HTTPS连接的情况，可以尝试直接使用公网IP建立HTTPS连接。[\[参考腾讯云用户反馈\]](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/issues/12)  
 可在下方网址填入公网IP，使用HTTP验证的方式获取IP证书。  
 > <a href="https://zerossl.com/" target="_blank">https://zerossl.com/</a>  
 
