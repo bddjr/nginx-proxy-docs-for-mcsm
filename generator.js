@@ -294,16 +294,18 @@ function generate_conf(){
              * @param {String} ipv4
              * @param {String} ipv6
              * @param {String|Number} port
+             * @param {boolean} usessl 
              * @return {String}
              * 如果是http，那么后面什么都不填。
              * 如果是https，那么后面填ssl。
             */
-            function buildconf_listen(ipv4,ipv6,port){
-                return `${
-                    ConfS.listenipv6()
-                    ? `        listen [${ipv6}]:${port} ${buildconf_sslORnone};\n`
-                    :''
-                }        listen ${ipv4+port} ${buildconf_sslORnone};`;
+            function buildconf_listen(ipv4,ipv6,port,usessl=true){
+                const sslORnone = usessl ? buildconf_sslORnone : ''
+                let i = `        listen ${ipv4+port} ${sslORnone};`
+                if (ConfS.listenipv6()) {
+                    i += `\n        listen [${ipv6}]:${port} ${sslORnone}; #IPv6`
+                }
+                return i
             }
             /**
              * @param {String} ipv4
@@ -314,11 +316,11 @@ function generate_conf(){
              * 如果是https，那么后面填ssl。
             */
             function buildconf_listendefault(ipv4,ipv6,port){
-                return `${
-                    ConfS.listenipv6()
-                    ? `        listen [${ipv6}]:${port} ${buildconf_sslORdefault} ;\n`
-                    :''
-                }        listen ${ipv4+port} ${buildconf_sslORdefault} ;`;
+                let i = `        listen ${ipv4+port} ${buildconf_sslORdefault};`
+                if (ConfS.listenipv6()) {
+                    i += `\n        listen [${ipv6}]:${port} ${buildconf_sslORdefault}; #IPv6`
+                }
+                return i
             }
 
 
@@ -334,7 +336,7 @@ function generate_conf(){
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # 仅允许使用 TLSv1.2 或 TLSv1.3 建立连接
+    ssl_protocols TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
@@ -413,7 +415,7 @@ ${buildconf_listendefault('','::',ConfS.webproxyport())}
         buildconf.push(
 `    server {
         # Daemon 端代理后的localhost访问HTTP协议端口（可用多个listen监听多个端口）
-${(ConfS.listenipv6()) ? (`        listen [::1]:${buildconf_daemonport} ;\n`) : ''}        listen 127.0.0.1:${buildconf_daemonport} ;
+${buildconf_listen('127.0.0.1:','::1',buildconf_daemonport,false)}
 
         # 本地回环域名
         server_name localhost ;

@@ -80,7 +80,6 @@ events {
 #=======================================================================
 # 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
-#    只需监听IPv4的端口
 #    Daemon端真正监听的端口：24444
 #    Web面板端真正监听的端口：23333
 #    代理后端口：12333
@@ -96,7 +95,7 @@ http {
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # 仅允许使用 TLSv1.2 或 TLSv1.3 建立连接
+    ssl_protocols TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
@@ -122,6 +121,7 @@ http {
 
         # 代理后端口（可用多个listen监听多个端口）
         listen 12333 ssl ;
+        listen [::]:12333 ssl ; #IPv6
 
         # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         server_name _ ;
@@ -139,6 +139,7 @@ http {
     server {
         # Daemon 端代理后localhost访问HTTP协议端口（可用多个listen监听多个端口）
         listen 127.0.0.1:12333 ;
+        listen [::1]:12333 ; #IPv6
 
         # 本地回环域名
         server_name localhost ;
@@ -169,6 +170,7 @@ http {
     server {
         # 代理后公网HTTPS端口（可用多个listen监听多个端口）
         listen 12333 ssl ;
+        listen [::]:12333 ssl ; #IPv6
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
