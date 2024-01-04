@@ -1,12 +1,10 @@
 [<=点此返回README](README.md)
 
 ***
-# 配置 HTTPS 反向代理且合并Web面板与守护节点的端口
+# 为同一主机的443端口配置HTTPS反向代理
 
-> 合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
 > 本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
-> 若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
-> 若您需要使用443端口，建议参考 [为同一主机的443端口配置HTTPS反向代理](为同一主机的443端口配置HTTPS反向代理.md) 。  
+> ⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
 > 本文**不是**MCSManager官方开发人员写的。  
 
 注释：  
@@ -38,65 +36,32 @@ location /path/ {}                  # 匹配单个路径开头
 可以在免费SSL的网站上，为自己的域名生成90天免费证书（可无限续签），用于建立安全的HTTPS连接。  
 > <a href="https://www.cersign.com/free-ssl-certificate.html" target="_blank">https://www.cersign.com/free-ssl-certificate.html</a>  
 > <a href="https://www.mianfeissl.com/" target="_blank">https://www.mianfeissl.com/</a>  
-
-如果您正在使用大厂IDC（例如阿里云、腾讯云），遇到非通用端口号（不是80也不是443）仍然不能使用域名建立HTTPS连接的情况，可以尝试直接使用公网IP建立HTTPS连接。[\[参考腾讯云用户反馈\]](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/issues/12)  
-可在下方网址填入公网IP，使用HTTP验证的方式获取IP证书。  
 > <a href="https://zerossl.com/" target="_blank">https://zerossl.com/</a>  
 
 ### ⚠别泄露私钥！私钥泄露会导致HTTPS形同虚设！
+
+⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
 
 <br />
 
 ## 配置反向代理
 
-> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=1" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
+如果你直接使用原生nginx配置，请编译安装最新版nginx，然后替换 `nginx.conf` 里的 `http{}` 。  
+如果你使用面板搭建网站（例如宝塔、1panel），请自行截取相关 `server{}` 块修改（除了阻止跨域访问的）。  
 
-以下示范内容的测试环境：  
-> ***CentOS*** 操作系统  
-> 使用yum安装的Nginx ***1.20.1***  
-> 配置文件目录 ***/etc/nginx/nginx.conf***  
-> Web面板 ***9.8.0***  
-> 守护进程 ***3.3.0***  
-
-如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
+假设：
+> 使用 ***mcsm.example.com*** 连接面板与守护节点  
 
 ```nginx
-# For more information on configuration, see:
-#   * Official English Documentation: http://nginx.org/en/docs/
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
-
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
-
-# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
-include /usr/share/nginx/modules/*.conf;
-
-events {
-    worker_connections 1024;
-}
-
-# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中有效即可。
-#=======================================================================
-# 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
-# 假设：
-#    Daemon端真正监听的端口：24444
-#    Web面板端真正监听的端口：23333
-#    代理后端口：12333
-#    ssl证书目录：/etc/nginx/ssl/domain.com.crt
-#    ssl证书私钥目录：/etc/nginx/ssl/domain.com_ECC.key
-#    需要允许主域名 domain.com 及其任意子域名访问
-
 http {
     # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
     #SSL-START
-    ssl_certificate "/etc/nginx/ssl/domain.com.crt";
-    ssl_certificate_key "/etc/nginx/ssl/domain.com_ECC.key";
+    ssl_certificate "/etc/nginx/ssl/example.com.crt";
+    ssl_certificate_key "/etc/nginx/ssl/example.com_ECC.key";
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接
+    ssl_protocols TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # 允许使用这些加密方式建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
@@ -120,9 +85,13 @@ http {
     server {
         # 这块是用于阻止跨域访问的。
 
-        # 代理后端口（可用多个listen监听多个端口）
-        listen 12333 ssl ;
-        listen [::]:12333 ssl ; #IPv6
+        # 代理后HTTPS端口
+        listen 443 ssl ;
+        listen [::]:443 ssl ; #IPv6
+
+        # 代理后HTTP端口
+        listen 80 default ;
+        listen [::]:80 default ; #IPv6
 
         # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         server_name _ ;
@@ -138,13 +107,13 @@ http {
         }
     }
     server {
-        # Daemon 端代理后localhost访问HTTP协议端口（可用多个listen监听多个端口）
-        listen 127.0.0.1:12333 ;
-        listen [::1]:12333 ; #IPv6
+        # Daemon 端代理后localhost访问HTTP协议端口
+        listen 127.0.0.1:443 ;
+        listen [::1]:443 ; #IPv6
 
         # 本地回环域名
         server_name localhost ;
-        
+
         # 本地回环地址不占宽带，无需压缩。
         gzip off;
 
@@ -169,18 +138,21 @@ http {
         }
     }
     server {
-        # 代理后公网HTTPS端口（可用多个listen监听多个端口）
-        listen 12333 ssl ;
-        listen [::]:12333 ssl ; #IPv6
+        # 代理后公网HTTPS端口
+        listen 443 ssl ;
+        listen [::]:443 ssl ; #IPv6
 
-        # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
-        # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
-        server_name domain.com *.domain.com ;
+        # 代理后HTTP端口
+        listen 80 default ;
+        listen [::]:80 default ; #IPv6
 
-        # 使用HTTP访问时，断开连接。
-        error_page 497 =200 /444nginx;
-        location =/444nginx {
-            return 444;
+        # 你访问时使用的域名
+        server_name mcsm.example.com ;
+
+        # 使用HTTP访问时，重定向到HTTPS。
+        error_page 497 https://$host$request_uri; 
+        if ($scheme = "http"){
+            return 302 https://$host$request_uri;
         }
 
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
@@ -226,7 +198,8 @@ http {
 }
 ```
 
-**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
+**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**  
+如果你使用面板搭建网站，请在面板里重载，而不是使用这条命令。  
 ```bash
 systemctl restart nginx
 ```
@@ -235,34 +208,31 @@ systemctl restart nginx
 
 ## 客户端访问面板
 
-依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启）或 **TLSv1.3** 。  
-假如域名是 ***domain.com*** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
-https://domain.com:12333/
+https://mcsm.example.com/
 ```
 
 **⚠请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。**  
+⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
 
 <br />
 
 ## 连接守护进程
 
 ### 本地回环地址  
-> 在**节点管理**中，填写地址为 ***localhost*** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
+> 在**节点管理**中，填写地址为 ***localhost*** ，端口填写443，然后单击右侧的 **连接** 或 **更新** 即可。  
 > **⚠不能将地址填写为 *ws://localhost* ！这会导致浏览器尝试使用HTTP协议连接！**  
 > 
-> ![connect_default_daemon_12333.webp](images/connect_default_daemon_12333.webp)
+> ![connect_daemon_443.webp](images/connect_daemon_443.webp)
 
-### 远程地址  
-> 在**节点管理**中，将原有的地址前面添加 ***wss://*** 协议头，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
-> 例如以下两种原地址：
-> > domain.com  
-> > ws://domain.com  
-> 
-> 修改后：
-> > wss://domain.com  
-> 
-> ![connect_wss_daemon_12333.webp](images/connect_wss_daemon_12333.webp)
+如果回环地址出现了冲突，请尝试将相关的 `localhost` 修改为 `127.0.0.0/24` 段的其它IPv4 ，例如 `127.0.0.244` 。（[参考mcsm9的前端相关源码](https://github.com/MCSManager/UI/blob/master/src/app/service/protocol.js#L131)，未验证有效性）
+```nginx
+        # Daemon 端代理后localhost访问HTTP协议端口
+        listen 127.0.0.244:443 ;
+
+        # 本地回环域名
+        server_name 127.0.0.244 ;
+```
 
 <br />
 
@@ -283,15 +253,15 @@ https://domain.com:12333/
 ### 想要分享该文档？  
 Gitee 仓库：  
 ```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTPS反向代理且合并端口.md
+https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/为同一主机的443端口配置HTTPS反向代理.md
 ```
 Github 仓库：  
 ```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTPS反向代理且合并端口.md
+https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/为同一主机的443端口配置HTTPS反向代理.md
 ```
 Github Page + Cloudflare CDN 网页：  
 ```
-https://proxyformcsm.bddjr.com/配置HTTPS反向代理且合并端口
+https://proxyformcsm.bddjr.com/为同一主机的443端口配置HTTPS反向代理
 ```
 
 ***

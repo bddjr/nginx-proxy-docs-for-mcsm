@@ -4,7 +4,7 @@
 > [配置HTTP反向代理](配置HTTP反向代理.md)  
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  
 > [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md)  
-> [通过不同域名实现与网站或其它面板合并](通过不同域名实现与网站或其它面板合并.md)  
+> [为同一主机的443端口配置HTTPS反向代理](为同一主机的443端口配置HTTPS反向代理.md)
 >   
 > ***  
 > <a href="https://proxyformcsm.bddjr.com/generator.html" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>

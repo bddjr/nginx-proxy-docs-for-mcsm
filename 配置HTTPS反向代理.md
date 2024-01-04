@@ -66,14 +66,14 @@ events {
 #    Web面板端真正监听的端口：23333
 #    Web面板端代理后端口：12333
 #    ssl证书目录：/etc/nginx/ssl/domain.com.crt
-#    ssl证书私钥目录：/etc/nginx/ssl/domain.com_rsa.key
+#    ssl证书私钥目录：/etc/nginx/ssl/domain.com_ECC.key
 #    需要允许主域名 domain.com 及其所有子域名访问
 
 http {
     # 配置SSL证书。以下监听的ssl端口将默认使用该证书。
     #SSL-START
     ssl_certificate "/etc/nginx/ssl/domain.com.crt";
-    ssl_certificate_key "/etc/nginx/ssl/domain.com_rsa.key";
+    ssl_certificate_key "/etc/nginx/ssl/domain.com_ECC.key";
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
