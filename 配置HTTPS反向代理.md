@@ -29,7 +29,7 @@
 
 ## 配置反向代理
 
-> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
+> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=0" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
 
 以下示范内容的测试环境：  
 > ***CentOS*** 操作系统  
