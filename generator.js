@@ -618,13 +618,14 @@ window.onload= /**@return {void}*/()=>{
 
 /**@return {void}*/
 function generate_result_text_resize(){
-    let height= window.innerHeight;
+    let height= window.innerHeight - 160;
     myLog(
 `generate_result_text_resize
 height: ${height}`
     );
+    if (height < 120) height = 120;
     // @ts-ignore
-    generate_result_text.style.height= height - 160;
+    generate_result_text.style.height= height;
 }
 
 generate_result_text_resize();
