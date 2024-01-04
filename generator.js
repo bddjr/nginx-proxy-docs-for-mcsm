@@ -23,7 +23,8 @@ function StrToBool(inputstr){
     if( (typeof inputstr)!=="string" )
         return !!inputstr;
     //如果转成数后是NaN，就识别字符串是否在列表内，输出相反值
-    if(Number.isNaN(+inputstr)){
+    let inputnum = +inputstr;
+    if(Number.isNaN(inputnum)){
         return !(
             StrToBool_falseStrings.includes(
                 inputstr.trim().toLowerCase()
@@ -31,7 +32,7 @@ function StrToBool(inputstr){
         );
     }
     //转成数再转布尔值
-    return !!(+inputstr);
+    return !!inputnum;
 }
 
 
@@ -575,7 +576,7 @@ if( location.search !=='' ){
     click_generate_url.innerHTML= "重新生成URL参数";
 
     // @ts-ignore
-    let params = (new URL(document.location)).searchParams;
+    let params = new URLSearchParams(location.search);
 
     for(let i of ConfS.ConfBooleanNameList){
         let j= params.get(i);
