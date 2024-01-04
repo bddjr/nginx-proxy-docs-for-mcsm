@@ -33,7 +33,5 @@ https://proxyformcsm.bddjr.com
 <https://docs.mcsmanager.com/#/zh-cn/>  
 
 ***
-> 写合并端口的文章是因为我看到这个issue：<https://github.com/MCSManager/MCSManager/issues/826>
->
 > 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by <a href="https://bddjr.cn" target="_blank" rel="noopener">bddjr</a>
