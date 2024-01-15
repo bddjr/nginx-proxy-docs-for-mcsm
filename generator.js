@@ -457,15 +457,7 @@ ${buildconf_listen('','::',ConfS.daemonproxyport())}
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name ${ConfS.domain()} ;
 
-${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
-
-        # 使用HTTP访问时，断开连接。
-        error_page 497 =200 /444nginx;
-        location =/444nginx {
-            return 444;
-        }
-
-`:''}        # 返回 robots.txt 以防止搜索引擎收录
+        # 返回 robots.txt 以防止搜索引擎收录
         location =/robots.txt{
             default_type text/plain;
             return 200 "User-agent: *\\nDisallow: /";
@@ -506,10 +498,12 @@ ${buildconf_listen('','::',ConfS.webproxyport())}
 
 ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
 
-        # 使用HTTP访问时，断开连接。
-        error_page 497 =200 /444nginx;
-        location =/444nginx {
-            return 444;
+        # HTTP跳转到HTTPS
+        error_page 497 =200 @HttpToHttps;
+        location @HttpToHttps {
+            # 此处使用前端script跳转，防止端口号错乱
+            default_type text/html;
+            return 200 "Redirecting to HTTPS <script>location.protocol='https:'</script> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"robots\" content=\"noindex, nofollow\">";
         }
 
 `:''}        # 此处无需单独返回 robots.txt ，面板已包含该文件。
@@ -548,6 +542,8 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
+${ConfS.https() ?`            # 仅允许客户端使用HTTPS发送Cookie
+            proxy_cookie_flags ~ secure;`:''}
             # 禁止客户端缓存，防止客户端未更新内容
             expires -1;
         }

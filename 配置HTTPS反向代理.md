@@ -33,32 +33,15 @@
 > <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=0" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
 
 以下示范内容的测试环境：  
-> ***CentOS*** 操作系统  
-> 使用yum安装的Nginx ***1.20.1***  
-> 配置文件目录 ***/etc/nginx/nginx.conf***  
-> Web面板 ***9.8.0***  
-> 守护进程 ***3.3.0***  
+> ***Ubuntu 22.04*** 操作系统  
+> 编译安装的Nginx ***1.24.0***  
+> Web面板 ***9.9.0***  
+> 守护进程 ***3.4.0***  
 
 如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
 
 ```nginx
-# For more information on configuration, see:
-#   * Official English Documentation: http://nginx.org/en/docs/
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
-
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
-
-# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
-include /usr/share/nginx/modules/*.conf;
-
-events {
-    worker_connections 1024;
-}
-
-# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中有效即可。
+# 以下http块才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 #=======================================================================
 # 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
@@ -161,14 +144,6 @@ http {
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
-        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
-
-        # 使用HTTP访问时，断开连接。
-        error_page 497 =200 /444nginx;
-        location =/444nginx {
-            return 444;
-        }
-        
         # 返回 robots.txt 以防止搜索引擎收录
         location =/robots.txt{
             default_type text/plain;
@@ -203,10 +178,12 @@ http {
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
         
-        # 使用HTTP访问时，断开连接。
-        error_page 497 =200 /444nginx;
-        location =/444nginx {
-            return 444;
+        # HTTP跳转到HTTPS
+        error_page 497 =200 @HttpToHttps;
+        location @HttpToHttps {
+            # 此处使用前端script跳转，防止端口号错乱
+            default_type text/html;
+            return 200 "Redirecting to HTTPS <script>location.protocol='https:'</script> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"robots\" content=\"noindex, nofollow\">";
         }
 
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
@@ -226,6 +203,8 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
+            # 仅允许客户端使用HTTPS发送Cookie
+            proxy_cookie_flags ~ secure;
             # 禁止客户端缓存，防止客户端未更新内容
             expires -1;
         }
