@@ -230,15 +230,15 @@ http://domain.com:12333/
 ### 想要分享该文档？  
 Gitee 仓库：  
 ```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTP反向代理.md
+https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
 Github 仓库：  
 ```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/配置HTTP反向代理.md
+https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
 Github Page + Cloudflare CDN 网页：  
 ```
-https://proxyformcsm.bddjr.com/配置HTTP反向代理
+https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
 ```
 
 ***

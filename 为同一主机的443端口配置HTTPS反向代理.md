@@ -255,15 +255,15 @@ https://mcsm.example.com/
 ### 想要分享该文档？  
 Gitee 仓库：  
 ```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/为同一主机的443端口配置HTTPS反向代理.md
+https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
 Github 仓库：  
 ```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/为同一主机的443端口配置HTTPS反向代理.md
+https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
 Github Page + Cloudflare CDN 网页：  
 ```
-https://proxyformcsm.bddjr.com/为同一主机的443端口配置HTTPS反向代理
+https://proxyformcsm.bddjr.com/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
 ```
 
 ***
