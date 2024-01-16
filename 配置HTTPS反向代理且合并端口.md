@@ -159,12 +159,7 @@ http {
         server_name domain.com *.domain.com ;
 
         # HTTP跳转到HTTPS
-        error_page 497 =200 @HttpToHttps;
-        location @HttpToHttps {
-            # 此处使用前端script跳转，防止端口号错乱
-            default_type text/html;
-            return 200 "Redirecting to HTTPS <script>location.protocol='https:'</script> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"robots\" content=\"noindex, nofollow\">";
-        }
+        error_page 497 https://$host:$server_port$request_uri;
 
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
@@ -204,6 +199,8 @@ http {
             add_header X-Cache $upstream_cache_status;
             # 仅允许客户端使用HTTPS发送Cookie
             proxy_cookie_flags ~ secure;
+            # 客户端访问后1年内HTTP自动跳转HTTPS（清浏览器缓存后失效）
+            add_header Strict-Transport-Security "max-age=31536000"; 
             # 禁止客户端缓存，防止客户端未更新内容
             expires -1;
         }
@@ -211,9 +208,9 @@ http {
 }
 ```
 
-**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
+**配置完成后，重载 Nginx 配置（以下命令用于Linux操作系统）**
 ```bash
-systemctl restart nginx
+systemctl reload nginx
 ```
 
 <br />
@@ -227,6 +224,7 @@ https://domain.com:12333/
 ```
 
 **⚠请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。**  
+⚠如果使用NAT端口，请确保内外端口号一致。  
 
 <br />
 

@@ -149,7 +149,7 @@ http {
         # 你访问时使用的域名
         server_name mcsm.example.com ;
 
-        # 使用HTTP访问时，重定向到HTTPS。
+        # HTTP跳转到HTTPS
         error_page 497 https://$host$request_uri; 
         if ($scheme = "http"){
             return 302 https://$host$request_uri;

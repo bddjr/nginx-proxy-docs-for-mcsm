@@ -186,9 +186,9 @@ http {
 }
 ```
 
-**配置完成后，重启 Nginx 服务（以下命令用于Linux操作系统）**
+**配置完成后，重载 Nginx 配置（以下命令用于Linux操作系统）**
 ```bash
-systemctl restart nginx
+systemctl reload nginx
 ```
 
 <br />
@@ -201,6 +201,7 @@ http://domain.com:12333/
 ```
 
 **⚠请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。**  
+⚠如果使用NAT端口，请确保内外端口号一致。  
 
 <br />
 

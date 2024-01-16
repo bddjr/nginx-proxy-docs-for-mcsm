@@ -499,12 +499,7 @@ ${buildconf_listen('','::',ConfS.webproxyport())}
 ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
 
         # HTTP跳转到HTTPS
-        error_page 497 =200 @HttpToHttps;
-        location @HttpToHttps {
-            # 此处使用前端script跳转，防止端口号错乱
-            default_type text/html;
-            return 200 "Redirecting to HTTPS <script>location.protocol='https:'</script> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"robots\" content=\"noindex, nofollow\">";
-        }
+        error_page 497 https://$host:$server_port$request_uri;
 
 `:''}        # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
@@ -543,7 +538,9 @@ ${ConfS.mergeports() ?`        # 代理Daemon节点
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
 ${ConfS.https() ?`            # 仅允许客户端使用HTTPS发送Cookie
-            proxy_cookie_flags ~ secure;`:''}
+            proxy_cookie_flags ~ secure;
+            # 客户端访问后1年内HTTP自动跳转HTTPS（清浏览器缓存后失效）
+            add_header Strict-Transport-Security "max-age=31536000"; `:''}
             # 禁止客户端缓存，防止客户端未更新内容
             expires -1;
         }
