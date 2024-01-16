@@ -228,15 +228,15 @@ http://domain.com:12333/
 有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
 
 ### 想要分享该文档？  
-Gitee 仓库：  
+[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
 ```
 https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
-Github 仓库：  
+[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
-Github Page + Cloudflare CDN 网页：  
+[Github Page + Cloudflare CDN 网页：](https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html)  
 ```
 https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
 ```

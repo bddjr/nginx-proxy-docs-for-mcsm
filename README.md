@@ -14,15 +14,15 @@
 有错误的内容或改进的建议？或者没弄懂怎么配置？<a href="../../issues/new" target="_blank">点此编辑并提交issue</a>。  
 
 ### 想要分享该文档？  
-Gitee 仓库：  
+[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md)  
 ```
 https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md
 ```
-Github 仓库：  
+[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md)  
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md
 ```
-Github Page + Cloudflare CDN 网页：  
+[Github Page + Cloudflare CDN 网页：](https://proxyformcsm.bddjr.com)  
 ```
 https://proxyformcsm.bddjr.com
 ```

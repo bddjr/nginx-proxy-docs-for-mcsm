@@ -4,7 +4,7 @@
 # 为同一主机的443端口配置HTTPS反向代理
 
 > 本文基于 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 进行修改。  
-> ⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
+> ⚠如果您正在使用中国内地的主机，必须先对您的根域名进行ICP备案。  
 > 本文**不是**MCSManager官方开发人员写的。  
 
 注释：  
@@ -40,7 +40,7 @@ location /path/ {}                  # 匹配单个路径开头
 
 ### ⚠别泄露私钥！私钥泄露会导致HTTPS形同虚设！
 
-⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
+⚠如果您正在使用中国内地的主机，必须先对您的根域名进行ICP备案。  
 
 <br />
 
@@ -215,7 +215,7 @@ https://mcsm.example.com/
 ```
 
 **⚠请确保反向代理后的端口都通过了服务器的防火墙，否则您是无法正常访问的。**  
-⚠如果您正在使用中国大陆管辖区境内的主机，必须先对您的根域名进行ICP备案。  
+⚠如果您正在使用中国内地的主机，必须先对您的根域名进行ICP备案。  
 
 <br />
 
@@ -253,15 +253,15 @@ https://mcsm.example.com/
 有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
 
 ### 想要分享该文档？  
-Gitee 仓库：  
+[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
 ```
 https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
-Github 仓库：  
+[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
 ```
-Github Page + Cloudflare CDN 网页：  
+[Github Page + Cloudflare CDN 网页：](https://proxyformcsm.bddjr.com/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html)  
 ```
 https://proxyformcsm.bddjr.com/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
 ```
