@@ -426,7 +426,7 @@ ${buildconf_listen('127.0.0.1:','::1',buildconf_daemonport,false)}
 
         # 开始反向代理
         location / {
-            # 填写Daemon进程真正监听的端口号
+            # 填写Daemon端真正监听的端口号
             proxy_pass http://localhost:${ConfS.daemonport()} ;
 
             # 一些请求头
@@ -463,7 +463,7 @@ ${buildconf_listen('','::',ConfS.daemonproxyport())}
 
         # 开始反向代理
         location / {
-            # 填写Daemon进程真正监听的端口号
+            # 填写Daemon端真正监听的端口号
             proxy_pass http://localhost:${ConfS.daemonport()} ;
 
             # 一些请求头
@@ -500,9 +500,9 @@ ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并�
 `:''}        # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
-${ConfS.mergeports() ?`        # 代理Daemon节点
+${ConfS.mergeports() ?`        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
-            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+            # 填写Daemon端真正监听的端口号，后面不能加斜杠！
             proxy_pass http://localhost:${ConfS.daemonport()} ;
 
             # 一些请求头

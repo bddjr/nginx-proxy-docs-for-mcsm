@@ -3,21 +3,17 @@
 ***
 # 配置 HTTP 反向代理且合并Web面板与守护节点的端口
 
-> 合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
+> 合并端口通常仅用于Web面板与Daemon端在同一主机的情况。  
 > 本文基于 [配置HTTP反向代理](配置HTTP反向代理.md) 进行修改。  
 > 若您需要 HTTPS 反向代理且合并端口，请参考 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。  
 > 本文**不是**MCSManager官方开发人员写的。  
 > ⚠ 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容。
 
-注释：  
-> 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
-> 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
-
 <br />
 
 ## 合并端口的原理
 
-MCSManager访问守护进程的路径开头（与Web面板路径开头不冲突）：  
+MCSManager访问Daemon端的路径开头（与Web面板路径开头不冲突）：  
 > /socket.io/  
 > /upload/  
 > /download/  
@@ -42,30 +38,12 @@ location /path/ {}                  # 匹配单个路径开头
 > 使用yum安装的Nginx ***1.20.1***  
 > 配置文件目录 ***/etc/nginx/nginx.conf***  
 > Web面板 ***9.8.0***  
-> 守护进程 ***3.3.0***  
+> Daemon端 ***3.3.0***  
 
 如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
 
 ```nginx
-# For more information on configuration, see:
-#   * Official English Documentation: http://nginx.org/en/docs/
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
-
-user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
-
-# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
-include /usr/share/nginx/modules/*.conf;
-
-events {
-    worker_connections 1024;
-}
-
-# 以上内容可能已经包含在nginx.conf里，确保目录在您的操作系统中有效即可。
-#=======================================================================
-# 以下才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
+# 以下http块才是需要理解并修改的内容，请依据自己的需求以及运行环境进行更改。
 # 假设：
 #    Daemon端真正监听的端口：24444
 #    Web面板端真正监听的端口：23333
@@ -115,9 +93,9 @@ http {
         gzip off;
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location / {
-            # 填写Daemon进程真正监听的端口号
+            # 填写Daemon端真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -144,9 +122,9 @@ http {
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
-            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+            # 填写Daemon端真正监听的端口号，后面不能加斜杠！
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -199,22 +177,12 @@ http://domain.com:12333/
 
 <br />
 
-## 连接守护进程
+## 连接Daemon端
 
 假如Web面板后台通过 ***localhost*** 域名连接节点，那么在**节点管理**中填写地址为 ***localhost*** 或 ***ws://localhost*** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
 假如需要填远程地址 ***domain.com*** ，那么将 ***localhost*** 改为 ***domain.com*** 即可。
 
 ![connect_default_daemon_12333.webp](images/connect_default_daemon_12333.webp)
-
-<br />
-
-## 恭喜你，基础配置完成了！
-
-为了安全，您应当在防火墙中，禁止通过以下端口访问：
-> Web面板端真正监听的端口（例如23333）  
-> Daemon端真正监听的端口（例如24444） 
-
-（本地回环地址不受防火墙限制）
 
 <br />
 

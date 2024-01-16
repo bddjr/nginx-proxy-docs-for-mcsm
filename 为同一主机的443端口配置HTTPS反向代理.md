@@ -7,15 +7,11 @@
 > ⚠如果您正在使用中国内地的主机，必须先对您的根域名进行ICP备案。  
 > 本文**不是**MCSManager官方开发人员写的。  
 
-注释：  
-> 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
-> 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
-
 <br />
 
 ## 合并端口的原理
 
-MCSManager访问守护进程的路径开头（与Web面板路径开头不冲突）：  
+MCSManager访问Daemon端的路径开头（与Web面板路径开头不冲突）：  
 > /socket.io/  
 > /upload/  
 > /download/  
@@ -118,9 +114,9 @@ http {
         gzip off;
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location / {
-            # 填写Daemon进程真正监听的端口号
+            # 填写Daemon端真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -156,9 +152,9 @@ http {
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
-            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+            # 填写Daemon端真正监听的端口号，后面不能加斜杠！
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -215,7 +211,7 @@ https://mcsm.example.com/
 
 <br />
 
-## 连接守护进程
+## 连接Daemon端
 
 ### 本地回环地址  
 > 在**节点管理**中，填写地址为 ***localhost*** ，端口填写443，然后单击右侧的 **连接** 或 **更新** 即可。  
@@ -231,16 +227,6 @@ https://mcsm.example.com/
         # 本地回环域名
         server_name 127.0.0.244 ;
 ```
-
-<br />
-
-## 恭喜你，基础配置完成了！
-
-为了安全，您应当在防火墙中，禁止通过以下端口访问：
-> Web面板端真正监听的端口（例如23333）  
-> Daemon端真正监听的端口（例如24444） 
-
-（本地回环地址不受防火墙限制）  
 
 <br />
 

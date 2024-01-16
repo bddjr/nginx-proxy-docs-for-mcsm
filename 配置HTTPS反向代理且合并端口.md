@@ -3,21 +3,17 @@
 ***
 # 配置 HTTPS 反向代理且合并Web面板与守护节点的端口
 
-> 合并端口通常仅用于Web面板与守护进程在同一主机的情况。  
+> 合并端口通常仅用于Web面板与Daemon端在同一主机的情况。  
 > 本文基于 [配置HTTPS反向代理](配置HTTPS反向代理.md) 进行修改。  
 > 若您只需要 HTTP 反向代理且合并端口，请参考 [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md) 。  
 > 若您需要使用443端口，建议参考 [为同一主机的443端口配置HTTPS反向代理](为同一主机的443端口配置HTTPS反向代理.md) 。  
 > 本文**不是**MCSManager官方开发人员写的。  
 
-注释：  
-> 本地回环地址：例如域名 ***localhost*** 或IPv4 ***127.0.0.1*** 。  
-> 守护进程：意思同守护节点、Daemon节点、Daemon进程、Daemon端。  
-
 <br />
 
 ## 合并端口的原理
 
-MCSManager访问守护进程的路径开头（与Web面板路径开头不冲突）：  
+MCSManager访问Daemon端的路径开头（与Web面板路径开头不冲突）：  
 > /socket.io/  
 > /upload/  
 > /download/  
@@ -55,7 +51,7 @@ location /path/ {}                  # 匹配单个路径开头
 > ***Ubuntu 22.04*** 操作系统  
 > 编译安装的Nginx ***1.24.0***  
 > Web面板 ***9.9.0***  
-> 守护进程 ***3.4.0***  
+> Daemon端 ***3.4.0***  
 
 如果操作系统的包管理器自带的nginx版本太低（例如ubuntu），请编译安装最新版nginx。  
 
@@ -130,9 +126,9 @@ http {
         gzip off;
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location / {
-            # 填写Daemon进程真正监听的端口号
+            # 填写Daemon端真正监听的端口号
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -162,9 +158,9 @@ http {
         # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
-        # 代理Daemon节点
+        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
-            # 填写Daemon进程真正监听的端口号，后面不能加斜杠！
+            # 填写Daemon端真正监听的端口号，后面不能加斜杠！
             proxy_pass http://localhost:24444 ;
 
             # 一些请求头
@@ -222,7 +218,7 @@ https://domain.com:12333/
 
 <br />
 
-## 连接守护进程
+## 连接Daemon端
 
 ### 本地回环地址  
 > 在**节点管理**中，填写地址为 ***localhost*** ，端口填写反向代理后的端口号（例如12333），然后单击右侧的 **连接** 或 **更新** 即可。  
@@ -240,16 +236,6 @@ https://domain.com:12333/
 > > wss://domain.com  
 > 
 > ![connect_wss_daemon_12333.webp](images/connect_wss_daemon_12333.webp)
-
-<br />
-
-## 恭喜你，基础配置完成了！
-
-为了安全，您应当在防火墙中，禁止通过以下端口访问：
-> Web面板端真正监听的端口（例如23333）  
-> Daemon端真正监听的端口（例如24444） 
-
-（本地回环地址不受防火墙限制）  
 
 <br />
 
