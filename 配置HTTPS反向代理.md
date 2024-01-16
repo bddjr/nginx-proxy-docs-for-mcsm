@@ -131,8 +131,6 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            # 禁止客户端缓存，防止客户端未更新内容
-            expires -1;
         }
     }
     server {
@@ -165,8 +163,6 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            # 禁止客户端缓存，防止客户端未更新内容
-            expires -1;
         }
     }
     server {
@@ -202,7 +198,7 @@ http {
             proxy_cookie_flags ~ secure;
             # 客户端访问后1年内HTTP自动跳转HTTPS（清浏览器缓存后失效）
             add_header Strict-Transport-Security "max-age=31536000"; 
-            # 禁止客户端缓存，防止客户端未更新内容
+            # 禁止客户端缓存，防止客户端未更新内容（例如计划任务）
             expires -1;
         }
     }

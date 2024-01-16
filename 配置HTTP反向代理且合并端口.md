@@ -130,8 +130,6 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            # 禁止客户端缓存，防止客户端未更新内容
-            expires -1;
         }
     }
     server {
@@ -161,8 +159,6 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            # 禁止客户端缓存，防止客户端未更新内容
-            expires -1;
         }
         # 代理Web端
         location / {
@@ -179,8 +175,6 @@ http {
             proxy_set_header Connection "upgrade";
             # 增加响应头
             add_header X-Cache $upstream_cache_status;
-            # 禁止客户端缓存，防止客户端未更新内容
-            expires -1;
         }
     }
 }
