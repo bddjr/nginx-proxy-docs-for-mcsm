@@ -1,3 +1,8 @@
+## Language
+> ***简体中文***  
+> [English](english/README.md)  
+
+***
 ## 用于MCSManager的Nginx反向代理文档
 
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  

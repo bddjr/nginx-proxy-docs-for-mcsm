@@ -1,3 +1,7 @@
+## Language
+> ***简体中文***  
+> [English](english/http-merge-ports.md)  
+
 [<=点此返回README](README.md)
 
 ***
@@ -7,7 +11,7 @@
 > 本文基于 [配置HTTP反向代理](配置HTTP反向代理.md) 进行修改。  
 > 若您需要 HTTPS 反向代理且合并端口，请参考 [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md) 。  
 > 本文**不是**MCSManager官方开发人员写的。  
-> ⚠ 使用HTTP协议可能导致毫不知情的遭到网页内容**篡改**、**窃取**连接内容。
+> ⚠ HTTP是明文传输，不安全！  
 
 <br />
 
