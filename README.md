@@ -3,7 +3,7 @@
 > [English](english/README.md)  
 
 ***
-## 用于MCSManager的Nginx反向代理文档
+# 用于MCSManager的Nginx反向代理文档
 
 > [配置HTTPS反向代理且合并端口](配置HTTPS反向代理且合并端口.md)  
 > [配置HTTPS反向代理](配置HTTPS反向代理.md)  

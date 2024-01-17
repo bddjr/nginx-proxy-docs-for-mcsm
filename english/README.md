@@ -5,7 +5,7 @@
 This document was translated by machine and manually corrected.
 
 ***
-## Nginx reverse proxy document for MCSManager
+# Nginx reverse proxy document for MCSManager
 > [Configure HTTPS reverse proxy and merge ports](https-merge-ports.md)  
 > [Configure HTTPS reverse proxy](https.md)  
 > [Configure HTTP reverse proxy and merge ports](http-merge-ports.md)  
