@@ -7,10 +7,9 @@ This document was translated by machine and manually corrected.
 ***
 # Nginx reverse proxy document for MCSManager
 > [Configure HTTPS reverse proxy and merge ports](https-merge-ports.md)  
+> [Configure HTTPS reverse proxy for port 443 on the same host](443.md)  
 > [Configure HTTPS reverse proxy](https.md)  
 > [Configure HTTP reverse proxy and merge ports](http-merge-ports.md)  
-> [Configure HTTP reverse proxy](http.md)  
-> [Configure HTTPS reverse proxy for port 443 on the same host](443.md)  
 
 ***
 ## Thank you very much for reading the tutorial I wrote. I hope it will be helpful to you!
