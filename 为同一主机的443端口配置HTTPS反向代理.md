@@ -141,8 +141,8 @@ http {
         listen [::]:443 ssl ; #IPv6
 
         # 代理后HTTP端口
-        listen 80 default ;
-        listen [::]:80 default ; #IPv6
+        listen 80 ;
+        listen [::]:80 ; #IPv6
 
         # 你访问时使用的域名
         server_name mcsm.example.com ;
