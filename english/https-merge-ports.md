@@ -146,8 +146,6 @@ http {
         # HTTP redirect to HTTPS
         error_page 497 https://$host:$server_port$request_uri;
 
-        # There is no need to return robots.txt separately; the panel already contains the file.
-
         # Start reverse proxy
         # Proxy Daemon
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {

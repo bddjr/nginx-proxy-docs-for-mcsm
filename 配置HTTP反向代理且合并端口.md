@@ -123,8 +123,6 @@ http {
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
-        # 此处无需单独返回 robots.txt ，面板已包含该文件。
-
         # 开始反向代理
         # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {

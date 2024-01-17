@@ -159,8 +159,6 @@ http {
         # HTTP跳转到HTTPS
         error_page 497 https://$host:$server_port$request_uri;
 
-        # 此处无需单独返回 robots.txt ，面板已包含该文件。
-
         # 开始反向代理
         # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {

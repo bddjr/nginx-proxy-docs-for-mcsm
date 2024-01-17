@@ -114,8 +114,6 @@ http {
         # If the link you are accessing uses a public IP address directly, enter the public IP address here.
         server_name domain.com *.domain.com ;
 
-        # There is no need to return robots.txt separately; the panel already contains the file.
-
         # Start reverse proxy
         # Proxy Daemon
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {

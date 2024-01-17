@@ -129,12 +129,6 @@ http {
         # If the link you are accessing uses a public IP address directly, enter the public IP address here.
         server_name domain.com *.domain.com ;
 
-        # Return robots.txt to prevent search engine indexing
-        location =/robots.txt{
-            default_type text/plain;
-            return 200 "User-agent: *\nDisallow: /";
-        }
-
         # Start reverse proxy
         location / {
             # Fill in the port number that the Daemon end truly listens to, and do not add a slash after it!
@@ -163,8 +157,6 @@ http {
 
         # HTTP redirect to HTTPS
         error_page 497 https://$host:$server_port$request_uri;
-
-        # There is no need to return robots.txt separately; the panel already contains the file.
 
         # Start reverse proxy
         location / {

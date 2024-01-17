@@ -140,12 +140,6 @@ http {
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name domain.com *.domain.com ;
 
-        # 返回 robots.txt 以防止搜索引擎收录
-        location =/robots.txt{
-            default_type text/plain;
-            return 200 "User-agent: *\nDisallow: /";
-        }
-
         # 开始反向代理
         location / {
             # 填写Daemon端真正监听的端口号
@@ -174,8 +168,6 @@ http {
         
         # HTTP跳转到HTTPS
         error_page 497 https://$host:$server_port$request_uri;
-
-        # 此处无需单独返回 robots.txt ，面板已包含该文件。
 
         # 开始反向代理
         location / {

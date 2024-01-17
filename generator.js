@@ -455,12 +455,6 @@ ${buildconf_listen('','::',ConfS.daemonproxyport())}
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name ${ConfS.domain()} ;
 
-        # 返回 robots.txt 以防止搜索引擎收录
-        location =/robots.txt{
-            default_type text/plain;
-            return 200 "User-agent: *\\nDisallow: /";
-        }
-
         # 开始反向代理
         location / {
             # 填写Daemon端真正监听的端口号
@@ -497,9 +491,7 @@ ${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并�
         # HTTP跳转到HTTPS
         error_page 497 https://$host:$server_port$request_uri;
 
-`:''}        # 此处无需单独返回 robots.txt ，面板已包含该文件。
-
-        # 开始反向代理
+`:''}        # 开始反向代理
 ${ConfS.mergeports() ?`        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
             # 填写Daemon端真正监听的端口号，后面不能加斜杠！
