@@ -10,7 +10,6 @@ This document was translated by machine and manually corrected.
 # Configure HTTP reverse proxy and merge Web and Daemon ports
 
 > The merge port is usually only used if the Web panel and Daemon are on the same host.  
-> This article is based on the modification of [Configure HTTP reverse proxy](http.md)  
 > If you only need HTTPS reverse proxy and merge ports, please refer to [Configure HTTPS reverse proxy and merge ports](https-merge-ports.md)  
 > This article was not written by an official developer of MCSManager.  
 > ⚠ HTTP is a plaintext transmission, not secure!  

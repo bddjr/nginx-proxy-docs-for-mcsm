@@ -9,7 +9,6 @@ This document was translated by machine and manually corrected.
 ***
 # Configure HTTPS reverse proxy
 
-> If you only need HTTP reverse proxy, please refer to [Configure HTTP Reverse Proxy](http.md)  
 > If you need to merge ports, please refer to [Configure HTTPS Reverse Proxy and Merge Ports](https-merge-ports.md)  
 > If you need to use port 443, it is recommended to refer to [Configure HTTPS reverse proxy for port 443 on the same host](443.md)  
 > This article was not written by an official developer of MCSManager.  
