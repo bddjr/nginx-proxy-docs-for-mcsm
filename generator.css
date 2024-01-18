@@ -111,5 +111,6 @@ textarea[id=generate_result_text]{
 
 .generate_info{
     font-size: 18px;
+    /* margin-right: 12px; */
     margin: 6px auto 8px 4px;
 }

@@ -2,7 +2,7 @@
 
 //my tools
 /**@type {boolean}*/
-var mydebugmode= (location.host === '127.0.0.1');
+var mydebugmode= (location.hostname === '127.0.0.1');
 /**
  * @param {any} a
  * @return {void}
@@ -43,7 +43,8 @@ const ConfS= new class{
     ConfBooleanNameList=[
         'https',
         'mergeports',
-        'listenipv6'
+        'listenipv6',
+        'crossOriginReject'
     ];
     /**@return {Boolean}*/
     https(){
@@ -59,6 +60,11 @@ const ConfS= new class{
     listenipv6(){
         // @ts-ignore
         return confCheck_listenipv6.checked;
+    }
+    /**@return {Boolean}*/
+    crossOriginReject(){
+        // @ts-ignore
+        return confCheck_crossOriginReject.checked;
     }
 
     /**@type {Array<String>}*/
@@ -109,8 +115,13 @@ const ConfS= new class{
 
     /**@type {Array<String>}*/
     ConfNameList
+    /**@return {boolean}*/
+    isWebProxy443(){
+        return ConfS.webproxyport() == '443' && ConfS.https();
+    }
+
 };
-ConfS.ConfNameList= ConfS.ConfBooleanNameList.concat( ConfS.ConfValueNameList );
+ConfS.ConfNameList = ConfS.ConfBooleanNameList.concat( ConfS.ConfValueNameList );
 
 
 //onclick
@@ -119,35 +130,31 @@ const clickconfCheck= new class{
     https(){
         myLog('clickconfCheck.https');
         if( ConfS.https() ){
-            // @ts-ignore
-            conf_sslcertpath.style.display= '';
-            // @ts-ignore
-            conf_sslkeypath.style.display= '';
+            document.getElementById('conf_sslcertpath').style.display= '';
+            document.getElementById('conf_sslkeypath').style.display= '';
         }else{
-            // @ts-ignore
-            conf_sslcertpath.style.display= "none";
-            // @ts-ignore
-            conf_sslkeypath.style.display= "none";
+            document.getElementById('conf_sslcertpath').style.display= "none";
+            document.getElementById('conf_sslkeypath').style.display= "none";
         }
     }
     /**@return {void}*/
     mergeports(){
         myLog('clickconfCheck.mergeports');
         if( ConfS.mergeports() ){
-            // @ts-ignore
-            conf_daemonproxyport.style.display= "none";
-            // @ts-ignore
-            conf_webproxyport_title.innerHTML= "代理后的端口：";
+            document.getElementById('conf_daemonproxyport').style.display= "none";
+            document.getElementById('conf_webproxyport_title').innerHTML= "代理后的端口：";
         }else{
-            // @ts-ignore
-            conf_daemonproxyport.style.display= '';
-            // @ts-ignore
-            conf_webproxyport_title.innerHTML= "web端代理后的端口：";
+            document.getElementById('conf_daemonproxyport').style.display= '';
+            document.getElementById('conf_webproxyport_title').innerHTML= "web端代理后的端口：";
         }
     }
     /**@return {void}*/
     listenipv6(){
         myLog('clickconfCheck.listenipv6');
+    }
+    /**@return {void}*/
+    crossOriginReject(){
+        myLog('clickconfCheck.crossOriginReject');
     }
 };
 
@@ -157,29 +164,29 @@ function generate_url(){
     // @ts-ignore
     click_generate_url.innerHTML= "重新生成URL参数";
 
-    /**@type {Array<String>}*/
-    let urils= [];
-    if(generate_conf_runned)
-        urils.push('autogenerate=true');
-    for(let i of ConfS.ConfNameList)
-        urils.push(`${i}=${encodeURIComponent( ConfS[i]() )}`);
-    let uri= '?'+ urils.join('&');
+    const usp = new URLSearchParams();
+    // if (generate_conf_runned)
+    //     usp.append('autogenerate', '1');
+    for (let i of ConfS.ConfNameList) {
+        let j = ConfS[i]();
+        if (typeof j === 'boolean')
+            j = +j;
+        usp.append(i, j);
+    }
 
+    let uri= '?' + usp;
     myLog(uri);
     if( location.search != uri )
-        history.pushState("","", uri);
+        history.replaceState(null,"", uri);
 }
 
 /**@return {void}*/
 function clear_url(){
     myLog('clear_url');
-    if(location.search!=''){
-        // @ts-ignore
-        click_generate_url.innerHTML= "生成URL参数";
-        history.pushState("","",
-            location.href.replace( location.search, '')
-        );
-    }
+    if (location.search == '') return;
+    // @ts-ignore
+    click_generate_url.innerHTML= "生成URL参数";
+    history.replaceState(null,"", '?');
 }
 
 
@@ -192,7 +199,7 @@ function generate_conf(){
     myLog('generate_conf');
     generate_conf_runned= true;
     // @ts-ignore
-    click_generate_conf.innerHTML= "重新生成配置文件";
+    click_generate_conf.innerHTML= "重新生成配置";
     try{
         //验证填写信息有效
         /**
@@ -224,6 +231,29 @@ function generate_conf(){
         porttest(ConfS.daemonport(), 'daemon端监听端口格式无效');
         if(!( ConfS.mergeports() ))
             porttest(ConfS.daemonproxyport(), 'daemon端代理后的端口格式无效');
+
+        if (!ConfS.mergeports() && ConfS.webproxyport() == ConfS.daemonproxyport()) {
+            // document.getElementById('confCheck_mergeports').click();
+            throw '检测到web与daemon反向代理后的端口号一致，请勾选合并端口'
+        }
+        {
+            let proxiedPorts = [ConfS.webproxyport()];
+            if (!(ConfS.mergeports())) {
+                proxiedPorts.push( ConfS.daemonproxyport() );
+            }
+            if (proxiedPorts.includes('80') && ConfS.https()) {
+                throw '80端口不应该用于HTTPS'
+            }
+            if (proxiedPorts.includes('443') && !ConfS.https()) {
+                throw '443端口不应该用于HTTP'
+            }
+        }{
+            let webDaemonPorts = [ConfS.webport(), ConfS.daemonport()];
+            if (webDaemonPorts.includes('80') || webDaemonPorts.includes('443')) {
+                throw '80或443端口不应该被web端或daemon端占用'
+            }
+        }
+
 
         //使用数组去重检测端口号冲突
         //有临时变量，括起来
@@ -312,14 +342,17 @@ function generate_conf(){
              * @param {String} ipv4
              * @param {String} ipv6
              * @param {String|Number} port
+             * @param {boolean|undefined} ishttps
              * @return {String}
              * 如果是http，那么后面填default。
              * 如果是https，那么后面填ssl。
             */
-            function buildconf_listendefault(ipv4,ipv6,port){
-                let i = `        listen ${ipv4+port} ${buildconf_sslORdefault};`
+            function buildconf_listendefault(ipv4, ipv6, port, ishttps=undefined){
+                if (ishttps === undefined) ishttps = ConfS.https();
+                let sslORdefault = ishttps ? buildconf_sslORdefault : 'default' ;
+                let i = `        listen ${ipv4+port} ${sslORdefault};`
                 if (ConfS.listenipv6()) {
-                    i += `\n        listen [${ipv6}]:${port} ${buildconf_sslORdefault}; #IPv6`
+                    i += `\n        listen [${ipv6}]:${port} ${sslORdefault}; #IPv6`
                 }
                 return i
             }
@@ -337,7 +370,7 @@ function generate_conf(){
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接
+    ssl_protocols ${ConfS.isWebProxy443 ? 'TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # 允许使用这些加密方式建立连接' : 'TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接'}
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
@@ -362,35 +395,45 @@ function generate_conf(){
     # 不限制客户端上传文件大小
     client_max_body_size 0;
 
-    server {
-        # 这块是用于阻止跨域访问的。
-
 `       );
 
 
 
         //防跨域模块
-        if(ConfS.mergeports()){
+        if (ConfS.crossOriginReject()) {
             buildconf.push(
-`        # 代理后端口（可用多个listen监听多个端口）
-${buildconf_listendefault('','::',ConfS.webproxyport())}
+`    server {
+        # 这块是用于阻止跨域访问的。
 
 `           );
-        }else{
-            buildconf.push(
+            if(ConfS.mergeports()){
+                buildconf.push(
+`        # 代理后端口（可用多个listen监听多个端口）
+${buildconf_listendefault('','::',ConfS.webproxyport())}
+`               );
+            }else{
+                buildconf.push(
 `        # Daemon 端访问端口（可用多个listen监听多个端口）
 ${buildconf_listendefault('','::',ConfS.daemonproxyport())}
         # Web面板访问端口（可用多个listen监听多个端口）
 ${buildconf_listendefault('','::',ConfS.webproxyport())}
-`           );
-        }
-        buildconf.push(
-`        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
+`               );
+            }
+            if (ConfS.isWebProxy443()) {
+                buildconf.push(
+`
+        # Web面板HTTP端口（用于重定向）
+${buildconf_listendefault('','::',80,false)}
+`               );
+            }
+            buildconf.push(
+`
+        # 若使用的域名在其它server{}中都无法匹配，则会匹配这里。
         server_name _ ;
 
-`       );
-        if(ConfS.https()){
-            buildconf.push(
+`           );
+            if(ConfS.https()){
+                buildconf.push(
 `        # 使用https访问时，直接断开连接，不返回证书。
         # 如果你需要套DNS的CDN高防，则不应该删除此块，那样更容易导致证书泄露，攻击者扫到IP后直接将源IP与域名绑定在一起。
         ssl_reject_handshake on;
@@ -401,13 +444,14 @@ ${buildconf_listendefault('','::',ConfS.webproxyport())}
             return 444;
         }
     }
-`           );
-        }else{
-            buildconf.push(
+`               );
+            }else{
+                buildconf.push(
 `        # 断开连接。
         return 444;
     }
-`           );
+`               );
+            }
         }
 
 
@@ -484,14 +528,18 @@ ${buildconf_listen('','::',ConfS.webproxyport())}
 
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
-        server_name domain.com *.domain.com ;
+        server_name ${ConfS.domain()} ;
 
-${ConfS.https() ?`        # 前面已经写了默认ssl配置，因此这里并没有ssl配置。您也可以在此处单独配置该域名的ssl。
+${ConfS.isWebProxy443() ?`        # HTTP跳转到HTTPS
+        error_page 497 https://$host$request_uri; 
+        if ($scheme = "http"){
+            return 302 https://$host$request_uri;
+        }
 
-        # HTTP跳转到HTTPS
+`: (ConfS.https() ?`        # HTTP跳转到HTTPS
         error_page 497 https://$host:$server_port$request_uri;
 
-`:''}        # 开始反向代理
+`:'')}        # 开始反向代理
 ${ConfS.mergeports() ?`        # 代理Daemon端
         location ~ (^/socket.io/)|(^/upload/)|(^/download/) {
             # 填写Daemon端真正监听的端口号，后面不能加斜杠！
@@ -534,50 +582,69 @@ ${ConfS.https() ?`            # 仅允许客户端使用HTTPS发送Cookie
         // @ts-ignore
         generate_result_text.value= buildconf.join('');
         // @ts-ignore
-        generate_info.innerHTML ="配置文件生成成功 ✓";
+        generate_info.innerHTML ="生成成功 ✓";
         // @ts-ignore
         generate_info.style.color= "green";
+        if (ConfS.isWebProxy443()) {
+            // @ts-ignore
+            generate_info.innerHTML += " （已为443端口进行特别优化）";
+        }
     }catch(e){
         // @ts-ignore
-        generate_info.innerHTML ="配置文件生成失败 ✖<br/>"+e;
+        generate_info.innerHTML = "生成失败 ✖ "+e;
         // @ts-ignore
-        generate_info.style.color= "red";
+        generate_info.style.color = "red";
+        // @ts-ignore
+        generate_result_text.value = '';
     }
 }
 
 
 //read uri
-if( location.search !=='' ){
-    myLog('read uri');
+myLog('read uri');
+
+let params = new URLSearchParams(location.search);
+if (params.size > 0) {
     // @ts-ignore
     click_generate_url.innerHTML= "重新生成URL参数";
+}
 
-    // @ts-ignore
-    let params = new URLSearchParams(location.search);
-
-    for(let i of ConfS.ConfBooleanNameList){
-        let j= params.get(i);
-        if(j !== null){
-            this['confCheck_'+i].checked= StrToBool(j);
-            clickconfCheck[i]();
-        }
+for(let i of ConfS.ConfBooleanNameList){
+    let j= params.get(i);
+    const ele = document.getElementById('confCheck_' + i);
+    if(j !== null){
+        // @ts-ignore
+        ele.checked= StrToBool(j);
     }
+    clickconfCheck[i]();
+    ele.addEventListener('click', generate_conf);
+}
 
-    for(let i of ConfS.ConfValueNameList){
-        let j= params.get(i);
-        if(j !== null){
-            this[`conf_${i}_input`].value= j;
-        }
+for(let i of ConfS.ConfValueNameList){
+    let j= params.get(i);
+    const ele = document.getElementById(`conf_${i}_input`)
+    if(j !== null){
+        // @ts-ignore
+        ele.value = j;
     }
+    ele.addEventListener('input', generate_conf);
+}
 
-    //默认不自动生成配置文件，所以缩写了。
-    //输入null不会导致出错。
-    if(StrToBool( params.get('autogenerate') ))
-        generate_conf();
+//默认不自动生成配置文件，所以缩写了。
+//输入null不会导致出错。
+// if(StrToBool( params.get('autogenerate') ))
+generate_conf();
+
+
+// 鼠标选择输出框时自动全选
+for (let i of document.getElementsByTagName("textarea")){
+    i.addEventListener('focus', function(){
+        i.select();
+    });
 }
 
 //网页加载完成或加载终止时，自动显示内容
-window.onload= /**@return {void}*/()=>{
+window.onload= ()=>{
     myLog('web loaded');
 
     //显示网页块

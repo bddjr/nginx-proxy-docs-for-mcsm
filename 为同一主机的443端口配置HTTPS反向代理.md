@@ -49,6 +49,8 @@ location /path/ {}                  # 匹配单个路径开头
 如果你直接使用原生nginx配置，请编译安装最新版nginx，然后替换 `nginx.conf` 里的 `http{}` 。  
 如果你使用面板搭建网站（例如宝塔、1panel），请自行截取相关 `server{}` 块修改（除了阻止跨域访问的）。  
 
+> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=1&webproxyport=443&domain=mcsm.domain.com" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
+
 假设：
 > 使用 ***mcsm.example.com*** 连接面板与守护节点  
 
