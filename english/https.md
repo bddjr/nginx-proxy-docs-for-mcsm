@@ -190,7 +190,6 @@ systemctl reload nginx
 
 ## Client access panel
 
-According to the demonstrated configuration content, it is necessary to enable **TLSv1.2** (usually enabled by default) or **TLSv1.3** within the system.  
 If the domain name is ***domain.com*** and the reverse proxy port is 12333, then the browser needs to use this address to access the panel:  
 ```
 https://domain.com:12333/
