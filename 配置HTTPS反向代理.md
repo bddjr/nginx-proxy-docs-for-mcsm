@@ -58,7 +58,7 @@ http {
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接
+    ssl_protocols TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # 允许使用这些加密方式建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
@@ -201,7 +201,6 @@ systemctl reload nginx
 
 ## 客户端访问面板
 
-依据示范的配置内容，需要在系统内开启 **TLSv1.2**（通常默认开启）或 **TLSv1.3** 。  
 假如域名是 ***domain.com*** ，反向代理后的端口是12333，那么浏览器需要使用这个地址访问面板：
 ```
 https://domain.com:12333/

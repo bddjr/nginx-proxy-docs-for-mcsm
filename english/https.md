@@ -47,7 +47,7 @@ http {
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols TLSv1.2 TLSv1.3; # Allow connection establishment using TLSv1.2 or TLSv1.3
+    ssl_protocols TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # Allow connections to be established using these encryption methods
     ssl_verify_client off; # Do not verify the client's certificate
     #SSL-END
 

@@ -370,7 +370,7 @@ function generate_conf(){
 
     ssl_session_cache shared:SSL:1m;
     ssl_session_timeout  10m;
-    ssl_protocols ${ConfS.isWebProxy443 ? 'TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # 允许使用这些加密方式建立连接' : 'TLSv1.2 TLSv1.3; # 允许使用 TLSv1.2 或 TLSv1.3 建立连接'}
+    ssl_protocols TLSv1.0 TLSv1.1 TLSv1.2 TLSv1.3; # 允许使用这些加密方式建立连接
     ssl_verify_client off; # 不验证客户端的证书
     #SSL-END
 
