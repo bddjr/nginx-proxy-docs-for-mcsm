@@ -342,14 +342,13 @@ function generate_conf(){
              * @param {String} ipv4
              * @param {String} ipv6
              * @param {String|Number} port
-             * @param {boolean|undefined} ishttps
+             * @param {boolean} usessl
              * @return {String}
              * 如果是http，那么后面填default。
              * 如果是https，那么后面填ssl。
             */
-            function buildconf_listendefault(ipv4, ipv6, port, ishttps=undefined){
-                if (ishttps === undefined) ishttps = ConfS.https();
-                let sslORdefault = ishttps ? buildconf_sslORdefault : 'default' ;
+            function buildconf_listendefault(ipv4, ipv6, port, usessl=true){
+                const sslORdefault = usessl ? buildconf_sslORdefault : 'default' ;
                 let i = `        listen ${ipv4+port} ${sslORdefault};`
                 if (ConfS.listenipv6()) {
                     i += `\n        listen [${ipv6}]:${port} ${sslORdefault}; #IPv6`
@@ -525,7 +524,10 @@ ${buildconf_listen('','::',ConfS.daemonproxyport())}
 `    server {
         # ${ConfS.mergeports() ?"代理后":"Web 端"}公网端口（可用多个listen监听多个端口）
 ${buildconf_listen('','::',ConfS.webproxyport())}
-
+${ConfS.isWebProxy443() ? `
+        # 代理后HTTP端口
+${buildconf_listen('','::',80,false)}
+`:''}
         # 你访问时使用的域名（支持通配符，但通配符不能用于根域名）
         # 如果你访问时的链接直接使用公网IP，那么此处填写公网IP。
         server_name ${ConfS.domain()} ;
