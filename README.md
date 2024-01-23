@@ -1,4 +1,4 @@
-## Language
+Language
 > ***简体中文***  
 > [English](english/README.md)  
 
@@ -9,8 +9,9 @@
 > [为同一主机的443端口配置HTTPS反向代理](为同一主机的443端口配置HTTPS反向代理.md)  
 > [配置HTTPS反向代理](配置HTTPS反向代理.md)  
 > [配置HTTP反向代理且合并端口](配置HTTP反向代理且合并端口.md)  
+>
+> [理论基础](理论基础.md)  
 >   
-> ***  
 > <a href="https://proxyformcsm.bddjr.com/generator.html" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>
 
 ***
@@ -32,7 +33,7 @@ https://proxyformcsm.bddjr.com
 ```
 
 ***
-其它文档请参考MCSM官方文档：  
+MCSManager官方文档：  
 <https://docs.mcsmanager.com/#/zh-cn/>  
 
 ***

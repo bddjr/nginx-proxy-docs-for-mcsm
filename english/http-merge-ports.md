@@ -1,4 +1,4 @@
-## Language
+Language
 > [简体中文](../配置HTTP反向代理且合并端口.md)  
 > ***English***  
 
