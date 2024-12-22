@@ -27,7 +27,7 @@ https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/README.md
 ```
-[Github Page + Cloudflare CDN 网页：](https://proxyformcsm.bddjr.com)  
+[Github Pages 网页：](https://proxyformcsm.bddjr.com)  
 ```
 https://proxyformcsm.bddjr.com
 ```

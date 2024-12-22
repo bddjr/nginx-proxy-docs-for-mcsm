@@ -21,7 +21,7 @@ Have incorrect content or suggestions for improvement? Or don't understand how t
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/english/README.md
 ```
-[Github Page + Cloudflare CDN :](https://proxyformcsm.bddjr.com/english/)  
+[Github Pages :](https://proxyformcsm.bddjr.com/english/)  
 ```
 https://proxyformcsm.bddjr.com/english/
 ```

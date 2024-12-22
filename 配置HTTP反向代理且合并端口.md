@@ -200,7 +200,7 @@ https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AE
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.md
 ```
-[Github Page + Cloudflare CDN 网页：](https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.html)  
+[Github Pages 网页：](https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.html)  
 ```
 https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.html
 ```

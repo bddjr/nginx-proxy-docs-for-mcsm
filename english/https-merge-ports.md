@@ -237,7 +237,7 @@ Have incorrect content or suggestions for improvement? Or don't understand how t
 ```
 https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/english/https-merge-ports.md
 ```
-[Github Page + Cloudflare CDN :](https://proxyformcsm.bddjr.com/english/https-merge-ports.html)  
+[Github Pages :](https://proxyformcsm.bddjr.com/english/https-merge-ports.html)  
 ```
 https://proxyformcsm.bddjr.com/english/https-merge-ports.html
 ```
