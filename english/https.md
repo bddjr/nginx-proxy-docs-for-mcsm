@@ -240,4 +240,4 @@ https://proxyformcsm.bddjr.com/english/https.html
 [<=Back to README](README.md)
 
 > Source code repository: <a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
-> Made by <a href="https://bddjr.cn" target="_blank" rel="noopener">bddjr</a>
+> Made by bddjr

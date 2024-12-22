@@ -262,4 +262,4 @@ https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A
 [<=点此返回README](README.md)
 
 > 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
-> Made by <a href="https://bddjr.cn" target="_blank" rel="noopener">bddjr</a>
+> Made by bddjr
