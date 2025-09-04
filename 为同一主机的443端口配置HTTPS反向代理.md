@@ -49,8 +49,6 @@ location /path/ {}                  # 匹配单个路径开头
 如果你直接使用原生nginx配置，请编译安装最新版nginx，然后替换 `nginx.conf` 里的 `http{}` 。  
 如果你使用面板搭建网站（例如宝塔、1panel），请自行截取相关 `server{}` 块修改（除了阻止跨域访问的）。  
 
-> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=1&webproxyport=443&domain=mcsm.domain.com" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
-
 假设：
 > 使用 ***mcsm.example.com*** 连接面板与守护节点  
 
@@ -235,25 +233,6 @@ https://mcsm.example.com/
 <br />
 
 ***
-## 非常感谢您能阅读我写的教程，希望对你有帮助！
-有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
-
-### 想要分享该文档？  
-[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
-```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
-```
-[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
-```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
-```
-[Github Pages 网页：](https://proxyformcsm.bddjr.com/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html)  
-```
-https://proxyformcsm.bddjr.com/%E4%B8%BA%E5%90%8C%E4%B8%80%E4%B8%BB%E6%9C%BA%E7%9A%84443%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
-```
-
-***
 [<=点此返回README](README.md)
 
-> 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr

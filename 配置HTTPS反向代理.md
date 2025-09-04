@@ -29,8 +29,6 @@ Language
 
 ## 配置反向代理
 
-> <a href="https://proxyformcsm.bddjr.com/generator.html?https=1&mergeports=0" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
-
 以下示范内容的测试环境：  
 > ***Ubuntu 22.04*** 操作系统  
 > 编译安装的Nginx ***1.24.0***  
@@ -233,25 +231,6 @@ https://domain.com:12333/
 <br />
 
 ***
-## 非常感谢您能阅读我写的教程，希望对你有帮助！
-有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
-
-### 想要分享该文档？  
-[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
-```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
-```
-[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md)  
-```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.md
-```
-[Github Pages 网页：](https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html)  
-```
-https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTPS%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.html
-```
-
-***
 [<=点此返回README](README.md)
 
-> 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr

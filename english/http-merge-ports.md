@@ -179,23 +179,8 @@ If you need to fill in the remote address ***domain.com***, then change ***local
 
 <br />
 
-***
-## Thank you very much for reading the tutorial I wrote. I hope it will be helpful to you!
-Have incorrect content or suggestions for improvement? Or don't understand how to configure? <a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm/issues/new" target="_blank">Click here to edit and submit the issue</a>
-
-## Want to share this document?
-
-[Github Repository :](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/english/http-merge-ports.md)  
-```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/english/http-merge-ports.md
-```
-[Github Pages :](https://proxyformcsm.bddjr.com/english/http-merge-ports.html)  
-```
-https://proxyformcsm.bddjr.com/english/http-merge-ports.html
-```
 
 ***
 [<=Back to README](README.md)
 
-> Source code repository: <a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr

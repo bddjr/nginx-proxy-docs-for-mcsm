@@ -34,8 +34,6 @@ location /path/ {}                  # 匹配单个路径开头
 
 ## 配置反向代理
 
-> <a href="https://proxyformcsm.bddjr.com/generator.html?https=0&mergeports=1" target="_blank">配置文件的主要参数改起来有些麻烦？试试这款生成器吧！</a>  
-
 以下示范内容的测试环境：  
 > ***CentOS*** 操作系统  
 > 使用yum安装的Nginx ***1.20.1***  
@@ -187,26 +185,8 @@ http://domain.com:12333/
 
 <br />
 
-***
-## 非常感谢您能阅读我写的教程，希望对你有帮助！
-有错误的内容或改进的建议？或者没弄懂怎么配置？[点此编辑并提交issue](../../issues/new)。  
-
-### 想要分享该文档？  
-[Gitee 仓库（中国内地访问稳定）：](https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.md)  
-```
-https://gitee.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.md
-```
-[Github 仓库：](https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.md)  
-```
-https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.md
-```
-[Github Pages 网页：](https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.html)  
-```
-https://proxyformcsm.bddjr.com/%E9%85%8D%E7%BD%AEHTTP%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%94%E5%90%88%E5%B9%B6%E7%AB%AF%E5%8F%A3.html
-```
 
 ***
 [<=点此返回README](README.md)
 
-> 源码仓库：<a href="https://github.com/bddjr/nginx-proxy-docs-for-mcsm" target="_blank">nginx-proxy-docs-for-mcsm</a><br/>
 > Made by bddjr
