@@ -3,7 +3,7 @@
 
 <head>
     <meta name="robots" content="noindex, nofollow">
-    <script>/bot/i.test(navigator.userAgent) || location.replace("https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master" + location.pathname.replace(/\/$/, '/README.md').replace(/(\.(html|md))?$/i, '.md'))</script>
+    <script>/bot/i.test(navigator.userAgent) || location.replace("https://github.com/bddjr/nginx-proxy-docs-for-mcsm/blob/master" + location.pathname.replace(/\/+/g, '/').replace(/(?<=^\/english)$/i, '/').replace(/\/$/i, '/README.md').replace(/(\.(html|md))?$/i, '.md'))</script>
 </head>
 
 <body></body>
