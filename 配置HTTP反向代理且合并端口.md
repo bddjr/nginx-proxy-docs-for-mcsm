@@ -4,6 +4,9 @@ Language
 
 [<=点此返回README](README.md)
 
+> 由于某人实在恶心到我了，我决定不再使用MCSManager，详见：    
+> https://github.com/bddjr/bddjr/discussions/17  
+
 ***
 # 配置 HTTP 反向代理且合并Web面板与守护节点的端口
 
@@ -189,4 +192,6 @@ http://domain.com:12333/
 ***
 [<=点此返回README](README.md)
 
-> Made by bddjr
+> Made by bddjr  
+> 由于某人实在恶心到我了，我决定不再使用MCSManager，详见：    
+> https://github.com/bddjr/bddjr/discussions/17  

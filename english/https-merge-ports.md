@@ -6,6 +6,9 @@ This document was translated by machine and manually corrected.
 
 [<=Back to README](README.md)
 
+> 由于某人实在恶心到我了，我决定不再使用MCSManager，详见：    
+> https://github.com/bddjr/bddjr/discussions/17  
+
 ***
 # Configure HTTPS reverse proxy and merge Web and Daemon ports
 
@@ -231,4 +234,6 @@ https://domain.com:12333/
 ***
 [<=Back to README](README.md)
 
-> Made by bddjr
+> Made by bddjr  
+> 由于某人实在恶心到我了，我决定不再使用MCSManager，详见：    
+> https://github.com/bddjr/bddjr/discussions/17  

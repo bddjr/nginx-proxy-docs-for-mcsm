@@ -12,4 +12,6 @@ This document was translated by machine and manually corrected.
 > [Configure HTTP reverse proxy and merge ports](http-merge-ports.md)  
 
 ***
-> Made by bddjr
+> Made by bddjr  
+> 由于某人实在恶心到我了，我决定不再使用MCSManager，详见：    
+> https://github.com/bddjr/bddjr/discussions/17  
